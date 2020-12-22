@@ -26,4 +26,18 @@
         <servlet-name>ServletTestBDD</servlet-name>
         <url-pattern>/testbdd</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ServletInscription</servlet-name>
+        <servlet-class>servlet.ServletInscription</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletInscription</servlet-name>
+        <url-pattern>/inscription</url-pattern>
+    </servlet-mapping>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404notfound.html</location>
+    </error-page>
 </web-app>
