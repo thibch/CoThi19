@@ -1,6 +1,7 @@
 package servlet;
 
 import connexionSQL.SQLConnector;
+import exception.ExceptionCoThi19;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -30,7 +31,7 @@ public class ServletTestBDD extends HttpServlet {
         out.println("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
         out.println("<title>TESTO</title></head>");
         out.println("<body>");
-        out.println("<p>Connexion à la base de données : </p>");
+        out.println("<p>Connexion à la base de données : </br>");
 
         System.out.println("Test connexion : ");
 
@@ -41,15 +42,16 @@ public class ServletTestBDD extends HttpServlet {
             resultSet.next();
             i = resultSet.getString("name"); // On récupère le résultat
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            System.out.println(i);
+            out.println(i);
+
+        } catch (SQLException | ExceptionCoThi19 throwables) {
+            System.out.println(throwables.getMessage());
+            out.println("</br>");
+            out.println(throwables.getMessage());
         }
-        System.out.println(i);
-        out.println(i);
 
-        System.out.println("Fin test connexion");
-
-        out.println("<p>Connexion </p>");
+        out.println("</p>");
 
         out.println("</body>");
         out.println("</html>");

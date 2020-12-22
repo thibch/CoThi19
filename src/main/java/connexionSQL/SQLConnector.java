@@ -1,5 +1,9 @@
 package connexionSQL;
 
+import exception.ExceptionCoThi19;
+import exception.ExceptionConnexionSQL;
+import exception.ExceptionRequeteSQL;
+
 import java.sql.*;
 
 public class SQLConnector {
@@ -20,37 +24,33 @@ public class SQLConnector {
         Statement stmt = null;
 
         try{
-            // On fait appel au driver
-            Class.forName(JDBC_DRIVER);
+            boolean connexion = tryConnection();
 
-            System.out.println("Connecting to database...");
-            con = DriverManager.getConnection(DB_URL, USER, PASS); // On récupère la connexion avec la bdd
-            System.out.println("Conexion réussie !");
+            if(connexion){
+                //STEP 4: Execute a query
+                System.out.println("Creating statement...");
+                stmt = con.createStatement();
+                String sql;
+                sql = "SELECT * FROM User";
+                ResultSet rs = stmt.executeQuery(sql);
 
+                //STEP 5: Extract data from result set
+                while(rs.next()){
+                    //Retrieve by column name
+                    String mail  = rs.getString("email");
+                    String password = rs.getString("password");
+                    boolean rang = rs.getBoolean("isAdmin");
 
-            //STEP 4: Execute a query
-            System.out.println("Creating statement...");
-            stmt = con.createStatement();
-            String sql;
-            sql = "SELECT * FROM User";
-            ResultSet rs = stmt.executeQuery(sql);
+                    //Display values
+                    System.out.print("email : " + mail);
+                    System.out.print(", password : " + password);
+                    System.out.print(", rang : " + rang + "\n");
+                }
 
-            //STEP 5: Extract data from result set
-            while(rs.next()){
-                //Retrieve by column name
-                String mail  = rs.getString("email");
-                String password = rs.getString("password");
-                boolean rang = rs.getBoolean("isAdmin");
-
-                //Display values
-                System.out.print("email : " + mail);
-                System.out.print(", password : " + password);
-                System.out.print(", rang : " + rang + "\n");
+                //STEP 6: Clean-up environment
+                rs.close();
+                stmt.close();
             }
-
-            //STEP 6: Clean-up environment
-            rs.close();
-            stmt.close();
         }catch(SQLException se){
             //Handle errors for JDBC
             se.printStackTrace();
@@ -65,67 +65,66 @@ public class SQLConnector {
             }catch(SQLException ignored){
             }// nothing we can do
         }//end try
-        System.out.println("End of Connection...");
+    }
+
+    /**
+     * Tente de se connecter à la base de données.
+     * Si échec la con est mis à null
+     * @return vrai si la connexion est réussie, faux sinon
+     */
+    private boolean tryConnection(){
+        boolean success;
+        try {
+            if(con == null || con.isClosed()){
+                // On fait appel au driver
+                Class.forName(JDBC_DRIVER);
+
+                System.out.println("Connecting to database...");
+                con = DriverManager.getConnection(DB_URL, USER, PASS); // On récupère la connexion avec la bdd
+                System.out.println("Conexion réussie !");
+            }
+            success = true;
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("-------------------------------------------------\n" +
+                    "ERROR : \n");
+            System.out.println(e.getMessage());
+            System.out.println("-------------------------------------------------");
+            con = null;
+            success = false;
+        }
+        return success;
     }
 
     public static SQLConnector getInstance() {
         if(instance == null) {
             synchronized (SQLConnector.class){
-                instance = new SQLConnector();
+                if(instance == null) {
+                    instance = new SQLConnector();
+                }
             }
         }
         return instance;
     }
-/*
-    public UserBean getUser(String email, String password){
 
-        UserBean user = null;
-
-        String rqString = "Select * from user where email ='" + email + "' and password='" + password + "'";
-        ResultSet res = doRequest(rqString);
-
-        try{
-            user = new UserBean();
-            while (res.next()){
-                user.setId(res.getInt("id"));
-                user.setEmail(res.getString("email"));
-                user.setPassword(res.getString("password"));
-                user.setRang(res.getString("rang"));
+    /**
+     * Execute la requete si possible, sinon retourne une exception
+     * @param requeteSQL requete SQL à executer sur la base de données
+     * @return le résultat de la requete exécutée
+     * @throws ExceptionCoThi19 Exception de connexion ou d'exécution de la requête SQL
+     */
+    public ResultSet doRequest(String requeteSQL) throws ExceptionCoThi19 {
+        ResultSet resultSet;
+        if(tryConnection()){
+            try {
+                Statement stmt = con.createStatement();
+                resultSet = stmt.executeQuery(requeteSQL);
+            } catch (SQLException throwables) {
+                throw new ExceptionRequeteSQL("Impossible d'exécuter la requete SQL", requeteSQL);
             }
-        } catch (SQLException e){
-            e.printStackTrace();
+        }else{
+            throw new ExceptionConnexionSQL("Impossible de se connecter à la base de donnée");
         }
-
-        return user;
-    }
-
-    public UserBean setNewUser(String email, String password){
-        String rqString = "Insert into User(email, password, rang) VALUES(?, ?, ?);";
-
-        try{
-            PreparedStatement preparedStmt = con.prepareStatement(rqString);
-            preparedStmt.setString (1, email);
-            preparedStmt.setString(2, password);
-            preparedStmt.setString (3, "user");
-            preparedStmt.execute();
-
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-
-        return getUser(email, password);
-    }
-*/
-
-    public ResultSet doRequest(String sql_string){
-        ResultSet results = null;
-        try {
-            Statement stmt = con.createStatement();
-            results = stmt.executeQuery(sql_string);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return results;
+        return resultSet;
     }
 
 }
