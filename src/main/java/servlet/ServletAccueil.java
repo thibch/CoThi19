@@ -6,11 +6,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class ServletTest extends HttpServlet {
+public class ServletAccueil extends HttpServlet {
 
     public static final String VUE = "/bienvenue.html";
 
-    public ServletTest(){
+    public ServletAccueil(){
         super();
     }
 
