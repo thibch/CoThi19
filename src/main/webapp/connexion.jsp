@@ -29,8 +29,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Mon compte</a>
-                    <span class="sr-only">(current)</span>
+                    <a class="nav-link" href="inscription">Mon compte</a>
                 </li>
             </ul>
         </div>
@@ -39,30 +38,18 @@
 <div class="container">
 
     <div class="col-lg-3">
-        <h1 class="my-4">Inscription</h1>
+        <h1 class="my-4">Connexion</h1>
     </div>
 
     <div class="col-lg-9">
         <div class = "form-group">
-            <form action="inscriptionVerification" method="GET">
+            <form action="connexionVerification" method="GET">
                 <label for="mail">Mail :</label>
                 <input class="form-control" type="email" id="mail" name="mail"><br>
-                <label for="surname">Prenom :</label>
-                <input class="form-control" type="text" id="surname" name="surname"><br>
-                <label for="name">Nom :</label>
-                <input class="form-control" type="text" id="name" name="name"><br>
                 <label for="password">Mot de passe :</label>
                 <input class="form-control" type="password" id="password" name="password"><br>
-                <label for="birthDate">Date de naissance :</label>
-                <input class="form-control" type="date" id="birthDate" name="birthDate"><br>
 
                 <input class="form-control" type="submit" value="ENVOYER">
-            </form>
-        </div>
-        <div class = "form-group">
-            <form action="connexion" method="GET">
-                <label style="color: #be0505">Vous avez déjà un compte?</label>
-                <input class="form-control" type="submit" value="CONNEXION">
             </form>
         </div>
     </div>

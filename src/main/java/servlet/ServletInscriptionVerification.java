@@ -31,8 +31,6 @@ public class ServletInscriptionVerification extends HttpServlet {
         birthDateString = request.getParameter("birthDate");
         Date birthDate = Date.valueOf(birthDateString);
 
-        System.out.println(birthDate);
-
         if (mail.equals("")){
             verification = false;
         }
@@ -56,24 +54,20 @@ public class ServletInscriptionVerification extends HttpServlet {
                 ResultSet resultIdSet = sql.doRequest("Select * from User");
                 if (resultIdSet.next()){
                     i = resultIdSet.getInt("id_user"); // On récupère le résultat
-                    bd = resultIdSet.getString("birth_date");
                 }else{
                     i = 0;
                 }
                 i++;
-                System.out.println(i);
-                System.out.println(bd);
-                System.out.println(birthDate);
                 int resultInsertSet = sql.doInsert("INSERT INTO User (id_user, email, password, name, surname, birth_date, isAdmin, path_picture) VALUES ("+i+", \""+mail+"\", \""+password+"\", \""+name+"\", \""+surname+"\", '"+birthDate+"', "+0+", NULL);");
                 if (resultInsertSet == 1){
-                    System.out.println("Insertion réussite");
+                    System.out.println("Insertion réussie");
                 }else{
                     System.out.println("Error");
                 }
             } catch (SQLException | ExceptionCoThi19 throwables) {
                 throwables.printStackTrace();
             }
-            response.sendRedirect(request.getContextPath() + "/test");
+            response.sendRedirect(request.getContextPath() + "/accueil");
         }else{
             response.sendRedirect(request.getContextPath() + "/inscription.jsp");
         }

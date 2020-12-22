@@ -7,11 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class ServletInscription extends HttpServlet {
+public class ServletConnexion extends HttpServlet {
 
-    public static final String VUE = "/inscription.jsp";
+    public static final String VUE = "/connexion.jsp";
 
-    public ServletInscription(){
+    public ServletConnexion(){
         super();
     }
 

@@ -45,6 +45,24 @@
         <url-pattern>/inscriptionVerification</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>ServletConnexion</servlet-name>
+        <servlet-class>servlet.ServletConnexion</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletConnexion</servlet-name>
+        <url-pattern>/connexion</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ServletConnexionVerification</servlet-name>
+        <servlet-class>servlet.ServletConnexionVerification</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletConnexionVerification</servlet-name>
+        <url-pattern>/connexionVerification</url-pattern>
+    </servlet-mapping>
+
     <error-page>
         <error-code>404</error-code>
         <location>/404notfound.html</location>
