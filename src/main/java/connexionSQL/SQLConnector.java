@@ -127,4 +127,14 @@ public class SQLConnector {
         return resultSet;
     }
 
+    public int doInsert(String sql_string){
+        int results = 0;
+        try {
+            Statement stmt = con.createStatement();
+            results = stmt.executeUpdate(sql_string);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return results;
+    }
 }

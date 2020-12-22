@@ -10,12 +10,12 @@
     </welcome-file-list>
 
     <servlet>
-        <servlet-name>ServletTest</servlet-name>
-        <servlet-class>servlet.ServletTest</servlet-class>
+        <servlet-name>ServletAccueil</servlet-name>
+        <servlet-class>servlet.ServletAccueil</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ServletTest</servlet-name>
-        <url-pattern>/test</url-pattern>
+        <servlet-name>ServletAccueil</servlet-name>
+        <url-pattern>/accueil</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -34,6 +34,33 @@
     <servlet-mapping>
         <servlet-name>ServletInscription</servlet-name>
         <url-pattern>/inscription</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ServletInscriptionVerification</servlet-name>
+        <servlet-class>servlet.ServletInscriptionVerification</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletInscriptionVerification</servlet-name>
+        <url-pattern>/inscriptionVerification</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ServletConnexion</servlet-name>
+        <servlet-class>servlet.ServletConnexion</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletConnexion</servlet-name>
+        <url-pattern>/connexion</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ServletConnexionVerification</servlet-name>
+        <servlet-class>servlet.ServletConnexionVerification</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletConnexionVerification</servlet-name>
+        <url-pattern>/connexionVerification</url-pattern>
     </servlet-mapping>
 
     <servlet>
