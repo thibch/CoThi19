@@ -36,6 +36,20 @@
         <url-pattern>/inscription</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>ServletActivity</servlet-name>
+        <servlet-class>servlet.ServletCreateActivity</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletActivity</servlet-name>
+        <url-pattern>/CreateActivity</url-pattern>
+        <url-pattern>/createActivity</url-pattern>
+        <url-pattern>/createactivity</url-pattern>
+        <url-pattern>/CreateActivity/</url-pattern>
+        <url-pattern>/createActivity/</url-pattern>
+        <url-pattern>/createactivity/</url-pattern>
+    </servlet-mapping>
+
     <error-page>
         <error-code>404</error-code>
         <location>/404notfound.html</location>
