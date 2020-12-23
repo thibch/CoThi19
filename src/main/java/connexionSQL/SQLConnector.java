@@ -127,13 +127,17 @@ public class SQLConnector {
         return resultSet;
     }
 
-    public int doInsert(String sql_string){
+    public int doInsert(String requeteSQL) throws ExceptionCoThi19 {
         int results = 0;
-        try {
-            Statement stmt = con.createStatement();
-            results = stmt.executeUpdate(sql_string);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        if(tryConnection()){
+            try {
+                Statement stmt = con.createStatement();
+                results = stmt.executeUpdate(requeteSQL);
+            } catch (SQLException throwables) {
+                throw new ExceptionRequeteSQL("Impossible d'exécuter la requete SQL", requeteSQL);
+            }
+        }else{
+            throw new ExceptionConnexionSQL("Impossible de se connecter à la base de donnée");
         }
         return results;
     }

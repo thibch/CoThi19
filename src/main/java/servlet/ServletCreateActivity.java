@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class ServletCreateActivity extends HttpServlet {
 
@@ -22,9 +23,11 @@ public class ServletCreateActivity extends HttpServlet {
         resp.setContentType("text/html");
 
         String date = req.getParameter("date");
-        System.out.println(date);
-        if(date.matches("^[0-9]{4}-(0[0-9]|1[0-2])-([1-2][0-9]|3[01])}$")){
-            //
+        if(date != null && date.matches("^[0-9]{4}-([0-9]|1[0-2])-(([3][0-1])|([1-2]?[0-9]))$")){
+            LocalDate datesql2 = LocalDate.parse(date);
+            System.out.println(datesql2);
+        }else{
+            date = "";
         }
 
         String heureDebString = req.getParameter("heureDebut");
