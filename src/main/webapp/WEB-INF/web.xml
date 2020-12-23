@@ -77,6 +77,24 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>ServletModification</servlet-name>
+        <servlet-class>servlet.ServletModification</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletModification</servlet-name>
+        <url-pattern>/modification</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ServletModificationVerification</servlet-name>
+        <servlet-class>servlet.ServletModificationVerification</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletModificationVerification</servlet-name>
+        <url-pattern>/modificationVerification</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>ServletDeconnexion</servlet-name>
         <servlet-class>servlet.ServletDeconnexion</servlet-class>
     </servlet>

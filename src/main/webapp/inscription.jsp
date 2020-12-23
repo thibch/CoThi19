@@ -55,7 +55,7 @@
                 <label for="birthDate">Date de naissance :</label>
                 <input class="form-control" type="date" id="birthDate" name="birthDate"><br>
 
-                <input class="form-control" type="submit" value="ENVOYER">
+                <input class="form-control" type="submit" value="INSCRIPTION">
             </form>
         </div>
         <div class = "form-group">

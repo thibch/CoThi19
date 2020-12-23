@@ -4,27 +4,22 @@
 <%@ page import="exception.ExceptionCoThi19" %>
 <%@ page import="java.sql.SQLException" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html lang="fr">
-
+<html>
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Mon compte</title>
+    <title>Modification des informations personnelles</title>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="bootstrap/css/shop-homepage.css" rel="stylesheet">
-
 </head>
-
 <body>
-
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
@@ -39,7 +34,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="deconnexion">Déconnexion</a>
+                    <a class="nav-link" href="monCompte">Mon compte</a>
                 </li>
             </ul>
         </div>
@@ -65,54 +60,30 @@
     }
 %>
 <div class="container">
-    <div class="row">
-        <div class="col-lg-3">
-            <img src="images/cothi19.png" alt="CoThi19" width="240" height="135">
-        </div>
-        <div class="col">
-            <div class="col-lg-9">
-                <div class="col-md-9">
-                    <h1>Mon compte</h1>
-                </div>
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <h2>Informations personnelles :</h2>
-                    </div>
-                    <div class="card-text">
-                        <div class="col-lg-4">
-                            <p>Mail :
-                        <%
-                            out.println(mail);
-                        %>
-                            </p>
-                        </div>
-                        <div class="col-lg-4">
-                            <p>Nom :
-                            <%
-                                out.println(name);
-                            %>
-                            </p>
-                        </div>
-                        <div class="col-lg-4">
-                            <p>Prenom :
-                            <%
-                                out.println(surname);
-                            %>
-                            </p>
-                        </div>
-                        <div class="col-lg-4">
-                            <p>Birthdate :
-                            <%
-                                out.println(birthDate);
-                            %>
-                            </p>
-                        </div>
-                    </div>
-                    <div>
-                        <a href="modification" class="btn btn-info" role="button">Modifier mes informations personnelles</a>
-                    </div>
-                </div>
-            </div>
+
+    <div class="col-lg-9">
+        <h1>Modification des informations personnelles</h1>
+    </div>
+
+    <div class="col-lg-9">
+        <p>Mail : <%out.print(mail);%></p>
+        <div class = "form-group">
+            <form action="modificationVerification" method="GET">
+                <label for="surname">Prenom :</label>
+                <input class="form-control" type="text" id="surname" name="surname" value="<%out.print(surname);%>"><br>
+                <label for="name">Nom :</label>
+                <input class="form-control" type="text" id="name" name="name" value="<%out.print(name);%>"><br>
+                <label for="birthDate">Date de naissance :</label>
+                <input class="form-control" type="date" id="birthDate" name="birthDate" value="<%out.print(birthDate);%>"><br>
+                <label for="password">Mot de passe actuel :</label>
+                <input class="form-control" type="password" id="password" name="password"><br>
+                <label for="newPassword">Nouveau mot de passe :</label>
+                <input class="form-control" type="password" id="newPassword" name="newPassword"><br>
+                <label for="confirmedPassword">Confirmation du nouveau mot de passe :</label>
+                <input class="form-control" type="password" id="confirmedPassword" name="confirmedPassword"><br>
+
+                <input class="form-control" type="submit" value="MODIFIER">
+            </form>
         </div>
     </div>
 </div>

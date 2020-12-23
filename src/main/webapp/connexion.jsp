@@ -49,7 +49,7 @@
                 <label for="password">Mot de passe :</label>
                 <input class="form-control" type="password" id="password" name="password"><br>
 
-                <input class="form-control" type="submit" value="ENVOYER">
+                <input class="form-control" type="submit" value="CONNEXION">
             </form>
         </div>
     </div>
