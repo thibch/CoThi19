@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<%@ page import="userBean.UserBean" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="fr">
 
 <head>
@@ -29,14 +30,33 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="inscription">Mon compte</a>
-                </li>
+                <%  UserBean user = (UserBean) request.getSession().getAttribute("userConnected");
+                    if (user != null){%>
+                    <li class="nav-item">
+                        <a class="btn disabled" style="color: white">Bonjour <% out.print(user.getMail());%></a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="monCompte">Mon compte</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="deconnexion">Déconnexion</a>
+                    </li>
+                <% }else{ %>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="connexion">Connexion</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="inscription">Inscription</a>
+                    </li>
+                <% } %>
             </ul>
         </div>
     </div>
@@ -52,7 +72,6 @@
             <img src="images/cothi19.png" alt="CoThi19" width="240" height="135">
 
         </div>
-        <!-- /.col-lg-3 -->
 
         <div class="col-lg-9">
 

@@ -29,8 +29,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Mon compte</a>
-                    <span class="sr-only">(current)</span>
+                    <a class="nav-link" href="connexion">Connexion</a>
                 </li>
             </ul>
         </div>

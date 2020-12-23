@@ -2,19 +2,24 @@ package servlet;
 
 import connexionSQL.SQLConnector;
 import exception.ExceptionCoThi19;
+import userBean.UserBean;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @WebServlet(name = "ServletConnexionVerification")
 public class ServletConnexionVerification extends HttpServlet {
+
+    private static final String ATT_SESSION_USER = "userConnected";
+    private UserBean user;
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
@@ -37,7 +42,6 @@ public class ServletConnexionVerification extends HttpServlet {
             try {
                 ResultSet resultIdSet = sql.doRequest("Select * from User WHERE email = \""+mail+"\" AND password = \""+password+"\"");
                 if (resultIdSet.next()){
-                    System.out.println("Récupération réussie");
                     recuperation = true;
                 }else{
                     System.out.println("Error");
@@ -47,6 +51,9 @@ public class ServletConnexionVerification extends HttpServlet {
                 throwables.printStackTrace();
             }
             if (recuperation) {
+                user = new UserBean(mail);
+                HttpSession session = request.getSession();
+                session.setAttribute( ATT_SESSION_USER, user);
                 response.sendRedirect(request.getContextPath() + "/accueil");
             }else{
                 response.sendRedirect(request.getContextPath() + "/connexion");

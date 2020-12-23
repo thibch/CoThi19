@@ -6,8 +6,12 @@
     <display-name> CotThi19 </display-name>
 
     <welcome-file-list>
-        <welcome-file>bienvenue.html</welcome-file>
+        <welcome-file>bienvenue.jsp</welcome-file>
     </welcome-file-list>
+
+    <session-config>
+        <session-timeout>10</session-timeout>
+    </session-config>
 
     <servlet>
         <servlet-name>ServletAccueil</servlet-name>
@@ -61,6 +65,24 @@
     <servlet-mapping>
         <servlet-name>ServletConnexionVerification</servlet-name>
         <url-pattern>/connexionVerification</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ServletMonCompte</servlet-name>
+        <servlet-class>servlet.ServletMonCompte</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletMonCompte</servlet-name>
+        <url-pattern>/monCompte</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ServletDeconnexion</servlet-name>
+        <servlet-class>servlet.ServletDeconnexion</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletDeconnexion</servlet-name>
+        <url-pattern>/deconnexion</url-pattern>
     </servlet-mapping>
 
     <servlet>

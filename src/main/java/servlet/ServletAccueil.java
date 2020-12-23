@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class ServletAccueil extends HttpServlet {
 
-    public static final String VUE = "/bienvenue.html";
+    public static final String VUE = "/bienvenue.jsp";
 
     public ServletAccueil(){
         super();
