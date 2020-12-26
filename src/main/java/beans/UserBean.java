@@ -1,4 +1,4 @@
-package userBean;
+package beans;
 
 /**
  * @author Roberge-Mentec Corentin

@@ -1,4 +1,4 @@
-<%@ page import="userBean.UserBean" %><%--
+<%@ page import="beans.UserBean" %><%--
   Created by IntelliJ IDEA.
   User: Thibault
   Date: 22/12/2020
@@ -74,7 +74,7 @@
                     <% String date = request.getParameter("date");
                     if(!"".equals(date)){ %>
                         <input class="form-control" type="date" id="date" name="date" value="<% if(date != null){
-                            out.print(request.getParameter("date"));
+                            out.print(request.getAttribute("date"));
                     }%>">
 
                     <% }else{%>
@@ -85,20 +85,81 @@
                     <%}%>
                     <br>
                     <label for="heureDebut">Heure de début :</label>
-                    <input class="form-control" type="number" id="heureDebut" name="heureDebut" value="0" min="0" max="23">
+                    <% String heureDebut = request.getParameter("heureDebut");
+                    out.print("<p> " + heureDebut + "</p>");
+                    if(!"-1".equals(heureDebut) && (Integer)request.getAttribute("heureDebut") != -1){ %>
+                        <input class="form-control" type="number" id="heureDebut" name="heureDebut" min="0" max="23" value="<%
+                               if(heureDebut != null){
+                                   out.print(request.getAttribute("heureDebut"));
+                               }else{
+                                   out.print(0);
+                               }
+                               %>">
+                    <% }else{%>
+                        <input class="form-control is-invalid" type="number" id="heureDebut" name="heureDebut" value="0" min="0" max="23">
+                        <div class="invalid-feedback">
+                            Please provide a valid hour.
+                        </div>
+                    <%}%>
                     <label for="minuteDebut"></label>
-                    <input class="form-control" type="number" id="minuteDebut" name="minuteDebut" value="0" min="0" max="59"><br>
+                    <% String minuteDebut = request.getParameter("minuteDebut");
+                        if(!"-1".equals(minuteDebut) && (Integer)request.getAttribute("minuteDebut") != -1){ %>
+                        <input class="form-control" type="number" id="minuteDebut" name="minuteDebut" min="0" max="59" value="<%
+                               if(minuteDebut != null){
+                                    out.print(request.getAttribute("minuteDebut"));
+                               }else{
+                                   out.print(0);
+                               }
+                               %>">
+                    <% }else{%>
+                    <input class="form-control is-invalid" type="number" id="minuteDebut" name="minuteDebut" value="0" min="0" max="59">
+                    <div class="invalid-feedback">
+                        Please provide a valid minute.
+                    </div>
+                    <%}%>
+                    <br>
                     <label for="heureFin">Heure de fin :</label>
-                    <input class="form-control" type="number" id="heureFin" name="heureFin" value="0" min="0" max="23">
+                    <% String heureFin = request.getParameter("heureFin");
+                        if(!"-1".equals(heureFin) && (Integer)request.getAttribute("heureFin") != -1){ %>
+                        <input class="form-control" type="number" id="heureFin" name="heureFin" min="0" max="23" value="<%
+                               if(heureFin != null){
+                                   out.print(request.getAttribute("heureFin"));
+                               }else{
+                                   out.print(0);
+                               }%>">
+                    <% }else{%>
+                        <input class="form-control is-invalid" type="number" id="heureFin" name="heureFin" min="0" max="23" value="0">
+                        <div class="invalid-feedback">
+                            Please provide a valid hour.
+                        </div>
+                    <%}%>
                     <label for="minuteFin"></label>
-                    <input class="form-control" type="number" id="minuteFin" name="minuteFin" value="0" min="0" max="59"><br>
+                    <% String minuteFin = request.getParameter("minuteFin");
+                        if(!"-1".equals(minuteFin) && (Integer)request.getAttribute("minuteFin") != -1){ %>
+                        <input class="form-control" type="number" id="minuteFin" name="minuteFin" min="0" max="59"
+                               value="<%
+                               if(minuteFin != null){
+                                   out.print(request.getAttribute("minuteFin"));
+                               }else{
+                                   out.print(0);
+                               }
+                               %>">
+                    <% }else{%>
+                        <input class="form-control is-invalid" type="number" id="minuteFin" name="minuteFin" value="0" min="0" max="59">
+                        <div class="invalid-feedback">
+                            Please provide a valid hour.
+                        </div>
+                    <%}%>
+                    <br>
                     <!-- Pour l'activité -->
 
-                    <label for="rechercheLieu">Entrez le nom du lieux</label>
-                    <input class="form-control" type="search" id="rechercheLieu" name="rechercheLieu" value=""><br>
+                    <label for="rechercheLieuNom">Entrez le nom du lieux</label>
+                    <input class="form-control" type="search" id="rechercheLieuNom" name="rechercheLieu" value=""><br>
+                    <label for="rechercheLieuAdresse">Entrez l'adresse du lieu</label>
+                    <input class="form-control" type="search" id="rechercheLieuAdresse" name="rechercheLieu" value=""><br>
 
 
-                    <input class="form-control" type="submit" value="Submit">
+                    <input class="form-control btn-outline-primary" type="submit" value="Submit">
                 </form>
             </div>
         </div>

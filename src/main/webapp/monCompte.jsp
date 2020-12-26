@@ -1,5 +1,5 @@
 <%@ page import="connexionSQL.SQLConnector" %>
-<%@ page import="userBean.UserBean" %>
+<%@ page import="beans.UserBean" %>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="exception.ExceptionCoThi19" %>
 <%@ page import="java.sql.SQLException" %>

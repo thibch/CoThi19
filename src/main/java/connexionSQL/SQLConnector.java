@@ -1,10 +1,14 @@
 package connexionSQL;
 
+import beans.LieuBean;
+import beans.UserBean;
 import exception.ExceptionCoThi19;
 import exception.ExceptionConnexionSQL;
 import exception.ExceptionRequeteSQL;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SQLConnector {
     private static volatile SQLConnector instance;
@@ -140,5 +144,42 @@ public class SQLConnector {
             throw new ExceptionConnexionSQL("Impossible de se connecter à la base de donnée");
         }
         return results;
+    }
+
+    public UserBean getUser(String mail, String password) throws ExceptionCoThi19{
+        UserBean usr = null;
+        //String rqString = "UPDATE User SET login = ?, password = ?, last_name = ?, first_name = ?, birthday = ?, is_admin = ?, is_infected = ? WHERE login = ?;";
+        String rqString = "SELECT * FROM USER WHERE mail = ?, password = ?;";
+        try {
+            PreparedStatement preparedStmt = con.prepareStatement(rqString);
+            preparedStmt.setString(1, mail);
+            preparedStmt.setString(2, password);
+            ResultSet r = preparedStmt.executeQuery();
+            usr = new UserBean(r.getString("email"));
+
+        } catch (SQLException throwables) {
+            throw new ExceptionRequeteSQL("Erreur lors de la récupération d'un utilisateur", "SELECT * FROM USER WHERE mail = " + mail + ", password = "+ password + ";");
+        }
+        return usr;
+    }
+
+    public List<LieuBean> getListeLieu(String name, String adress) throws ExceptionCoThi19{
+
+        ArrayList<LieuBean> listeLieux = new ArrayList<>();
+
+        String rqString = "SELECT * FROM PLACE WHERE name LIKE ?, adress LIKE ?;";
+        try {
+            PreparedStatement preparedStmt = con.prepareStatement(rqString);
+            preparedStmt.setString(1, "%" + name + "%");
+            preparedStmt.setString(2, "%" + adress + "%");
+            ResultSet r = preparedStmt.executeQuery();
+            do{
+                listeLieux.add(new LieuBean(r.getString("name"), r.getString("adress")));
+            }while(r.next());
+
+        } catch (SQLException throwables) {
+            throw new ExceptionRequeteSQL("Erreur lors de la récupération d'un utilisateur", "SELECT * FROM PLACE WHERE name LIKE " + name + ", adress LIKE " + adress + ";");
+        }
+        return listeLieux;
     }
 }

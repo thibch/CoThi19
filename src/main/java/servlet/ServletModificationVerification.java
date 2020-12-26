@@ -2,7 +2,7 @@ package servlet;
 
 import connexionSQL.SQLConnector;
 import exception.ExceptionCoThi19;
-import userBean.UserBean;
+import beans.UserBean;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
