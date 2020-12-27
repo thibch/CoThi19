@@ -61,7 +61,7 @@
         </div>
     </nav>
     <div class="container">
-        <div class="col-lg-3">
+        <div class="col-lg-5">
             <h1 class="my-4">Creation D'activité</h1>
         </div>
 
@@ -72,10 +72,10 @@
                     <label for="date">Date Activté :</label>
                     <br>
                     <% String date = request.getParameter("date");
-                    if(!"".equals(date)){ %>
-                        <input class="form-control" type="date" id="date" name="date" value="<% if(date != null){
-                            out.print(request.getAttribute("date"));
-                    }%>">
+                        String dateStr = (String)request.getAttribute("date");
+                    if(!"".equals(date) &&
+                            (dateStr == null || !dateStr.equals(""))){ %>
+                        <input class="form-control" type="date" id="date" name="date" value="<%out.print(dateStr);%>">
 
                     <% }else{%>
                         <input type="date" class="form-control is-invalid" id="date" name="date">
@@ -86,8 +86,9 @@
                     <br>
                     <label for="heureDebut">Heure de début :</label>
                     <% String heureDebut = request.getParameter("heureDebut");
-                    out.print("<p> " + heureDebut + "</p>");
-                    if(!"-1".equals(heureDebut) && (Integer)request.getAttribute("heureDebut") != -1){ %>
+                    Integer heureDebInt = (Integer)request.getAttribute("heureDebut");
+                    if(!"".equals(heureDebut) &&
+                            (heureDebInt == null || heureDebInt != -1)){ %>
                         <input class="form-control" type="number" id="heureDebut" name="heureDebut" min="0" max="23" value="<%
                                if(heureDebut != null){
                                    out.print(request.getAttribute("heureDebut"));
@@ -103,7 +104,9 @@
                     <%}%>
                     <label for="minuteDebut"></label>
                     <% String minuteDebut = request.getParameter("minuteDebut");
-                        if(!"-1".equals(minuteDebut) && (Integer)request.getAttribute("minuteDebut") != -1){ %>
+                        Integer minuteDebInt = (Integer)request.getAttribute("minuteDebut");
+                        if(!"".equals(minuteDebut) &&
+                                (minuteDebInt == null || minuteDebInt != -1)){ %>
                         <input class="form-control" type="number" id="minuteDebut" name="minuteDebut" min="0" max="59" value="<%
                                if(minuteDebut != null){
                                     out.print(request.getAttribute("minuteDebut"));
@@ -120,7 +123,9 @@
                     <br>
                     <label for="heureFin">Heure de fin :</label>
                     <% String heureFin = request.getParameter("heureFin");
-                        if(!"-1".equals(heureFin) && (Integer)request.getAttribute("heureFin") != -1){ %>
+                        Integer heureFinInt = (Integer)request.getAttribute("heureFin");
+                        if(!"".equals(heureFin) &&
+                                (heureFinInt == null || heureFinInt != -1)){ %>
                         <input class="form-control" type="number" id="heureFin" name="heureFin" min="0" max="23" value="<%
                                if(heureFin != null){
                                    out.print(request.getAttribute("heureFin"));
@@ -135,7 +140,9 @@
                     <%}%>
                     <label for="minuteFin"></label>
                     <% String minuteFin = request.getParameter("minuteFin");
-                        if(!"-1".equals(minuteFin) && (Integer)request.getAttribute("minuteFin") != -1){ %>
+                        Integer minuteFinInt = (Integer)request.getAttribute("minuteFin");
+                        if(!"".equals(minuteFin) &&
+                                (minuteFinInt == null || minuteFinInt != -1)){ %>
                         <input class="form-control" type="number" id="minuteFin" name="minuteFin" min="0" max="59"
                                value="<%
                                if(minuteFin != null){
@@ -153,12 +160,25 @@
                     <br>
                     <!-- Pour l'activité -->
 
-                    <label for="rechercheLieuNom">Entrez le nom du lieux</label>
-                    <input class="form-control" type="search" id="rechercheLieuNom" name="rechercheLieu" value=""><br>
-                    <label for="rechercheLieuAdresse">Entrez l'adresse du lieu</label>
-                    <input class="form-control" type="search" id="rechercheLieuAdresse" name="rechercheLieu" value=""><br>
+                    <!-- Recherche de Lieux :-->
+
+                    <% String rechercheLieuNom = request.getParameter("rechercheLieuNom");
+                        String rechercheLieuNomStr = (String)request.getAttribute("rechercheLieuNom");
+
+                        String rechercheLieuAdresse = request.getParameter("rechercheLieuAdresse");
+                        String rechercheLieuAdresseStr = (String)request.getAttribute("rechercheLieuAdresse");
+
+                        boolean error = !rechercheLieuNom.equals("") || !rechercheLieuAdresse.equals("");
+                         %>
+                        <label for="rechercheLieuNom">Entrez le nom du lieux</label>
+                        <input class="form-control" type="search" id="rechercheLieuNom" name="rechercheLieuNom" value=""><br>
+                        <label for="rechercheLieuAdresse">Entrez l'adresse du lieu</label>
+                        <input class="form-control" type="search" id="rechercheLieuAdresse" name="rechercheLieuAdresse" value=""><br>
+                        <input class="form-control" type="submit" id="creationLieu" name="creationLieu" value="Créer un nouveau lieux"><br>
+                    <% %>
 
 
+                    <input type="hidden" id="estActif" name="estActif" value="1">
                     <input class="form-control btn-outline-primary" type="submit" value="Submit">
                 </form>
             </div>

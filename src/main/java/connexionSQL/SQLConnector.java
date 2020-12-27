@@ -163,23 +163,40 @@ public class SQLConnector {
         return usr;
     }
 
-    public List<LieuBean> getListeLieu(String name, String adress) throws ExceptionCoThi19{
+    public List<LieuBean> getListeLieu(String name, String adress, int max) throws ExceptionCoThi19{
 
         ArrayList<LieuBean> listeLieux = new ArrayList<>();
 
-        String rqString = "SELECT * FROM PLACE WHERE name LIKE ?, adress LIKE ?;";
+        String rqString = "SELECT * FROM PLACE WHERE name LIKE ?, adress LIKE ? LIMIT 10;";
         try {
-            PreparedStatement preparedStmt = con.prepareStatement(rqString);
-            preparedStmt.setString(1, "%" + name + "%");
-            preparedStmt.setString(2, "%" + adress + "%");
-            ResultSet r = preparedStmt.executeQuery();
-            do{
-                listeLieux.add(new LieuBean(r.getString("name"), r.getString("adress")));
-            }while(r.next());
+            if(tryConnection()){
+                PreparedStatement preparedStmt = con.prepareStatement(rqString);
+                preparedStmt.setString(1, "%" + name + "%");
+                preparedStmt.setString(2, "%" + adress + "%");
+                ResultSet r = preparedStmt.executeQuery();
+                do{
+                    listeLieux.add(new LieuBean(r.getString("name"), r.getString("adress")));
+                }while(r.next());
+            }
 
         } catch (SQLException throwables) {
             throw new ExceptionRequeteSQL("Erreur lors de la récupération d'un utilisateur", "SELECT * FROM PLACE WHERE name LIKE " + name + ", adress LIKE " + adress + ";");
         }
         return listeLieux;
+    }
+
+    public void createLieux(String name, String adress) throws ExceptionRequeteSQL {
+        String rqString = "INSERT INTO Place(name, adress, gps_coordinates) VALUES(?, ?, ?);";
+
+        try {
+            PreparedStatement preparedStmt = con.prepareStatement(rqString);
+            preparedStmt.setString(1, name);
+            preparedStmt.setString(2, adress);
+            preparedStmt.setString(3, "0");
+            preparedStmt.executeUpdate();
+        }catch (SQLException throwables) {
+            throw new ExceptionRequeteSQL("Erreur lors de la creation d'un lieux",
+                    "INSERT INTO Place(name, adress, gps_coordinates) VALUES(" + name + ", " + adress +", " + 0 + ");");
+        }
     }
 }
