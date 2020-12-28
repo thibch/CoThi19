@@ -33,62 +33,83 @@ public class ServletCreateActivity extends HttpServlet {
 
         HttpSession session = req.getSession();
         if(session.getAttribute(ATT_SESSION_USER) != null){
+            String date = null;
+            int heureDebut = 0;
+            int minuteDebut = 0;
+            int heureFin = 0;
+            int minuteFin = 0;
+
+            String rechercheLieuNom = null;
+            String rechercheLieuAdresse = null;
+
+            List<LieuBean> lieux = null;
+
+            // TODO : check des heures
 
             if(req.getParameter("estActif") != null && req.getParameter("estActif").equals("1")){
-                String date = req.getParameter("date");
+                date = req.getParameter("date");
                 if(date != null && date.matches("^[0-9]{4}-(0[1-9]|1[0-2])-(([3][0-1])|([0-2]?[0-9]))$")){
                     LocalDate datesql2 = LocalDate.parse(date);
-                    System.out.println(datesql2);
+                    //System.out.println(datesql2);
                 }else{
                     date = "";
                 }
 
                 String heureDebString = req.getParameter("heureDebut");
-                int heureDebut = -1;
+                heureDebut = -1;
                 if(heureDebString != null && heureDebString.matches("^1?[0-9]$|^[2]?[0-3]$")){
                     heureDebut = Integer.parseInt(heureDebString);
                 }
                 String minuteDebString = req.getParameter("minuteDebut");
-                int minuteDebut = -1;
+                minuteDebut = -1;
                 if(minuteDebString != null && minuteDebString.matches("^[1-5]?[0-9]$")){
                     minuteDebut = Integer.parseInt(minuteDebString);
                 }
                 String heureFinString = req.getParameter("heureFin");
-                int heureFin = -1;
+                heureFin = -1;
                 if(heureFinString != null && heureFinString.matches("^1?[0-9]$|^[2]?[0-3]$")){
                     heureFin = Integer.parseInt(heureFinString);
                 }
 
                 String minuteFinString = req.getParameter("minuteFin");
-                int minuteFin = -1;
+                minuteFin = -1;
                 if(minuteFinString != null && minuteFinString.matches("^[1-5]?[0-9]$")){
                     minuteFin = Integer.parseInt(minuteFinString);
                 }
 
-                req.setAttribute("date", date);
-                req.setAttribute("heureDebut", heureDebut);
-                req.setAttribute("minuteDebut", minuteDebut);
-                req.setAttribute("heureFin", heureFin);
-                req.setAttribute("minuteFin", minuteFin);
 
-                String rechercheLieuNom = req.getParameter("rechercheLieuNom");
-                String rechercheLieuAdresse = req.getParameter("rechercheLieuAdresse");
+                rechercheLieuNom = req.getParameter("rechercheLieuNom");
+                rechercheLieuAdresse = req.getParameter("rechercheLieuAdresse");
 
-                if(rechercheLieuNom != null || rechercheLieuAdresse != null){
-                    List<LieuBean> lieux = null;
-                    try {
-                        lieux = SQLConnector.getInstance().getListeLieu(rechercheLieuNom, rechercheLieuAdresse, 10);
-                        System.out.println(lieux);
-                    } catch (ExceptionCoThi19 exceptionCoThi19) {
-                        System.out.println("Impossible de récupérer les lieux");
-                        System.out.println(exceptionCoThi19.getMessage());
-                        rechercheLieuNom = "ERROR";
-                        rechercheLieuAdresse = "ERROR";
+                if(rechercheLieuNom != null && rechercheLieuAdresse != null) { // Si on fait une recherche d'abord
+                    if (!rechercheLieuNom.equals("") || !rechercheLieuAdresse.equals("")) {
+                        try {
+                            lieux = SQLConnector.getInstance().getListeLieu(rechercheLieuNom, rechercheLieuAdresse, 10);
+                            System.out.println(lieux);
+                        } catch (ExceptionCoThi19 exceptionCoThi19) {
+                            System.out.println("Impossible de récupérer les lieux");
+                            System.out.println(exceptionCoThi19.getMessage());
+                            rechercheLieuNom = "ERROR";
+                            rechercheLieuAdresse = "ERROR";
+                        }
+                    }
+                }else{
+
+                    if(req.getParameter("creerLieu") == null){
+                        //Création de lieux
                     }
                 }
-                req.setAttribute("rechercheLieuNom", rechercheLieuNom);
-                req.setAttribute("rechercheLieuAdresse", rechercheLieuAdresse);
             }
+            req.setAttribute("date", date);
+            req.setAttribute("heureDebut", heureDebut);
+            req.setAttribute("minuteDebut", minuteDebut);
+            req.setAttribute("heureFin", heureFin);
+            req.setAttribute("minuteFin", minuteFin);
+
+            req.setAttribute("rechercheLieuNom", rechercheLieuNom);
+            req.setAttribute("rechercheLieuAdresse", rechercheLieuAdresse);
+
+            req.setAttribute("rechercheLieux", lieux);
 
             this.getServletContext().getRequestDispatcher(VUE).forward(req, resp);
         }else{

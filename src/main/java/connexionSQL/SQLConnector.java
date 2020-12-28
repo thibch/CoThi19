@@ -167,20 +167,28 @@ public class SQLConnector {
 
         ArrayList<LieuBean> listeLieux = new ArrayList<>();
 
-        String rqString = "SELECT * FROM PLACE WHERE name LIKE ?, adress LIKE ? LIMIT 10;";
+        String rqString = "SELECT * " +
+                "FROM PLACE " +
+                "WHERE name LIKE ? AND adress LIKE ? " +
+                "LIMIT " + max + ";";
         try {
             if(tryConnection()){
                 PreparedStatement preparedStmt = con.prepareStatement(rqString);
+                System.out.println(rqString);
                 preparedStmt.setString(1, "%" + name + "%");
                 preparedStmt.setString(2, "%" + adress + "%");
                 ResultSet r = preparedStmt.executeQuery();
-                do{
+                System.out.println("after statement");
+                while(r.next()){
+                    System.out.println(r.getString("name"));
+                    System.out.println(r.getString("adress"));
                     listeLieux.add(new LieuBean(r.getString("name"), r.getString("adress")));
-                }while(r.next());
+                }
             }
 
         } catch (SQLException throwables) {
-            throw new ExceptionRequeteSQL("Erreur lors de la récupération d'un utilisateur", "SELECT * FROM PLACE WHERE name LIKE " + name + ", adress LIKE " + adress + ";");
+            System.out.println(throwables.getMessage());
+            throw new ExceptionRequeteSQL("Erreur lors de la récupération des lieux", "SELECT * FROM PLACE WHERE name LIKE %" + name + "%, adress LIKE %" + adress + "%;");
         }
         return listeLieux;
     }
