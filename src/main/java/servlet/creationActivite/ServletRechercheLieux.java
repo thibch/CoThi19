@@ -1,4 +1,4 @@
-package servlet;
+package servlet.creationActivite;
 
 import beans.LieuBean;
 import connexionSQL.SQLConnector;
@@ -10,20 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
-public class ServletCreateActivity extends HttpServlet {
-
+public class ServletRechercheLieux extends HttpServlet {
 
     private static final String ATT_SESSION_USER = "userConnected";
-    public static final String VUE = "/CreateActivity.jsp";
+    public static final String VUE = "/createLieux.jsp";
     public static final String VUE_ERROR = "/error404";
 
-    public ServletCreateActivity(){
+    public ServletRechercheLieux(){
         super();
     }
 
@@ -38,45 +34,19 @@ public class ServletCreateActivity extends HttpServlet {
             int minuteDebut = 0;
             int heureFin = 0;
             int minuteFin = 0;
+            date = req.getParameter("date");
+            heureDebut = Integer.parseInt(req.getParameter("heureDebut"));
+            minuteDebut = Integer.parseInt(req.getParameter("minuteDebut"));
+            heureFin = Integer.parseInt(req.getParameter("heureFin"));
+            minuteFin = Integer.parseInt(req.getParameter("minuteFin"));
 
             String rechercheLieuNom = null;
             String rechercheLieuAdresse = null;
 
             List<LieuBean> lieux = null;
 
-            // TODO : check des heures
-
             if(req.getParameter("estActif") != null && req.getParameter("estActif").equals("1")){
-                date = req.getParameter("date");
-                if(date != null && date.matches("^[0-9]{4}-(0[1-9]|1[0-2])-(([3][0-1])|([0-2]?[0-9]))$")){
-                    LocalDate datesql2 = LocalDate.parse(date);
-                    //System.out.println(datesql2);
-                }else{
-                    date = "";
-                }
-
-                String heureDebString = req.getParameter("heureDebut");
-                heureDebut = -1;
-                if(heureDebString != null && heureDebString.matches("^1?[0-9]$|^[2]?[0-3]$")){
-                    heureDebut = Integer.parseInt(heureDebString);
-                }
-                String minuteDebString = req.getParameter("minuteDebut");
-                minuteDebut = -1;
-                if(minuteDebString != null && minuteDebString.matches("^[1-5]?[0-9]$")){
-                    minuteDebut = Integer.parseInt(minuteDebString);
-                }
-                String heureFinString = req.getParameter("heureFin");
-                heureFin = -1;
-                if(heureFinString != null && heureFinString.matches("^1?[0-9]$|^[2]?[0-3]$")){
-                    heureFin = Integer.parseInt(heureFinString);
-                }
-
-                String minuteFinString = req.getParameter("minuteFin");
-                minuteFin = -1;
-                if(minuteFinString != null && minuteFinString.matches("^[1-5]?[0-9]$")){
-                    minuteFin = Integer.parseInt(minuteFinString);
-                }
-
+                // TODO :
 
                 rechercheLieuNom = req.getParameter("rechercheLieuNom");
                 rechercheLieuAdresse = req.getParameter("rechercheLieuAdresse");
@@ -94,10 +64,12 @@ public class ServletCreateActivity extends HttpServlet {
                         }
                     }
                 }else{
+                    String choixLieux = req.getParameter("choixLieux");
+                    if(choixLieux != null){ // Choix du lieux
+                        String name = req.getParameter(choixLieux + "name");
+                        String adress = req.getParameter(choixLieux + "adress");
 
-                    if(req.getParameter("creerLieu") == null){
-                        //Création de lieux
-                    }
+                    }//Création de lieux
                 }
             }
             req.setAttribute("date", date);
@@ -123,5 +95,4 @@ public class ServletCreateActivity extends HttpServlet {
         doGet(req, resp);
 
     }
-
 }

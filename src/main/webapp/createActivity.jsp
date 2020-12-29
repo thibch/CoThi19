@@ -107,7 +107,7 @@
                 }
 
                 for(String message : list){
-                    out.print("<div class=\"alert alert-danger\">"
+                    out.print("<div class=\"alert alert-danger col-lg-9\">"
                             + "<strong>Erreur ! </strong> " + message
                             + "</div>");
                 }
@@ -151,52 +151,8 @@
                     <br>
                     <!-- Pour l'activité -->
 
-                    <!-- Recherche de Lieux :-->
-
-                    <% String rechercheLieuNom = request.getParameter("rechercheLieuNom");
-                        String rechercheLieuNomStr = (String)request.getAttribute("rechercheLieuNom");
-
-                        String rechercheLieuAdresse = request.getParameter("rechercheLieuAdresse");
-                        String rechercheLieuAdresseStr = (String)request.getAttribute("rechercheLieuAdresse");
-
-                        boolean error = "".equals(rechercheLieuNom) && "".equals(rechercheLieuAdresse);
-
-                        if(error){
-                            out.print("Erreur sur les lieux<br>");
-                        }
-                        Collection<LieuBean> rechercheLieuListe = (Collection<LieuBean>)request.getAttribute("rechercheLieux");
-
-                        if(rechercheLieuListe == null){%>
-                        <label for="rechercheLieuNom">Entrez le nom du lieux</label>
-                        <input class="form-control" type="search" id="rechercheLieuNom" name="rechercheLieuNom" value=""><br>
-                        <label for="rechercheLieuAdresse">Entrez l'adresse du lieu</label>
-                        <input class="form-control" type="search" id="rechercheLieuAdresse" name="rechercheLieuAdresse" value=""><br>
-                        <input class="form-control" type="submit" id="creationLieu" name="creationLieu" value="Créer un nouveau lieux"><br>
-                    <% }else{
-                            if(request.getParameter("creerLieu") != null){
-                                out.print("<label for=\"creationLieu\" >");
-
-
-                            }else{
-                                int number = 1;
-                                for (LieuBean lieu : rechercheLieuListe){
-                                    out.print("<label for=\"choixLieux"+number+"\" >");
-                                    out.print("Nom : " + lieu.getName() + " : " + lieu.getAdress());
-                                    out.print("</label>");
-                                    out.print("<button class=\"btn btn-primary\" type=\"submit\" form=\"formActivity\" id=\"choixLieux"+number+ "\" name=\"choixLieux\" value=\""+number+"\">Choisir ce lieu</button>");
-                                    out.print("<input type=\"hidden\" name=\""+number+"name\" id=\"choixLieux"+number+"\" value=\""+lieu.getName()+"\">");
-                                    out.print("<input type=\"hidden\" name=\""+number+"adress\" id=\"choixLieux"+number+"\" value=\""+lieu.getAdress()+"\">");
-                                    out.print("<br>");
-                                    number++;
-                                }
-                                out.print("<button class=\"btn btn-primary\" type=\"submit\" form=\"formActivity\" name=\"creerLieu\" value=\"1\">Créer un nouveau lieu</button>");
-                            }
-
-                    }%>
-
-
                     <input type="hidden" id="estActif" name="estActif" value="1">
-                    <input class="form-control btn-outline-primary" type="submit" value="Submit">
+                    <input class="form-control btn-outline-primary" type="submit" value="Rechercher un lieux">
                 </form>
             </div>
         </div>
