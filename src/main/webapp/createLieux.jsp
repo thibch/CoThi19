@@ -88,27 +88,24 @@
                 <!-- Recherche de Lieux :-->
 
                 <% String rechercheLieuNom = request.getParameter("rechercheLieuNom");
-                    String rechercheLieuNomStr = (String)request.getAttribute("rechercheLieuNom");
-
                     String rechercheLieuAdresse = request.getParameter("rechercheLieuAdresse");
-                    String rechercheLieuAdresseStr = (String)request.getAttribute("rechercheLieuAdresse");
+                    String error = (String)request.getAttribute("error");
 
-                    boolean error = "".equals(rechercheLieuNom) && "".equals(rechercheLieuAdresse);
-
-                    if(error){
-                        out.print("Erreur sur les lieux<br>");
+                    if(error != null){
+                        out.print("<div class=\"alert alert-danger col-lg-9\">"
+                                + "<strong>Erreur ! </strong> " + error
+                                + "</div><br>");
                     }
                     Collection<LieuBean> rechercheLieuListe = (Collection<LieuBean>)request.getAttribute("rechercheLieux");
 
-                    if(rechercheLieuListe == null && request.getParameter("creerLieu") == null){%>
+                    if(rechercheLieuListe == null && request.getParameter("createLieux") == null){%>
                 <label for="rechercheLieuNom">Entrez le nom du lieux</label>
                 <input class="form-control" type="search" id="rechercheLieuNom" name="rechercheLieuNom" value=""><br>
                 <label for="rechercheLieuAdresse">Entrez l'adresse du lieu</label>
                 <input class="form-control" type="search" id="rechercheLieuAdresse" name="rechercheLieuAdresse" value=""><br>
                 <button class="form-control btn btn-primary" type="submit" form="formActivity" id="RechercheLieu" name="RechercheLieu" value="1">Rechercher un lieux</button><br>
                 <% }else{
-                        out.print("CREATE LIEUX : " + request.getAttribute("createLieux"));
-                    if(request.getAttribute("createLieux") != null && request.getAttribute("createLieux") == "1"){
+                    if(request.getParameter("createLieux") != null){ // Formulaire de création de lieux
                         String nom = request.getParameter("createPlaceName")==null?"":request.getParameter("createPlaceName");
                         out.print(
                                 "<label for=\"createPlaceName\">Entrez le nom du lieu</label>\n" +
@@ -122,12 +119,8 @@
                                 "<label for=\"createPlaceCityName\">Entrez le nom de la ville</label>\n" +
                                         "<input class=\"form-control\" type=\"text\" id=\"createPlaceCityName\" name=\"createPlaceCityName\" placeholder=\"Entrez le nom de la ville\" value=\"" + cityName  + "\"><br>");
                         out.print("<button class=\"form-control btn btn-primary\" type=\"submit\" form=\"formActivity\" id=\"createLieux\" name=\"createLieux\" value=\"2\">Créer un nouveau lieu</button>");
-                    }else{
+                    }else if(rechercheLieuListe !=null){ // Formulaire de selection de lieu
                         int number = 1;
-                        out.print("\n" +
-                                "        <div class=\"col-lg-12\">\n" +
-                                "            <h1 class=\"my-4\">Creation D'activité</h1>\n" +
-                                "        </div>");
                         for (LieuBean lieu : rechercheLieuListe){
                             out.print("<label for=\"choixLieux"+number+"\" >");
                             out.print("Nom : " + lieu.getName() + " : " + lieu.getAdress());
@@ -138,9 +131,9 @@
                             out.print("<br>");
                             number++;
                         }
-                        out.print("<button class=\"form-control btn btn-primary\" type=\"submit\" form=\"formActivity\" id=\"creerLieu\" name=\"creerLieu\" value=\"1\">Créer un nouveau lieu</button>");
+                        out.print("<br>\n" +
+                                "<button class=\"form-control btn btn-primary\" type=\"submit\" form=\"formActivity\" id=\"createLieux\" name=\"createLieux\" value=\"1\">Créer un nouveau lieu</button>");
                     }
-
                 }%>
 
 

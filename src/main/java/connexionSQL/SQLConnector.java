@@ -1,5 +1,6 @@
 package connexionSQL;
 
+import beans.ActiviteBean;
 import beans.LieuBean;
 import beans.UserBean;
 import exception.ExceptionCoThi19;
@@ -224,21 +225,40 @@ public class SQLConnector {
         return lieu;
     }
 
-    public void createActivite(int idUtilisateur, int idPlace, Date date, Time hourStart, Time hourEnd) throws ExceptionRequeteSQL {
+    public ActiviteBean createActivite(String email, int idPlace, Date date, Time hourStart, Time hourEnd) throws ExceptionRequeteSQL {
         String rqString = "INSERT INTO Activity(id_user, id_place, date, hourStart, hourEnd) VALUES(?, ?, ?, ?, ?);";
+        String rqToGetActivity = "Select * FROM Activity WHERE id_user = ? AND id_place = ?;";
 
+        String rqToGetUser = "Select * FROM User WHERE email = ?;";
+        ActiviteBean act;
+        int idUtilisateur = -1;
         try {
-            PreparedStatement preparedStmt = con.prepareStatement(rqString);
+            PreparedStatement preparedStmt = con.prepareStatement(rqToGetUser);
+            preparedStmt.setString(1, email);
+            ResultSet r = preparedStmt.executeQuery();
+            r.next();
+
+            idUtilisateur = r.getInt("id_user");
+
+            preparedStmt = con.prepareStatement(rqString);
             preparedStmt.setInt(1, idUtilisateur);
             preparedStmt.setInt(2, idPlace);
             preparedStmt.setDate(3, date);
             preparedStmt.setTime(4, hourStart);
             preparedStmt.setTime(5, hourEnd);
             preparedStmt.executeUpdate();
+
+            preparedStmt = con.prepareStatement(rqToGetActivity);
+            preparedStmt.setInt(1, idUtilisateur);
+            preparedStmt.setInt(2, idPlace);
+            r = preparedStmt.executeQuery();
+            r.next();
+            act = new ActiviteBean(r.getDate("date"), r.getTime("hourStart"), r.getTime("hourEnd"));
         }catch (SQLException throwables) {
             throw new ExceptionRequeteSQL("Erreur lors de la creation d'une activité",
                     "INSERT INTO Activity(id_user, id_place, date, hourStart, hourEnd) VALUES("+idUtilisateur+","+idPlace+","+date+", "+hourStart+ ","+hourEnd+");");
         }
+        return act;
     }
 
     public LieuBean getLieu(String name, String adress) throws ExceptionRequeteSQL {

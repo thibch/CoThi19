@@ -1,6 +1,8 @@
 package servlet.creationActivite;
 
+import beans.ActiviteBean;
 import beans.LieuBean;
+import beans.UserBean;
 import connexionSQL.SQLConnector;
 import exception.ExceptionCoThi19;
 import exception.ExceptionRequeteSQL;
@@ -11,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -18,7 +22,7 @@ public class ServletRechercheLieux extends HttpServlet {
 
     private static final String ATT_SESSION_USER = "userConnected";
     public static final String VUE = "/createLieux.jsp";
-    public static final String VUE_SUCCESS = "/monCompte.jsp";
+    public static final String VUE_SUCCESS = "/summaryActivity.jsp";
     public static final String VUE_ERROR = "/error404";
 
     public ServletRechercheLieux(){
@@ -46,6 +50,8 @@ public class ServletRechercheLieux extends HttpServlet {
             String rechercheLieuAdresse = null;
 
             List<LieuBean> lieux = null;
+            LieuBean lieu = null;
+            ActiviteBean activite = null;
 
             boolean creationReussie = false;
             boolean erreur = false;
@@ -73,41 +79,54 @@ public class ServletRechercheLieux extends HttpServlet {
                     if(choixLieux != null){ // Choix du lieux
                         String name = req.getParameter(choixLieux + "name");
                         String adress = req.getParameter(choixLieux + "adress");
-                        LieuBean lieu = null;
                         try {
                             lieu = SQLConnector.getInstance().getLieu(name, adress);
                             creationReussie = lieu != null;
                         } catch (ExceptionRequeteSQL exceptionRequeteSQL) {
                             erreur = true;
                             System.out.println(exceptionRequeteSQL.getMessage());
-                            //this.getServletContext().getRequestDispatcher(VUE_ERROR).forward(req, resp);
                         }
                     }else{
                         //Création de lieux
-                        if(req.getParameter("creerLieu") != null && req.getParameter("creerLieu").equals("1")){
-                            req.setAttribute("createLieux", "1");
-                        }else{
-                            if(req.getParameter("createLieu") != null && req.getParameter("createLieu").equals("2")){
-                                String name = req.getParameter("createPlaceName");
-                                String adresse = req.getParameter("createPlaceAdress");
-                                String cityName = req.getParameter("createPlaceCityName");
-                                if(name.equals("") && adresse.equals("") && cityName.equals("")){
-                                    erreur = true;
-                                }else{
-                                    try {
-                                        LieuBean lieu = SQLConnector.getInstance().createLieux(name, adresse + ", " + cityName);
-                                        if(lieu != null){
-                                            req.setAttribute("lieu", lieu);
-                                            creationReussie = true;
-                                        }else{
-                                            erreur = true;
-                                        }
-                                    } catch (ExceptionRequeteSQL exceptionRequeteSQL) {
+                        if(req.getParameter("createLieux") != null){
+                            if(req.getParameter("createLieux").equals("1")){
+                                req.setAttribute("createLieux", "1");
+                            }else{
+                                if(req.getParameter("createLieux").equals("2")){
+                                    String name = req.getParameter("createPlaceName");
+                                    String adresse = req.getParameter("createPlaceAdress");
+                                    String cityName = req.getParameter("createPlaceCityName");
+                                    if(name.equals("") && adresse.equals("") && cityName.equals("")){
                                         erreur = true;
-                                        System.out.println(exceptionRequeteSQL.getMessage());
+                                    }else{
+                                        try {
+                                            lieu = SQLConnector.getInstance().createLieux(name, adresse + ", " + cityName);
+                                            if(lieu != null){
+                                                creationReussie = true;
+                                            }else{
+                                                erreur = true;
+                                            }
+                                        } catch (ExceptionRequeteSQL exceptionRequeteSQL) {
+                                            erreur = true;
+                                            System.out.println(exceptionRequeteSQL.getMessage());
+                                        }
                                     }
                                 }
                             }
+                        }
+                    }
+                    if(creationReussie){
+                        UserBean usr =  (UserBean)session.getAttribute(ATT_SESSION_USER);
+                        try {
+                            System.out.println("HEURE DEB" + heureDebut* 3600000L + minuteDebut * 60000L);
+                            System.out.println("HEURE FIN" + heureFin* 3600000L + minuteFin * 60000L);
+                            System.out.println("time = " + new Time(0L));
+                            System.out.println("time = " + new Time(1L));
+                            activite = SQLConnector.getInstance().createActivite(usr.getMail(), lieu.getId(), Date.valueOf(date), new Time(heureDebut* 3600000L + minuteDebut * 60000L), new Time(heureFin* 3600000L + minuteFin * 60000L));
+                        } catch (ExceptionRequeteSQL exceptionRequeteSQL) {
+                            creationReussie = false;
+                            erreur = true;
+                            exceptionRequeteSQL.printStackTrace();
                         }
                     }
                 }
@@ -124,10 +143,12 @@ public class ServletRechercheLieux extends HttpServlet {
             req.setAttribute("rechercheLieux", lieux);
 
             if(creationReussie){
+                req.setAttribute("activite", activite);
+                req.setAttribute("lieu", lieu);
                 this.getServletContext().getRequestDispatcher(VUE_SUCCESS).forward(req, resp);
             }else{
                 if(erreur){
-                    req.setAttribute("error", "Une erreur s'est porduite !");
+                    req.setAttribute("error", "Une erreur s'est produite !");
                     this.getServletContext().getRequestDispatcher(VUE).forward(req, resp);
                 }else{
                     this.getServletContext().getRequestDispatcher(VUE).forward(req, resp);

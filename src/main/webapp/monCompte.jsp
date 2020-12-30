@@ -75,9 +75,8 @@
                     <h1>Mon compte</h1>
                 </div>
                 <div class="card-body">
-                    <h4 class="card-title">
-                        <h2>Informations personnelles :</h2>
-                    </div>
+                    <h2>Informations personnelles :</h2>
+                </div>
                     <div class="card-text">
                         <div class="col-lg-4">
                             <p>Mail :
