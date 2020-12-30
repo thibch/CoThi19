@@ -174,27 +174,30 @@ public class SQLConnector {
         try {
             if(tryConnection()){
                 PreparedStatement preparedStmt = con.prepareStatement(rqString);
-                System.out.println(rqString);
                 preparedStmt.setString(1, "%" + name + "%");
                 preparedStmt.setString(2, "%" + adress + "%");
                 ResultSet r = preparedStmt.executeQuery();
-                System.out.println("after statement");
                 while(r.next()){
                     System.out.println(r.getString("name"));
                     System.out.println(r.getString("adress"));
-                    listeLieux.add(new LieuBean(r.getString("name"), r.getString("adress")));
+                    listeLieux.add(new LieuBean(r.getInt("id_place"), r.getString("name"), r.getString("adress")));
                 }
             }
 
         } catch (SQLException throwables) {
             System.out.println(throwables.getMessage());
-            throw new ExceptionRequeteSQL("Erreur lors de la récupération des lieux", "SELECT * FROM PLACE WHERE name LIKE %" + name + "%, adress LIKE %" + adress + "%;");
+            throw new ExceptionRequeteSQL("Erreur lors de la récupération des lieux", "SELECT * FROM PLACE WHERE name LIKE %" + name + "%, adress LIKE %" + adress + "% LIMIT " + max + ";");
         }
         return listeLieux;
     }
 
-    public void createLieux(String name, String adress) throws ExceptionRequeteSQL {
+    public LieuBean createLieux(String name, String adress) throws ExceptionRequeteSQL {
         String rqString = "INSERT INTO Place(name, adress, gps_coordinates) VALUES(?, ?, ?);";
+        String rqString2 = "Select * " +
+                "FROM Place " +
+                "WHERE name = ? AND adress = ?;";
+
+        LieuBean lieu = null;
 
         try {
             PreparedStatement preparedStmt = con.prepareStatement(rqString);
@@ -202,9 +205,62 @@ public class SQLConnector {
             preparedStmt.setString(2, adress);
             preparedStmt.setString(3, "0");
             preparedStmt.executeUpdate();
+
+            PreparedStatement preparedStmt2 = con.prepareStatement(rqString2);
+            preparedStmt2.setString(1, name);
+            preparedStmt2.setString(2, adress);
+            ResultSet r = preparedStmt2.executeQuery();
+            r.next();
+            lieu = new LieuBean(r.getInt("id_place"), r.getString("name"), r.getString("adress"));
+            System.out.println("LIEU" + lieu);
+            System.out.println("LIEU" + lieu.getName());
+            System.out.println("LIEU" + lieu.getAdress());
+            System.out.println("LIEU" + lieu.getId());
         }catch (SQLException throwables) {
             throw new ExceptionRequeteSQL("Erreur lors de la creation d'un lieux",
-                    "INSERT INTO Place(name, adress, gps_coordinates) VALUES(" + name + ", " + adress +", " + 0 + ");");
+                    "INSERT INTO Place(name, adress, gps_coordinates) VALUES(" + name + ", " + adress +", 0);");
         }
+
+        return lieu;
+    }
+
+    public void createActivite(int idUtilisateur, int idPlace, Date date, Time hourStart, Time hourEnd) throws ExceptionRequeteSQL {
+        String rqString = "INSERT INTO Activity(id_user, id_place, date, hourStart, hourEnd) VALUES(?, ?, ?, ?, ?);";
+
+        try {
+            PreparedStatement preparedStmt = con.prepareStatement(rqString);
+            preparedStmt.setInt(1, idUtilisateur);
+            preparedStmt.setInt(2, idPlace);
+            preparedStmt.setDate(3, date);
+            preparedStmt.setTime(4, hourStart);
+            preparedStmt.setTime(5, hourEnd);
+            preparedStmt.executeUpdate();
+        }catch (SQLException throwables) {
+            throw new ExceptionRequeteSQL("Erreur lors de la creation d'une activité",
+                    "INSERT INTO Activity(id_user, id_place, date, hourStart, hourEnd) VALUES("+idUtilisateur+","+idPlace+","+date+", "+hourStart+ ","+hourEnd+");");
+        }
+    }
+
+    public LieuBean getLieu(String name, String adress) throws ExceptionRequeteSQL {
+        String rqString = "SELECT * " +
+                "FROM PLACE " +
+                "WHERE name = ? AND adress = ? ";
+
+        LieuBean lieu = null;
+        try {
+            if(tryConnection()){
+                PreparedStatement preparedStmt = con.prepareStatement(rqString);
+                preparedStmt.setString(1, name);
+                preparedStmt.setString(2, adress);
+                ResultSet r = preparedStmt.executeQuery();
+                r.next();
+                lieu = new LieuBean(r.getInt("id_place"), r.getString("name"), r.getString("adress"));
+            }
+
+        } catch (SQLException throwables) {
+            System.out.println(throwables.getMessage());
+            throw new ExceptionRequeteSQL("Erreur lors de la récupération d'un lieu", "SELECT * FROM PLACE WHERE name = " + name + ", adress = " + adress + ";");
+        }
+        return lieu;
     }
 }

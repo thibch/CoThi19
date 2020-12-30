@@ -3,6 +3,7 @@ package servlet.creationActivite;
 import beans.LieuBean;
 import connexionSQL.SQLConnector;
 import exception.ExceptionCoThi19;
+import exception.ExceptionRequeteSQL;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +18,7 @@ public class ServletRechercheLieux extends HttpServlet {
 
     private static final String ATT_SESSION_USER = "userConnected";
     public static final String VUE = "/createLieux.jsp";
+    public static final String VUE_SUCCESS = "/monCompte.jsp";
     public static final String VUE_ERROR = "/error404";
 
     public ServletRechercheLieux(){
@@ -45,6 +47,9 @@ public class ServletRechercheLieux extends HttpServlet {
 
             List<LieuBean> lieux = null;
 
+            boolean creationReussie = false;
+            boolean erreur = false;
+
             if(req.getParameter("estActif") != null && req.getParameter("estActif").equals("1")){
                 // TODO :
 
@@ -63,13 +68,48 @@ public class ServletRechercheLieux extends HttpServlet {
                             rechercheLieuAdresse = "ERROR";
                         }
                     }
-                }else{
+                }else{ // Choix ou création lieux
                     String choixLieux = req.getParameter("choixLieux");
                     if(choixLieux != null){ // Choix du lieux
                         String name = req.getParameter(choixLieux + "name");
                         String adress = req.getParameter(choixLieux + "adress");
-
-                    }//Création de lieux
+                        LieuBean lieu = null;
+                        try {
+                            lieu = SQLConnector.getInstance().getLieu(name, adress);
+                            creationReussie = lieu != null;
+                        } catch (ExceptionRequeteSQL exceptionRequeteSQL) {
+                            erreur = true;
+                            System.out.println(exceptionRequeteSQL.getMessage());
+                            //this.getServletContext().getRequestDispatcher(VUE_ERROR).forward(req, resp);
+                        }
+                    }else{
+                        //Création de lieux
+                        if(req.getParameter("creerLieu") != null && req.getParameter("creerLieu").equals("1")){
+                            req.setAttribute("createLieux", "1");
+                        }else{
+                            if(req.getParameter("createLieu") != null && req.getParameter("createLieu").equals("2")){
+                                String name = req.getParameter("createPlaceName");
+                                String adresse = req.getParameter("createPlaceAdress");
+                                String cityName = req.getParameter("createPlaceCityName");
+                                if(name.equals("") && adresse.equals("") && cityName.equals("")){
+                                    erreur = true;
+                                }else{
+                                    try {
+                                        LieuBean lieu = SQLConnector.getInstance().createLieux(name, adresse + ", " + cityName);
+                                        if(lieu != null){
+                                            req.setAttribute("lieu", lieu);
+                                            creationReussie = true;
+                                        }else{
+                                            erreur = true;
+                                        }
+                                    } catch (ExceptionRequeteSQL exceptionRequeteSQL) {
+                                        erreur = true;
+                                        System.out.println(exceptionRequeteSQL.getMessage());
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
             req.setAttribute("date", date);
@@ -83,7 +123,16 @@ public class ServletRechercheLieux extends HttpServlet {
 
             req.setAttribute("rechercheLieux", lieux);
 
-            this.getServletContext().getRequestDispatcher(VUE).forward(req, resp);
+            if(creationReussie){
+                this.getServletContext().getRequestDispatcher(VUE_SUCCESS).forward(req, resp);
+            }else{
+                if(erreur){
+                    req.setAttribute("error", "Une erreur s'est porduite !");
+                    this.getServletContext().getRequestDispatcher(VUE).forward(req, resp);
+                }else{
+                    this.getServletContext().getRequestDispatcher(VUE).forward(req, resp);
+                }
+            }
         }else{
             this.getServletContext().getRequestDispatcher(VUE_ERROR).forward(req, resp);
         }

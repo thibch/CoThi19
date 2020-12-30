@@ -107,9 +107,21 @@
                 <input class="form-control" type="search" id="rechercheLieuAdresse" name="rechercheLieuAdresse" value=""><br>
                 <button class="form-control btn btn-primary" type="submit" form="formActivity" id="RechercheLieu" name="RechercheLieu" value="1">Rechercher un lieux</button><br>
                 <% }else{
-                    if(request.getParameter("creerLieu") != null){
-                        out.print("<label for=\"creationLieu\">");
-
+                        out.print("CREATE LIEUX : " + request.getAttribute("createLieux"));
+                    if(request.getAttribute("createLieux") != null && request.getAttribute("createLieux") == "1"){
+                        String nom = request.getParameter("createPlaceName")==null?"":request.getParameter("createPlaceName");
+                        out.print(
+                                "<label for=\"createPlaceName\">Entrez le nom du lieu</label>\n" +
+                                "<input class=\"form-control\" type=\"text\" id=\"createPlaceName\" name=\"createPlaceName\" placeholder=\"Entrez le nom du lieu\" value=\"" + nom + "\"><br>");
+                        String adress = request.getParameter("createPlaceAdress")==null?"":request.getParameter("createPlaceAdress");
+                        out.print(
+                                "<label for=\"createPlaceAdress\">Entrez l'adresse du lieu</label>\n" +
+                                "<input class=\"form-control\" type=\"text\" id=\"createPlaceAdress\" name=\"createPlaceAdress\" placeholder=\"Entrez l'adresse du lieu\" value=\"" + adress + "\"><br>");
+                        String cityName = request.getParameter("createPlaceCityName")==null?"":request.getParameter("createPlaceCityName");
+                        out.print(
+                                "<label for=\"createPlaceCityName\">Entrez le nom de la ville</label>\n" +
+                                        "<input class=\"form-control\" type=\"text\" id=\"createPlaceCityName\" name=\"createPlaceCityName\" placeholder=\"Entrez le nom de la ville\" value=\"" + cityName  + "\"><br>");
+                        out.print("<button class=\"form-control btn btn-primary\" type=\"submit\" form=\"formActivity\" id=\"createLieux\" name=\"createLieux\" value=\"2\">Créer un nouveau lieu</button>");
                     }else{
                         int number = 1;
                         out.print("\n" +
