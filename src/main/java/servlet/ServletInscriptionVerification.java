@@ -58,7 +58,7 @@ public class ServletInscriptionVerification extends HttpServlet {
                     i = 0;
                 }
                 i++;
-                int resultInsertSet = sql.doInsert("INSERT INTO User (id_user, email, password, name, surname, birth_date, isAdmin, path_picture) VALUES ("+i+", \""+mail+"\", \""+password+"\", \""+name+"\", \""+surname+"\", '"+birthDate+"', "+0+", NULL);");
+                int resultInsertSet = sql.doInsert("INSERT INTO User (id_user, email, password, name, surname, birth_date, isAdmin, path_picture, isInfected) VALUES ("+i+", \""+mail+"\", \""+password+"\", \""+name+"\", \""+surname+"\", '"+birthDate+"', "+0+", NULL, " + 0 + ");");
                 if (resultInsertSet == 1){
                     System.out.println("Insertion réussie");
                 }else{

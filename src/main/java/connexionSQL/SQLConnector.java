@@ -8,6 +8,7 @@ import exception.ExceptionConnexionSQL;
 import exception.ExceptionRequeteSQL;
 
 import java.sql.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -225,7 +226,7 @@ public class SQLConnector {
         return lieu;
     }
 
-    public ActiviteBean createActivite(String email, int idPlace, Date date, Time hourStart, Time hourEnd) throws ExceptionRequeteSQL {
+    public ActiviteBean createActivite(String email, int idPlace, Date date, LocalTime hourStart, LocalTime hourEnd) throws ExceptionRequeteSQL {
         String rqString = "INSERT INTO Activity(id_user, id_place, date, hourStart, hourEnd) VALUES(?, ?, ?, ?, ?);";
         String rqToGetActivity = "Select * FROM Activity WHERE id_user = ? AND id_place = ?;";
 
@@ -244,8 +245,8 @@ public class SQLConnector {
             preparedStmt.setInt(1, idUtilisateur);
             preparedStmt.setInt(2, idPlace);
             preparedStmt.setDate(3, date);
-            preparedStmt.setTime(4, hourStart);
-            preparedStmt.setTime(5, hourEnd);
+            preparedStmt.setTime(4, Time.valueOf(hourStart));
+            preparedStmt.setTime(5, Time.valueOf(hourEnd));
             preparedStmt.executeUpdate();
 
             preparedStmt = con.prepareStatement(rqToGetActivity);
@@ -253,7 +254,7 @@ public class SQLConnector {
             preparedStmt.setInt(2, idPlace);
             r = preparedStmt.executeQuery();
             r.next();
-            act = new ActiviteBean(r.getDate("date"), r.getTime("hourStart"), r.getTime("hourEnd"));
+            act = new ActiviteBean(r.getDate("date"), hourStart, hourEnd);
         }catch (SQLException throwables) {
             throw new ExceptionRequeteSQL("Erreur lors de la creation d'une activité",
                     "INSERT INTO Activity(id_user, id_place, date, hourStart, hourEnd) VALUES("+idUtilisateur+","+idPlace+","+date+", "+hourStart+ ","+hourEnd+");");

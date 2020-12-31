@@ -34,6 +34,9 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="createActivity">Créer une activité</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="monCompte">Mon compte</a>
                 </li>
             </ul>

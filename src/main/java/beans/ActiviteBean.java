@@ -2,14 +2,15 @@ package beans;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalTime;
 
 public class ActiviteBean {
 
     private Date date;
-    private Time heureDebut;
-    private Time heureFin;
+    private LocalTime heureDebut;
+    private LocalTime heureFin;
 
-    public ActiviteBean(Date date, Time heureDebut, Time heureFin) {
+    public ActiviteBean(Date date, LocalTime heureDebut, LocalTime heureFin) {
         this.date = date;
         this.heureDebut = heureDebut;
         this.heureFin = heureFin;
@@ -19,11 +20,11 @@ public class ActiviteBean {
         return date;
     }
 
-    public Time getHeureDebut() {
+    public LocalTime getHeureDebut() {
         return heureDebut;
     }
 
-    public Time getHeureFin() {
+    public LocalTime getHeureFin() {
         return heureFin;
     }
 }

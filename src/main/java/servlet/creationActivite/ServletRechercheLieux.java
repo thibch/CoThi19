@@ -14,8 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Date;
-import java.sql.Time;
-import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public class ServletRechercheLieux extends HttpServlet {
@@ -35,16 +34,15 @@ public class ServletRechercheLieux extends HttpServlet {
 
         HttpSession session = req.getSession();
         if(session.getAttribute(ATT_SESSION_USER) != null){
-            String date = null;
-            int heureDebut = 0;
-            int minuteDebut = 0;
-            int heureFin = 0;
-            int minuteFin = 0;
-            date = req.getParameter("date");
-            heureDebut = Integer.parseInt(req.getParameter("heureDebut"));
-            minuteDebut = Integer.parseInt(req.getParameter("minuteDebut"));
-            heureFin = Integer.parseInt(req.getParameter("heureFin"));
-            minuteFin = Integer.parseInt(req.getParameter("minuteFin"));
+            String date = ServletCreateActivity.getDate(req);
+            int heureDebut = ServletCreateActivity.getTimeRegex(req, "heureDebut", ServletCreateActivity.getRegexHeure());
+            int minuteDebut = ServletCreateActivity.getTimeRegex(req, "minuteDebut", ServletCreateActivity.getRegexMinute());
+            int heureFin = ServletCreateActivity.getTimeRegex(req, "heureFin", ServletCreateActivity.getRegexHeure());
+            int minuteFin = ServletCreateActivity.getTimeRegex(req, "minuteFin", ServletCreateActivity.getRegexMinute());
+            if(heureFin < heureDebut || heureFin == heureDebut && minuteFin <= minuteDebut){
+                minuteFin = -1;
+                heureFin = -1;
+            }
 
             String rechercheLieuNom = null;
             String rechercheLieuAdresse = null;
@@ -54,10 +52,9 @@ public class ServletRechercheLieux extends HttpServlet {
             ActiviteBean activite = null;
 
             boolean creationReussie = false;
-            boolean erreur = false;
+            boolean erreur = date.equals("") || heureDebut == 1 || heureFin == -1 || minuteDebut == -1 || minuteFin == -1;
 
             if(req.getParameter("estActif") != null && req.getParameter("estActif").equals("1")){
-                // TODO :
 
                 rechercheLieuNom = req.getParameter("rechercheLieuNom");
                 rechercheLieuAdresse = req.getParameter("rechercheLieuAdresse");
@@ -118,11 +115,7 @@ public class ServletRechercheLieux extends HttpServlet {
                     if(creationReussie){
                         UserBean usr =  (UserBean)session.getAttribute(ATT_SESSION_USER);
                         try {
-                            System.out.println("HEURE DEB" + heureDebut* 3600000L + minuteDebut * 60000L);
-                            System.out.println("HEURE FIN" + heureFin* 3600000L + minuteFin * 60000L);
-                            System.out.println("time = " + new Time(0L));
-                            System.out.println("time = " + new Time(1L));
-                            activite = SQLConnector.getInstance().createActivite(usr.getMail(), lieu.getId(), Date.valueOf(date), new Time(heureDebut* 3600000L + minuteDebut * 60000L), new Time(heureFin* 3600000L + minuteFin * 60000L));
+                            activite = SQLConnector.getInstance().createActivite(usr.getMail(), lieu.getId(), Date.valueOf(date), LocalTime.of(heureDebut, minuteDebut, 0, 0), LocalTime.of(heureFin, minuteFin, 0, 0));
                         } catch (ExceptionRequeteSQL exceptionRequeteSQL) {
                             creationReussie = false;
                             erreur = true;
