@@ -24,7 +24,7 @@ public class ServletAddBDD extends HttpServlet {
         boolean verification = true;
         switch (request.getParameter("form")) {
             case "userForm":
-                String idUser, mail, name, surname, password, birthDateString, isAdmin, pathPicture;
+                String idUser, mail, name, surname, password, birthDateString, isAdmin, pathPicture, isInfected;
                 idUser = request.getParameter("id_user");
                 mail = request.getParameter("mail");
                 name = request.getParameter("name");
@@ -33,6 +33,7 @@ public class ServletAddBDD extends HttpServlet {
                 birthDateString = request.getParameter("birthDate");
                 isAdmin = request.getParameter("isAdmin");
                 pathPicture = request.getParameter("path_picture");
+                isInfected = request.getParameter("isInfected");
 
                 Date birthDate = Date.valueOf(birthDateString);
 
@@ -60,6 +61,9 @@ public class ServletAddBDD extends HttpServlet {
                 if (pathPicture.equals("")){
                     pathPicture = "NULL";
                 }
+                if (isInfected.equals("")){
+                    verification = false;
+                }
 
                 if (verification){
                     int i;
@@ -73,7 +77,7 @@ public class ServletAddBDD extends HttpServlet {
                                 response.setHeader("Refresh", "10;url=keskecer");
                             }
                         }
-                        int resultInsertSet = sql.doInsert("INSERT INTO User (id_user, email, password, name, surname, birth_date, isAdmin, path_picture, isInfected) VALUES ("+Integer.parseInt(idUser)+", \""+mail+"\", \""+password+"\", \""+name+"\", \""+surname+"\", '"+birthDate+"', "+Integer.parseInt(isAdmin)+", "+pathPicture+", "+0+");");
+                        int resultInsertSet = sql.doInsert("INSERT INTO User (id_user, email, password, name, surname, birth_date, isAdmin, path_picture, isInfected) VALUES ("+Integer.parseInt(idUser)+", \""+mail+"\", \""+password+"\", \""+name+"\", \""+surname+"\", '"+birthDate+"', "+Integer.parseInt(isAdmin)+", "+pathPicture+", "+Integer.parseInt(isInfected)+");");
                         if (resultInsertSet == 1){
                             System.out.println("Insertion réussie");
                         }else{

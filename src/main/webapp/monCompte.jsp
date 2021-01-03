@@ -38,6 +38,12 @@
                     <a class="nav-link" href="accueil">Home
                     </a>
                 </li>
+                <%  UserBean user = (UserBean) request.getSession().getAttribute("userConnected");
+                if (user.isAdmin()){ %>
+                <li class="nav-item">
+                    <a class="nav-link" href="keskecer">Administration</a>
+                </li>
+                <% } %>
                 <li class="nav-item">
                     <a class="nav-link" href="createActivity">Créer une activités</a>
                 </li>
@@ -54,7 +60,7 @@
     String surname = "";
     String birthDate = "";
     SQLConnector sql = SQLConnector.getInstance();
-    UserBean user = (UserBean) request.getSession().getAttribute("userConnected");
+    user = (UserBean) request.getSession().getAttribute("userConnected");
     try {
         ResultSet resultSet = sql.doRequest("Select * from User WHERE email = \"" + user.getMail() + "\"");
         if (resultSet.next()){

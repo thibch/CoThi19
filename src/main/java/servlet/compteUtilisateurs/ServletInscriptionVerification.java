@@ -51,11 +51,10 @@ public class ServletInscriptionVerification extends HttpServlet {
             int i;
             String bd = null;
             try {
+                i = 0;
                 ResultSet resultIdSet = sql.doRequest("Select * from User");
-                if (resultIdSet.next()){
+                while (resultIdSet.next()){
                     i = resultIdSet.getInt("id_user"); // On récupère le résultat
-                }else{
-                    i = 0;
                 }
                 i++;
                 int resultInsertSet = sql.doInsert("INSERT INTO User (id_user, email, password, name, surname, birth_date, isAdmin, path_picture, isInfected) VALUES ("+i+", \""+mail+"\", \""+password+"\", \""+name+"\", \""+surname+"\", '"+birthDate+"', "+0+", NULL, " + 0 + ");");

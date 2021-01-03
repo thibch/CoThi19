@@ -125,6 +125,7 @@
                                 <th scope="col">Birth_date</th>
                                 <th scope="col">IsAdmin</th>
                                 <th scope="col">Path_picture</th>
+                                <th scope="col">IsInfected</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -142,6 +143,7 @@
                                             <td><% out.print(resultSet.getString("birth_date")); %></td>
                                             <td><% out.print(resultSet.getString("isAdmin")); %></td>
                                             <td><% out.print(resultSet.getString("path_picture")); %></td>
+                                            <td><% out.print(resultSet.getString("isInfected")); %></td>
                                         </tr>
                                     <% }
                                 }catch (ExceptionCoThi19 | SQLException throwable){
@@ -176,6 +178,8 @@
                             <input class="form-control" type="number" id="isAdmin" name="isAdmin"><br>
                             <label for="path_picture">Path_picture :</label>
                             <input class="form-control" type="text" id="path_picture" name="path_picture"><br>
+                            <label for="isInfected">IsInfected :</label>
+                            <input class="form-control" type="number" id="isInfected" name="isInfected"><br>
                             <input type="hidden" value="userForm" name="form" />
                             <input class="form-control" type="submit" value="VALIDER">
                         </form>

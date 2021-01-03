@@ -84,7 +84,7 @@
                 <input class="form-control" type="password" id="newPassword" name="newPassword"><br>
                 <label for="confirmedPassword">Confirmation du nouveau mot de passe :</label>
                 <input class="form-control" type="password" id="confirmedPassword" name="confirmedPassword"><br>
-
+                <input type="hidden" value="nothing" name="form" />
                 <input class="form-control" type="submit" value="MODIFIER">
             </form>
         </div>
