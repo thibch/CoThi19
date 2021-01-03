@@ -1,4 +1,4 @@
-package servlet;
+package servlet.compteUtilisateurs;
 
 import connexionSQL.SQLConnector;
 import exception.ExceptionCoThi19;
@@ -27,6 +27,7 @@ public class ServletConnexionVerification extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         boolean verification = true;
         boolean recuperation = true;
+        int isAdmin = 0;
         String mail, password;
         mail = request.getParameter("mail");
         password = request.getParameter("password");
@@ -43,6 +44,7 @@ public class ServletConnexionVerification extends HttpServlet {
                 ResultSet resultIdSet = sql.doRequest("Select * from User WHERE email = \""+mail+"\" AND password = \""+password+"\"");
                 if (resultIdSet.next()){
                     recuperation = true;
+                    isAdmin = resultIdSet.getInt("isAdmin");
                 }else{
                     System.out.println("Error");
                     recuperation = false;
@@ -52,6 +54,7 @@ public class ServletConnexionVerification extends HttpServlet {
             }
             if (recuperation) {
                 user = new UserBean(mail);
+                user.setAdmin(isAdmin);
                 HttpSession session = request.getSession();
                 session.setAttribute( ATT_SESSION_USER, user);
                 response.sendRedirect(request.getContextPath() + "/accueil");

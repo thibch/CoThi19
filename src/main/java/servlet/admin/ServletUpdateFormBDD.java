@@ -1,4 +1,4 @@
-package servlet;
+package servlet.admin;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -7,13 +7,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class ServletModification extends HttpServlet {
+@WebServlet(name = "ServletUpdateBDD")
+public class ServletUpdateFormBDD extends HttpServlet {
 
-    public static final String VUE = "/modification.jsp";
+    public static final String VUE = "/updateBDD.jsp";
 
-    public ServletModification(){
+    public ServletUpdateFormBDD(){
         super();
     }
+
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);

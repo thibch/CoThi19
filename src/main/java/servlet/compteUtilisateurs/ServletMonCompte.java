@@ -1,17 +1,16 @@
-package servlet;
+package servlet.compteUtilisateurs;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class ServletInscription extends HttpServlet {
+public class ServletMonCompte extends HttpServlet {
 
-    public static final String VUE = "/inscription.jsp";
+    private static final String VUE = "/monCompte.jsp";
 
-    public ServletInscription(){
+    public ServletMonCompte(){
         super();
     }
 

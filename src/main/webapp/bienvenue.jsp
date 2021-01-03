@@ -31,35 +31,40 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
             <%  UserBean user = (UserBean) request.getSession().getAttribute("userConnected");
-                if (user != null){%>
-                <li class="nav-item">
-                    <a class="btn disabled" style="color: white">Bonjour <% out.print(user.getMail());%></a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="createActivity">Créer une activité</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="monCompte">Mon compte</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="deconnexion">Déconnexion</a>
-                </li>
-            <% }else{ %>
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="connexion">Connexion</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="inscription">Inscription</a>
-                </li>
-            <% } %>
+                if (user != null){ %>
+                    <li class="nav-item">
+                        <a class="btn disabled" style="color: white">Bonjour <% out.print(user.getMail());%></a>
+                    </li>
+                        <% if (user.isAdmin()){ %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="keskecer">Administration</a>
+                        </li>
+                        <% } %>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="createActivity">Créer une activité</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="monCompte">Mon compte</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="deconnexion">Déconnexion</a>
+                    </li>
+                <% }else{ %>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="connexion">Connexion</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="inscription">Inscription</a>
+                    </li>
+                <% } %>
             </ul>
         </div>
     </div>
@@ -72,7 +77,7 @@
 
         <div class="col-lg-3">
 
-            <img src="images/cothi19.png" alt="CoThi19" width="240" height="135">
+            <a href="#"><img src="images/cothi19.png" alt="CoThi19" width="240" height="135"></a>
 
         </div>
 
@@ -81,7 +86,7 @@
             <div>
                 <h2>Liste des activités des 10 derniers jours :</h2>
             </div>
-
+            <br><br>
             <div class="row">
 
                 <div class="col-lg-4 col-md-6 mb-4">

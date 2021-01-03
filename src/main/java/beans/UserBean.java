@@ -8,9 +8,11 @@ package beans;
 public class UserBean {
 
     private String mail;
+    private boolean admin;
 
     public UserBean(String mail){
         this.mail = mail;
+        admin = false;
     }
 
     public String getMail() {
@@ -19,5 +21,13 @@ public class UserBean {
 
     public void setMail(String mail) {
         this.mail = mail;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(int admin) {
+        this.admin = admin == 1;
     }
 }

@@ -1,4 +1,4 @@
-package servlet;
+package servlet.compteUtilisateurs;
 
 import connexionSQL.SQLConnector;
 import exception.ExceptionCoThi19;
@@ -23,7 +23,7 @@ public class ServletInscriptionVerification extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         boolean verification = true;
-        String mail, name, surname, password, birthDateString;
+        String idUser, mail, name, surname, password, birthDateString;
         mail = request.getParameter("mail");
         name = request.getParameter("name");
         surname = request.getParameter("surname");
@@ -69,7 +69,7 @@ public class ServletInscriptionVerification extends HttpServlet {
             }
             response.sendRedirect(request.getContextPath() + "/accueil");
         }else{
-            response.sendRedirect(request.getContextPath() + "/inscription.jsp");
+            response.sendRedirect(request.getContextPath() + "/inscription");
         }
     }
 }

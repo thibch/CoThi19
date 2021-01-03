@@ -32,8 +32,44 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>ServletAdmin</servlet-name>
+        <servlet-class>servlet.admin.ServletAdmin</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletAdmin</servlet-name>
+        <url-pattern>/keskecer</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ServletAddBDD</servlet-name>
+        <servlet-class>servlet.admin.ServletAddBDD</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletAddBDD</servlet-name>
+        <url-pattern>/addBDD</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ServletDeleteBDD</servlet-name>
+        <servlet-class>servlet.admin.ServletDeleteBDD</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletDeleteBDD</servlet-name>
+        <url-pattern>/deleteBDD</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ServletUpdateFormBDD</servlet-name>
+        <servlet-class>servlet.admin.ServletUpdateFormBDD</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletUpdateFormBDD</servlet-name>
+        <url-pattern>/updateBDD</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>ServletInscription</servlet-name>
-        <servlet-class>servlet.ServletInscription</servlet-class>
+        <servlet-class>servlet.compteUtilisateurs.ServletInscription</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ServletInscription</servlet-name>
@@ -42,7 +78,7 @@
 
     <servlet>
         <servlet-name>ServletInscriptionVerification</servlet-name>
-        <servlet-class>servlet.ServletInscriptionVerification</servlet-class>
+        <servlet-class>servlet.compteUtilisateurs.ServletInscriptionVerification</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ServletInscriptionVerification</servlet-name>
@@ -51,7 +87,7 @@
 
     <servlet>
         <servlet-name>ServletConnexion</servlet-name>
-        <servlet-class>servlet.ServletConnexion</servlet-class>
+        <servlet-class>servlet.compteUtilisateurs.ServletConnexion</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ServletConnexion</servlet-name>
@@ -60,7 +96,7 @@
 
     <servlet>
         <servlet-name>ServletConnexionVerification</servlet-name>
-        <servlet-class>servlet.ServletConnexionVerification</servlet-class>
+        <servlet-class>servlet.compteUtilisateurs.ServletConnexionVerification</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ServletConnexionVerification</servlet-name>
@@ -69,7 +105,7 @@
 
     <servlet>
         <servlet-name>ServletMonCompte</servlet-name>
-        <servlet-class>servlet.ServletMonCompte</servlet-class>
+        <servlet-class>servlet.compteUtilisateurs.ServletMonCompte</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ServletMonCompte</servlet-name>
@@ -78,7 +114,7 @@
 
     <servlet>
         <servlet-name>ServletModification</servlet-name>
-        <servlet-class>servlet.ServletModification</servlet-class>
+        <servlet-class>servlet.compteUtilisateurs.ServletModification</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ServletModification</servlet-name>
@@ -87,7 +123,7 @@
 
     <servlet>
         <servlet-name>ServletModificationVerification</servlet-name>
-        <servlet-class>servlet.ServletModificationVerification</servlet-class>
+        <servlet-class>servlet.compteUtilisateurs.ServletModificationVerification</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ServletModificationVerification</servlet-name>
@@ -96,7 +132,7 @@
 
     <servlet>
         <servlet-name>ServletDeconnexion</servlet-name>
-        <servlet-class>servlet.ServletDeconnexion</servlet-class>
+        <servlet-class>servlet.compteUtilisateurs.ServletDeconnexion</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ServletDeconnexion</servlet-name>
