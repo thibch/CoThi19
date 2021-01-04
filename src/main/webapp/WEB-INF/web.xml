@@ -174,11 +174,18 @@
 
     <servlet>
         <servlet-name>ServletNotifi</servlet-name>
-        <servlet-class>servlet.not.ServletNotif</servlet-class>
+        <servlet-class>servlet.notif.ServletNotif</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ServletNotifi</servlet-name>
         <url-pattern>/consultnotifications</url-pattern>
+        <url-pattern>/consultnotifications/</url-pattern>
+        <url-pattern>/consultNotifications</url-pattern>
+        <url-pattern>/consultNotifications/</url-pattern>
+        <url-pattern>/Consultnotifications</url-pattern>
+        <url-pattern>/Consultnotifications/</url-pattern>
+        <url-pattern>/ConsultNotifications</url-pattern>
+        <url-pattern>/ConsultNotifications/</url-pattern>
     </servlet-mapping>
 
     <error-page>

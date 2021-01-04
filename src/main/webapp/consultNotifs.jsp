@@ -81,25 +81,26 @@
             <div class="col-lg-3">
                 <img src="images/cothi19.png" alt="CoThi19" width="240" height="135">
             </div>
-            <div class="col-lg-9">
-                <form action="notifications/" method="GET" id="formNotif">
+            <div class="col-lg-8">
+                <form action="consultnotifications" method="GET" id="formNotif">
                     <h1 class="my-4">Notifications</h1>
                     <% String isSeen = "";
                         if(notificationBeans != null){
+                            out.print("<div class=\"col-lg-9\">");
                         for(NotificationBean notif : notificationBeans){
                             if(!notif.isSeen()) {
                                 isSeen = "class=\"font-weight-bold\"";
                             }else{
                                 isSeen = "";
                             }
-                            out.print("<div class=\"col-lg-7\">");
-                            out.print("\t<p " + isSeen + ">" + notif.getContent() + " </p>");
-                            out.print("</div>");
-                            out.print("<div class=\"col-lg-2\">");
-                            out.print("\t<button type=\"submit\" class=\"btn btn-danger\" name=\"wantToDelete"+ notif.getIdNotif() +"\" id=\"wantToDelete"+ notif.getIdNotif() +"\" value=\"" + notif.getIdNotif() + "\">Supprimer</button>");
-                            out.print("\t<button type=\"submit\" class=\"btn btn-danger\" name=\"wantToDelete"+ notif.getIdNotif() +"\" id=\"wantToDelete"+ notif.getIdNotif() +"\" value=\"" + (notif.getIdNotif()+1) + "\">Supprimer</button>");
-                            out.print("</div>");
+                                out.print("<div class=\"col-lg-7\" " + isSeen + " ");
+                                out.print(notif.getContent());
+                                out.print("</div>");
+                                out.print("<div class=\"col-lg-3\" text-right ");
+                                out.print("<button type=\"submit\" class=\"btn btn-danger col-lg-2\" name=\"wantToDelete\" id=\"wantToDelete\" value=\"" + notif.getIdNotif() + "\">Supprimer</button>");
+                                out.print("</div>");
                         }
+                            out.print("</div>");
                     }%>
                 </form>
             </div>

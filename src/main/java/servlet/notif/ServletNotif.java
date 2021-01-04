@@ -1,4 +1,4 @@
-package servlet.not;
+package servlet.notif;
 
 import beans.NotificationBean;
 import beans.UserBean;
