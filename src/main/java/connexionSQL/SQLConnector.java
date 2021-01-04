@@ -2,6 +2,7 @@ package connexionSQL;
 
 import beans.ActiviteBean;
 import beans.LieuBean;
+import beans.NotificationBean;
 import beans.UserBean;
 import exception.ExceptionCoThi19;
 import exception.ExceptionConnexionSQL;
@@ -10,6 +11,7 @@ import exception.ExceptionRequeteSQL;
 import java.sql.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class SQLConnector {
@@ -283,5 +285,93 @@ public class SQLConnector {
             throw new ExceptionRequeteSQL("Erreur lors de la récupération d'un lieu", "SELECT * FROM PLACE WHERE name = " + name + ", adress = " + adress + ";");
         }
         return lieu;
+    }
+
+    public Collection<NotificationBean> getListeNotif(String email, int max) throws ExceptionRequeteSQL {
+
+        Collection<NotificationBean> collection = new ArrayList<>();
+
+        String rqString = "SELECT * " +
+                "FROM Notification JOIN User " +
+                "WHERE email = ? AND id_user = id_receive " +
+                "ORDER BY id_notif DESC " +
+                "LIMIT " + max + " ";
+
+        try {
+            if(tryConnection()){
+                PreparedStatement preparedStmt = con.prepareStatement(rqString);
+                preparedStmt.setString(1, email);
+                ResultSet r = preparedStmt.executeQuery();
+                while(r.next()){
+                    collection.add(new NotificationBean(r.getInt("id_notif"),
+                            r.getInt("id_receive"),
+                            r.getInt("id_ask"),
+                            r.getString("content"),
+                            r.getBoolean("seen")));
+                }
+            }
+        } catch (SQLException throwables) {
+            System.out.println(throwables.getMessage());
+            throw new ExceptionRequeteSQL("Erreur lors de la récupération de notification",
+                    "SELECT *  FROM Notification JOIN User WHERE email = " + email + " AND id_user = id_receive LIMIT" + max);
+        }
+        return collection;
+    }
+
+    public void setNotifAsSeen(Collection<NotificationBean> notifications) throws ExceptionRequeteSQL {
+        String rqString = "UPDATE Notification " +
+                "SET seen = 1 " +
+                "WHERE id_notif = ? ";
+
+        if(tryConnection() && notifications != null){
+            PreparedStatement preparedStmt = null;
+            try {
+                preparedStmt = con.prepareStatement(rqString);
+            } catch (SQLException throwables) {
+                System.out.println(throwables.getMessage());
+                throw new ExceptionRequeteSQL("Erreur lors de la création du Statement notifications", rqString);
+            }
+            for(NotificationBean notif : notifications){
+                try {
+                    preparedStmt.setInt(1, notif.getIdNotif());
+                    preparedStmt.executeUpdate();
+                } catch (SQLException throwables) {
+                    System.out.println(throwables.getMessage());
+                    throw new ExceptionRequeteSQL("Erreur lors de l'update d'une notif",
+                            "UPDATE Notification " +
+                                    "SET Notification seen = 1 " +
+                                    "WHERE id_notif = " + notif.getIdNotif());
+                }
+            }
+        }
+    }
+
+    public void delNotif(int notif, UserBean usr) throws ExceptionRequeteSQL {
+        String rqString = "Select * FROM User\n" +
+                "WHERE email = ?";
+        String rqString2 = "DELETE FROM Notification\n" +
+                "WHERE id_notif = ? AND id_receive = ?";
+
+
+        try {
+            if(tryConnection()){
+                PreparedStatement preparedStmt = con.prepareStatement(rqString);
+                preparedStmt.setString(1, usr.getMail());
+                ResultSet r = preparedStmt.executeQuery();
+                int idReceiv = -1;
+                if(r.next()){
+                    idReceiv = r.getInt("id_user");
+                }
+
+                preparedStmt = con.prepareStatement(rqString2);
+                preparedStmt.setInt(1, notif);
+                preparedStmt.setInt(2, idReceiv);
+                preparedStmt.executeUpdate();
+            }
+        } catch (SQLException throwables) {
+            System.out.println(throwables.getMessage());
+            throw new ExceptionRequeteSQL("Erreur lors de la récupération d'un lieu",
+                    "SELECT *  FROM Notification JOIN User WHERE email = " + " AND id_user = id_receive LIMIT" );
+        }
     }
 }

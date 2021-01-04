@@ -171,6 +171,16 @@
         <url-pattern>/findplace/</url-pattern>
     </servlet-mapping>
 
+
+    <servlet>
+        <servlet-name>ServletNotifi</servlet-name>
+        <servlet-class>servlet.not.ServletNotif</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletNotifi</servlet-name>
+        <url-pattern>/consultnotifications</url-pattern>
+    </servlet-mapping>
+
     <error-page>
         <error-code>404</error-code>
         <location>/404notfound.html</location>
