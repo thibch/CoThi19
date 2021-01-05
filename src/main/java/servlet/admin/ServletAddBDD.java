@@ -21,6 +21,7 @@ public class ServletAddBDD extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         SQLConnector sql = SQLConnector.getInstance();
+        String redirect = response.encodeRedirectURL(request.getContextPath() + "/keskecer");
         boolean verification = true;
         switch (request.getParameter("form")) {
             case "userForm":
@@ -52,7 +53,10 @@ public class ServletAddBDD extends HttpServlet {
                 if (password.equals("")){
                     verification = false;
                 }
-                if (birthDateString.equals("")){
+
+                java.util.Date dateMax = new java.util.Date();
+
+                if (birthDateString.equals("") || birthDate.after(dateMax)){
                     verification = false;
                 }
                 if (isAdmin.equals("")){
@@ -67,28 +71,34 @@ public class ServletAddBDD extends HttpServlet {
 
                 if (verification){
                     int i;
+                    boolean idCorresponding = false;
                     String bd = null;
                     try {
                         ResultSet resultIdSet = sql.doRequest("Select * from User");
                         if (resultIdSet.next()){
                             i = resultIdSet.getInt("id_user"); // On récupère le résultat
-                            if (!String.valueOf(i).equals(idUser)){
+                            if (String.valueOf(i).equals(idUser)){
+                                idCorresponding = true;
+                            }else{
                                 System.out.println("Error");
-                                response.setHeader("Refresh", "10;url=keskecer");
                             }
                         }
-                        int resultInsertSet = sql.doInsert("INSERT INTO User (id_user, email, password, name, surname, birth_date, isAdmin, path_picture, isInfected) VALUES ("+Integer.parseInt(idUser)+", \""+mail+"\", \""+password+"\", \""+name+"\", \""+surname+"\", '"+birthDate+"', "+Integer.parseInt(isAdmin)+", "+pathPicture+", "+Integer.parseInt(isInfected)+");");
-                        if (resultInsertSet == 1){
-                            System.out.println("Insertion réussie");
+                        if(idCorresponding) {
+                            int resultInsertSet = sql.doInsert("INSERT INTO User (id_user, email, password, name, surname, birth_date, isAdmin, path_picture, isInfected) VALUES (" + Integer.parseInt(idUser) + ", \"" + mail + "\", \"" + password + "\", \"" + name + "\", \"" + surname + "\", '" + birthDate + "', " + Integer.parseInt(isAdmin) + ", " + pathPicture + ", " + Integer.parseInt(isInfected) + ");");
+                            if (resultInsertSet == 1) {
+                                System.out.println("Insertion réussie");
+                            } else {
+                                System.out.println("Error");
+                            }
                         }else{
-                            System.out.println("Error");
+                            response.sendRedirect(redirect);
                         }
                     } catch (SQLException | ExceptionCoThi19 throwables) {
                         throwables.printStackTrace();
                     }
-                    response.setHeader("Refresh", "10;url=keskecer");
+                    response.sendRedirect(redirect);
                 }else{
-                    response.setHeader("Refresh", "10;url=keskecer");
+                    response.sendRedirect(redirect);
                 }
                 break;
             case "activityForm":
@@ -130,7 +140,7 @@ public class ServletAddBDD extends HttpServlet {
                             i = resultIdSet.getInt("id_act"); // On récupère le résultat
                             if (!String.valueOf(i).equals(idAct)){
                                 System.out.println("Error");
-                                response.setHeader("Refresh", "10;url=keskecer");
+                                response.sendRedirect(redirect);
                             }
                         }
                         int resultInsertSet = sql.doInsert("INSERT INTO Activity (id_act, id_user, id_place, date, hourEnd, hourStart) VALUES ("+Integer.parseInt(idAct)+", "+Integer.parseInt(idUser)+", "+Integer.parseInt(idPlace)+", \""+date+"\", "+Integer.parseInt(hourEnd)+", "+Integer.parseInt(hourStart)+");");
@@ -142,9 +152,9 @@ public class ServletAddBDD extends HttpServlet {
                     } catch (SQLException | ExceptionCoThi19 throwables) {
                         throwables.printStackTrace();
                     }
-                    response.setHeader("Refresh", "10;url=keskecer");
+                    response.sendRedirect(redirect);
                 }else{
-                    response.setHeader("Refresh", "10;url=keskecer");
+                    response.sendRedirect(redirect);
                 }
                 break;
             case "placeForm" :
@@ -176,7 +186,7 @@ public class ServletAddBDD extends HttpServlet {
                             i = resultIdSet.getInt("id_place"); // On récupère le résultat
                             if (!String.valueOf(i).equals(idPlace)){
                                 System.out.println("Error");
-                                response.setHeader("Refresh", "10;url=keskecer");
+                                response.sendRedirect(redirect);
                             }
                         }
                         int resultInsertSet = sql.doInsert("INSERT INTO Place (id_place, name, adress, gps_coordinates) VALUES ("+Integer.parseInt(idPlace)+", \""+name+"\", \""+adress+"\", \""+gpsCoordinates+"\");");
@@ -188,9 +198,9 @@ public class ServletAddBDD extends HttpServlet {
                     } catch (SQLException | ExceptionCoThi19 throwables) {
                         throwables.printStackTrace();
                     }
-                    response.setHeader("Refresh", "10;url=keskecer");
+                    response.sendRedirect(redirect);
                 }else{
-                    response.setHeader("Refresh", "10;url=keskecer");
+                    response.sendRedirect(redirect);
                 }
                 break;
             case "notifForm" :
@@ -221,7 +231,7 @@ public class ServletAddBDD extends HttpServlet {
                             i = resultIdSet.getInt("id_notif"); // On récupère le résultat
                             if (!String.valueOf(i).equals(idNotif)){
                                 System.out.println("Error");
-                                response.setHeader("Refresh", "10;url=keskecer");
+                                response.sendRedirect(redirect);
                             }
                         }
                         int resultInsertSet = sql.doInsert("INSERT INTO Notification (id_notif, id_receive, id_ask, content) VALUES ("+Integer.parseInt(idNotif)+", "+Integer.parseInt(idReceive)+", "+Integer.parseInt(idAsk)+", \""+content+"\");");
@@ -233,9 +243,9 @@ public class ServletAddBDD extends HttpServlet {
                     } catch (SQLException | ExceptionCoThi19 throwables) {
                         throwables.printStackTrace();
                     }
-                    response.setHeader("Refresh", "10;url=keskecer");
+                    response.sendRedirect(redirect);
                 }else{
-                    response.setHeader("Refresh", "10;url=keskecer");
+                    response.sendRedirect(redirect);
                 }
                 break;
 

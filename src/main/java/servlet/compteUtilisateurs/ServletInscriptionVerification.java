@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 
 /**
  * @author Roberge-Mentec Corentin
@@ -31,6 +32,7 @@ public class ServletInscriptionVerification extends HttpServlet {
         birthDateString = request.getParameter("birthDate");
         Date birthDate = Date.valueOf(birthDateString);
 
+
         if (mail.equals("")){
             verification = false;
         }
@@ -43,9 +45,13 @@ public class ServletInscriptionVerification extends HttpServlet {
         if (password.equals("")){
             verification = false;
         }
-        if (birthDateString.equals("")){
+
+        java.util.Date date = new java.util.Date();
+
+        if (birthDateString.equals("") || birthDate.after(date)){
             verification = false;
         }
+
         if (verification){
             SQLConnector sql = SQLConnector.getInstance(); // On récupère la connexion sql
             int i;

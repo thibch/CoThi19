@@ -55,6 +55,7 @@
     </div>
 </nav>
 <%
+    int id = 0;
     String mail = "";
     String name = "";
     String surname = "";
@@ -64,6 +65,7 @@
     try {
         ResultSet resultSet = sql.doRequest("Select * from User WHERE email = \"" + user.getMail() + "\"");
         if (resultSet.next()){
+            id = resultSet.getInt("id_user");
             mail = resultSet.getString("email");
             name = resultSet.getString("name");
             surname = resultSet.getString("surname");
@@ -86,39 +88,46 @@
                 <div class="card-body">
                     <h2>Informations personnelles :</h2>
                 </div>
-                    <div class="card-text">
-                        <div class="col-lg-4">
-                            <p>Mail :
+                <div class="card-text">
+                    <div class="col-lg-4">
+                        <p>Mail :
+                    <%
+                        out.println(mail);
+                    %>
+                        </p>
+                    </div>
+                    <div class="col-lg-4">
+                        <p>Nom :
                         <%
-                            out.println(mail);
+                            out.println(name);
                         %>
-                            </p>
-                        </div>
-                        <div class="col-lg-4">
-                            <p>Nom :
-                            <%
-                                out.println(name);
-                            %>
-                            </p>
-                        </div>
-                        <div class="col-lg-4">
-                            <p>Prenom :
-                            <%
-                                out.println(surname);
-                            %>
-                            </p>
-                        </div>
-                        <div class="col-lg-4">
-                            <p>Birthdate :
-                            <%
-                                out.println(birthDate);
-                            %>
-                            </p>
-                        </div>
+                        </p>
                     </div>
-                    <div>
-                        <a href="modification" class="btn btn-info" role="button">Modifier mes informations personnelles</a>
+                    <div class="col-lg-4">
+                        <p>Prenom :
+                        <%
+                            out.println(surname);
+                        %>
+                        </p>
                     </div>
+                    <div class="col-lg-4">
+                        <p>Birthdate :
+                        <%
+                            out.println(birthDate);
+                        %>
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <a href="modification" class="btn btn-dark" role="button">Modifier mes informations personnelles</a>
+                </div>
+            </div>
+            <div class="card-text">
+                <div class="col-lg-4">
+                    <form id="delUser" action="deleteBDD">
+                        <input class="form-control" type="hidden" id="idDeleteUser" name="idDeleteUser" value="<% out.print(id); %>"><br>
+                        <input class="btn btn-dark" type="submit" value="Supprimer mon compte">
+                    </form>
                 </div>
             </div>
         </div>

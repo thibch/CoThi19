@@ -21,10 +21,10 @@ public class ServletModificationVerification extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String idUser, name, surname, password, newPassword, confirmedPassword, birthDateString, isAdmin;
+        String idUser, name, surname, password, newPassword, confirmedPassword, birthDateString, isAdmin, isInfected;
         String pathPicture, idAct, idPlace, idNotif, dateString, hourEnd, hourStart, namePlace, adress;
         String gpsCoordinates, content;
-        String bdName, bdSurname, bdPassword, bdBirthdate, bdIsAdmin, bdPathPicture, bdContent;
+        String bdName, bdSurname, bdPassword, bdBirthdate, bdIsAdmin, bdPathPicture, bdContent, bdIsInfected;
         String bdDate, bdHourEnd, bdHourStart, bdAdress, bdGpsCooridnates;
 
         System.out.println("id act : "+request.getParameter("id_activity"));
@@ -48,6 +48,7 @@ public class ServletModificationVerification extends HttpServlet {
         gpsCoordinates = request.getParameter("gpsCoordinates");
         content = request.getParameter("content");
         pathPicture = request.getParameter("pathPicture");
+        isInfected = request.getParameter("isInfected");
 
         Date birthDate = null, date = null;
 
@@ -76,6 +77,7 @@ public class ServletModificationVerification extends HttpServlet {
                         bdBirthdate = resultSet.getString("birth_date");
                         bdIsAdmin = resultSet.getString("isAdmin");
                         bdPathPicture = resultSet.getString("path_picture");
+                        bdIsInfected = resultSet.getString("isinfected");
                     } else {
                         bdName = "";
                         bdSurname = "";
@@ -83,6 +85,7 @@ public class ServletModificationVerification extends HttpServlet {
                         bdBirthdate = "";
                         bdIsAdmin = "";
                         bdPathPicture = "";
+                        bdIsInfected = "";
                     }
                     if (!bdName.equals(name) && !name.equals("")) {
                         int resultInsertSet = sql.doInsert("UPDATE User SET name = \"" + name + "\" where id_user = \"" + idUser + "\";");
@@ -90,20 +93,24 @@ public class ServletModificationVerification extends HttpServlet {
                     if (!bdSurname.equals(surname) && !surname.equals("")) {
                         int resultInsertSet = sql.doInsert("UPDATE User SET surname = \"" + surname + "\" where id_user = \"" + idUser + "\";");
                     }
-                    if (!bdBirthdate.equals(birthDateString) && !birthDateString.equals("")) {
+                    java.util.Date dateMax = new java.util.Date();
+                    if (!bdBirthdate.equals(birthDateString) && !birthDateString.equals("") && birthDate.before(dateMax)) {
                         int resultInsertSet = sql.doInsert("UPDATE User SET birth_date = '" + birthDate + "' where id_user = \"" + idUser + "\";");
                     }
                     if (!bdPassword.equals(password) && !password.equals("")) {
                         int resultInsertSet = sql.doInsert("UPDATE User SET password = \"" + password + "\" where id_user = \"" + idUser + "\";");
                     }
                     if (!bdIsAdmin.equals(isAdmin) && !isAdmin.equals("")) {
-                        int resultInsertSet = sql.doInsert("UPDATE User SET isAdmin = \"" + isAdmin + "\" where id_user = \"" + idUser + "\";");
+                        int resultInsertSet = sql.doInsert("UPDATE User SET isAdmin = " + isAdmin + " where id_user = \"" + idUser + "\";");
                     }
                     if (bdPathPicture == null) {
                         bdPathPicture = "NULL";
                     }
                     if (!bdPathPicture.equals(pathPicture) && !pathPicture.equals("")) {
                         int resultInsertSet = sql.doInsert("UPDATE User SET path_picture = \"" + pathPicture + "\" where id_user = \"" + idUser + "\";");
+                    }
+                    if (!bdIsInfected.equals(isInfected) && !isInfected.equals("")) {
+                        int resultInsertSet = sql.doInsert("UPDATE User SET isInfected = " + isInfected + " where id_user = \"" + idUser + "\";");
                     }
                 } catch (SQLException | ExceptionCoThi19 throwables) {
                     throwables.printStackTrace();
