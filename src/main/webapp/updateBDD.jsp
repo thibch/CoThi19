@@ -46,8 +46,9 @@
         String name = "";
         String surname = "";
         String birthDate = "";
-        String pathPicture = "";
         String isAdmin = "";
+        String pathPicture = "";
+        String isInfected = "";
         SQLConnector sql = SQLConnector.getInstance();
         try {
             ResultSet resultSet = sql.doRequest("Select * from User WHERE id_user = \"" + request.getParameter("idUpdateUser") + "\"");
@@ -60,6 +61,7 @@
                 birthDate = resultSet.getString("birth_date");
                 isAdmin = resultSet.getString("isAdmin");
                 pathPicture = resultSet.getString("path_picture");
+                isInfected = resultSet.getString("isInfected");
             }
         }catch (ExceptionCoThi19 | SQLException throwables){
             throwables.printStackTrace();
@@ -81,6 +83,8 @@
                 <input class="form-control" type="text" id="isAdmin" name="isAdmin" value="<%out.print(isAdmin);%>"><br>
                 <label for="pathPicture">Path_picture :</label>
                 <input class="form-control" type="text" id="pathPicture" name="pathPicture" value="<%out.print(pathPicture);%>"><br>
+                <label for="isInfected">IsInfected :</label>
+                <input class="form-control" type="text" id="isInfected" name="isInfected" value="<%out.print(isInfected);%>"><br>
                 <input type="hidden" value="userForm" name="form" />
                 <input type="hidden" value="<% out.print(email); %>" name="email" id="email"/>
                 <input type="hidden" value="<% out.print(idUser);%>" name="id_user" id="id_user"/>

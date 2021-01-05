@@ -1,5 +1,6 @@
 package servlet.admin;
 
+import beans.UserBean;
 import connexionSQL.SQLConnector;
 import exception.ExceptionCoThi19;
 
@@ -20,6 +21,8 @@ public class ServletDeleteBDD extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idString, table;
+        UserBean user = (UserBean) request.getSession().getAttribute("userConnected");
+        String redirect = response.encodeRedirectURL(request.getContextPath() + "/keskecer");
         int id;
         if (request.getParameter("idDeleteUser") != null) {
             idString = request.getParameter("idDeleteUser");
@@ -48,9 +51,12 @@ public class ServletDeleteBDD extends HttpServlet {
                         int deletedUser = sql.doInsert("Delete from User WHERE id_user = \"" + id + "\"");
                         int deletedActivity = sql.doInsert("Delete from Activity WHERE id_user = \"" + id + "\"");
                         int deletedNotif = sql.doInsert("Delete from Notification WHERE id_receive = \"" + id + "\"");
-                        if (deletedUser == 1 && deletedActivity == 1 && deletedNotif == 1) {
+                        if (deletedUser == 1 && deletedActivity == 1 && deletedNotif == 1 && resultSet.getString("email").equals(user.getMail())) {
+                            request.getSession().invalidate();
+                            response.sendRedirect(request.getContextPath() + "/inscription");
+                        } else if (deletedUser == 1 && deletedActivity == 1 && deletedNotif == 1 && !resultSet.getString("email").equals(user.getMail())){
                             response.sendRedirect(request.getContextPath() + "/keskecer");
-                        } else {
+                        } else{
                             response.sendRedirect(request.getContextPath() + "/keskecer");
                         }
                     }else{

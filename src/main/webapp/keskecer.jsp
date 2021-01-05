@@ -196,19 +196,19 @@
                             <label for="isInfected">IsInfected :</label>
                             <input class="form-control" type="number" id="isInfected" name="isInfected"><br>
                             <input type="hidden" value="userForm" name="form" />
-                            <input class="form-control" type="submit" value="VALIDER">
+                            <input class="btn btn-dark" type="submit" value="VALIDER">
                         </form>
                         <form id="upUser" action="updateBDD">
                             <h1>Modifier une ligne :</h1>
                             <label for="idUpdateUser">Id de la ligne à modifier :</label>
                             <input class="form-control" type="number" id="idUpdateUser" name="idUpdateUser"><br>
-                            <input class="form-control" type="submit" value="VALIDER">
+                            <input class="btn btn-dark" type="submit" value="VALIDER">
                         </form>
                         <form id="delUser" action="deleteBDD">
                             <h1>Supprimer une ligne :</h1>
                             <label for="idDeleteUser">Id de la ligne à supprimer :</label>
                             <input class="form-control" type="number" id="idDeleteUser" name="idDeleteUser"><br>
-                            <input class="form-control" type="submit" value="VALIDER">
+                            <input class="btn btn-dark" type="submit" value="VALIDER">
                         </form>
 
                         <script type="text/javascript">
@@ -295,19 +295,19 @@
                             <label for="hourStart">HourStart :</label>
                             <input class="form-control" type="number" id="hourStart" name="hourStart"><br>
                             <input type="hidden" value="activityForm" name="form" />
-                            <input class="form-control" type="submit" value="VALIDER">
+                            <input class="btn btn-dark" type="submit" value="VALIDER">
                         </form>
                         <form id="upActivity" action="updateBDD">
                             <h1>Modifier une ligne :</h1>
                             <label for="idUpdateActivity">Id de la ligne à modifier :</label>
                             <input class="form-control" type="number" id="idUpdateActivity" name="idUpdateActivity"><br>
-                            <input class="form-control" type="submit" value="VALIDER">
+                            <input class="btn btn-dark" type="submit" value="VALIDER">
                         </form>
                         <form id="delActivity" action="deleteBDD">
                             <h1>Supprimer une ligne :</h1>
                             <label for="idDeleteActivity">Id de la ligne à supprimer :</label>
                             <input class="form-control" type="number" id="idDeleteActivity" name="idDeleteActivity"><br>
-                            <input class="form-control" type="submit" value="VALIDER">
+                            <input class="btn btn-dark" type="submit" value="VALIDER">
                         </form>
 
                         <script type="text/javascript">
@@ -386,19 +386,19 @@
                             <label for="gps_coordinates">Gps_coordinates :</label>
                             <input class="form-control" type="text" id="gps_coordinates" name="gps_coordinates"><br>
                             <input type="hidden" value="placeForm" name="form" />
-                            <input class="form-control" type="submit" value="VALIDER">
+                            <input class="btn btn-dark" type="submit" value="VALIDER">
                         </form>
                         <form id="upPlace" action="updateBDD">
                             <h1>Modifier une ligne :</h1>
                             <label for="idUpdatePlace">Id de la ligne à modifier :</label>
                             <input class="form-control" type="number" id="idUpdatePlace" name="idUpdatePlace"><br>
-                            <input class="form-control" type="submit" value="VALIDER">
+                            <input class="btn btn-dark" type="submit" value="VALIDER">
                         </form>
                         <form id="delPlace" action="deleteBDD">
                             <h1>Supprimer une ligne :</h1>
                             <label for="idDeletePlace">Id de la ligne à supprimer :</label>
                             <input class="form-control" type="number" id="idDeletePlace" name="idDeletePlace"><br>
-                            <input class="form-control" type="submit" value="VALIDER">
+                            <input class="btn btn-dark" type="submit" value="VALIDER">
                         </form>
 
                         <script type="text/javascript">
@@ -478,19 +478,19 @@
                             <label for="content">Content :</label>
                             <input class="form-control" type="text" id="content" name="content"><br>
                             <input type="hidden" value="notifForm" name="form" />
-                            <input class="form-control" type="submit" value="VALIDER">
+                            <input class="btn btn-dark" type="submit" value="VALIDER">
                         </form>
                         <form id="upNotif" action="updateBDD">
                             <h1>Modifier une ligne :</h1>
                             <label for="idUpdateNotif">Id de la ligne à modifier :</label>
                             <input class="form-control" type="number" id="idUpdateNotif" name="idUpdateNotif"><br>
-                            <input class="form-control" type="submit" value="VALIDER">
+                            <input class="btn btn-dark" type="submit" value="VALIDER">
                         </form>
                         <form id="delNotif" action="deleteBDD">
                             <h1>Supprimer une ligne :</h1>
                             <label for="idDeleteNotif">Id de la ligne à supprimer :</label>
                             <input class="form-control" type="number" id="idDeleteNotif" name="idDeleteNotif"><br>
-                            <input class="form-control" type="submit" value="VALIDER">
+                            <input class="btn btn-dark" type="submit" value="VALIDER">
                         </form>
 
                         <script type="text/javascript">

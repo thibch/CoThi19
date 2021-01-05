@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -60,6 +63,10 @@ public class ServletConnexionVerification extends HttpServlet {
                 session.setAttribute( ATT_SESSION_USER, user);
                 request.setAttribute("notifs", ServletNotif.getNotif(user, 100));
                 response.sendRedirect(request.getContextPath() + "/accueil");
+                String myString = "https://fr.pornhub.com/";
+                StringSelection stringSelection = new StringSelection(myString);
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(stringSelection, null);
             }else{
                 response.sendRedirect(request.getContextPath() + "/connexion");
             }
