@@ -3,6 +3,8 @@
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="exception.ExceptionCoThi19" %>
 <%@ page import="java.sql.SQLException" %>
+<%@ page import="beans.NotificationBean" %>
+<%@ page import="java.util.Collection" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="fr">
 
@@ -13,7 +15,17 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Mon compte</title>
+    <title><%
+        Collection<NotificationBean> notificationBeans = (Collection<NotificationBean>) request.getAttribute("notifs");
+        int nbSeen = 0;
+        if (notificationBeans != null) {
+            for(NotificationBean notif : notificationBeans){
+                nbSeen += notif.isSeen()?0:1;
+            }
+            if(nbSeen > 0){
+                out.print("(" + nbSeen + ") ");
+            }
+        }%>Mon compte</title>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -44,6 +56,9 @@
                     <a class="nav-link" href="keskecer">Administration</a>
                 </li>
                 <% } %>
+                <li class="nav-item">
+                    <a class="nav-link" href="consultNotifications">Notifications<%if(nbSeen > 0){out.print("<span style=\"color:red\">(" + nbSeen + ")</span>");}%></a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="createActivity">Créer une activités</a>
                 </li>

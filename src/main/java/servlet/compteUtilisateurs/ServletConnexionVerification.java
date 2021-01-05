@@ -3,6 +3,7 @@ package servlet.compteUtilisateurs;
 import connexionSQL.SQLConnector;
 import exception.ExceptionCoThi19;
 import beans.UserBean;
+import servlet.notif.ServletNotif;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -57,6 +58,7 @@ public class ServletConnexionVerification extends HttpServlet {
                 user.setAdmin(isAdmin);
                 HttpSession session = request.getSession();
                 session.setAttribute( ATT_SESSION_USER, user);
+                request.setAttribute("notifs", ServletNotif.getNotif(user, 100));
                 response.sendRedirect(request.getContextPath() + "/accueil");
             }else{
                 response.sendRedirect(request.getContextPath() + "/connexion");

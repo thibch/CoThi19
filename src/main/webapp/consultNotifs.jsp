@@ -14,21 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title> Notifications<%
-        Collection<NotificationBean> notificationBeans = (Collection<NotificationBean>) request.getAttribute("notifs");
-        if (notificationBeans != null) {
-            if(notificationBeans.size() > 0){
-                int nbSeen = 0;
-                for(NotificationBean notif : notificationBeans){
-                    nbSeen += notif.isSeen()?0:1;
-                }
-                if(nbSeen > 0){
-                    out.print("(" + nbSeen + ")");
-                }
-            }else{
-                out.print("OH");
-            }
-        }%></title>
+    <title>Notifications</title>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -36,6 +22,7 @@
     <!-- Custom styles for this template -->
     <link href="bootstrap/css/shop-homepage.css" rel="stylesheet">
 </head>
+<%Collection<NotificationBean> notificationBeans = (Collection<NotificationBean>) request.getAttribute("notifs");%>
 <body>
 
     <!-- Navigation -->
@@ -86,21 +73,21 @@
                     <h1 class="my-4">Notifications</h1>
                     <% String isSeen = "";
                         if(notificationBeans != null){
-                            out.print("<div class=\"col-lg-9\">");
                         for(NotificationBean notif : notificationBeans){
+                            out.print("<div class=\"col-lg-9 clearfix\">");
                             if(!notif.isSeen()) {
                                 isSeen = "class=\"font-weight-bold\"";
                             }else{
                                 isSeen = "";
                             }
-                                out.print("<div class=\"col-lg-7\" " + isSeen + " ");
-                                out.print(notif.getContent());
-                                out.print("</div>");
-                                out.print("<div class=\"col-lg-3\" text-right ");
-                                out.print("<button type=\"submit\" class=\"btn btn-danger col-lg-2\" name=\"wantToDelete\" id=\"wantToDelete\" value=\"" + notif.getIdNotif() + "\">Supprimer</button>");
-                                out.print("</div>");
-                        }
+                            out.print("<span class=\"col-lg-6\" " + isSeen + " >");
+                            out.print(notif.getContent());
+                            out.print("</span>");
+                            out.print("<div class=\"col-lg-2 float-right\" >");
+                            out.print("<button type=\"submit\" class=\"btn btn-danger\" name=\"wantToDelete\" id=\"wantToDelete\" value=\"" + notif.getIdNotif() + "\">Supprimer</button>");
                             out.print("</div>");
+                            out.print("</div><br>");
+                        }
                     }%>
                 </form>
             </div>

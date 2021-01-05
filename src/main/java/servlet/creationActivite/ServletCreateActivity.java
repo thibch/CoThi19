@@ -1,5 +1,8 @@
 package servlet.creationActivite;
 
+import beans.UserBean;
+import servlet.notif.ServletNotif;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +29,7 @@ public class ServletCreateActivity extends HttpServlet {
 
         HttpSession session = req.getSession();
         if(session.getAttribute(ATT_SESSION_USER) != null){
+            req.setAttribute("notifs", ServletNotif.getNotif((UserBean)req.getSession().getAttribute(ATT_SESSION_USER), 100));
             String date = null;
             int heureDebut = 0;
             int minuteDebut = 0;

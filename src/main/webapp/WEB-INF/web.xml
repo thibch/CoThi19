@@ -23,15 +23,6 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>ServletTestBDD</servlet-name>
-        <servlet-class>servlet.ServletTestBDD</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ServletTestBDD</servlet-name>
-        <url-pattern>/testbdd</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>ServletAdmin</servlet-name>
         <servlet-class>servlet.admin.ServletAdmin</servlet-class>
     </servlet>

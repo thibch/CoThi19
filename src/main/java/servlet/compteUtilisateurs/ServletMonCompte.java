@@ -1,5 +1,8 @@
 package servlet.compteUtilisateurs;
 
+import beans.UserBean;
+import servlet.notif.ServletNotif;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +23,7 @@ public class ServletMonCompte extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
+        request.setAttribute("notifs", ServletNotif.getNotif((UserBean)request.getSession().getAttribute("userConnected"), 100));
         this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
     }
 }

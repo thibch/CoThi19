@@ -1,5 +1,8 @@
 package servlet.admin;
 
+import beans.UserBean;
+import servlet.notif.ServletNotif;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,6 +25,7 @@ public class ServletAdmin extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
+        request.setAttribute("notifs", ServletNotif.getNotif((UserBean)request.getSession().getAttribute("userConnected"), 100));
         this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
     }
 }

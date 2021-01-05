@@ -6,6 +6,7 @@ import beans.UserBean;
 import connexionSQL.SQLConnector;
 import exception.ExceptionCoThi19;
 import exception.ExceptionRequeteSQL;
+import servlet.notif.ServletNotif;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -34,6 +35,7 @@ public class ServletRechercheLieux extends HttpServlet {
 
         HttpSession session = req.getSession();
         if(session.getAttribute(ATT_SESSION_USER) != null){
+            req.setAttribute("notifs", ServletNotif.getNotif((UserBean)session.getAttribute(ATT_SESSION_USER), 100));
             String date = ServletCreateActivity.getDate(req);
             int heureDebut = ServletCreateActivity.getTimeRegex(req, "heureDebut", ServletCreateActivity.getRegexHeure());
             int minuteDebut = ServletCreateActivity.getTimeRegex(req, "minuteDebut", ServletCreateActivity.getRegexMinute());

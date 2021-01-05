@@ -2,7 +2,9 @@
 <%@ page import="beans.UserBean" %>
 <%@ page import="connexionSQL.SQLConnector" %>
 <%@ page import="exception.ExceptionCoThi19" %>
-<%@ page import="java.sql.SQLException" %><%--
+<%@ page import="java.sql.SQLException" %>
+<%@ page import="beans.NotificationBean" %>
+<%@ page import="java.util.Collection" %><%--
   Created by IntelliJ IDEA.
   User: Khozo
   Date: 31/12/2020
@@ -17,7 +19,17 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Modification BDD</title>
+    <title><%
+        Collection<NotificationBean> notificationBeans = (Collection<NotificationBean>) request.getAttribute("notifs");
+        int nbSeen = 0;
+        if (notificationBeans != null) {
+            for(NotificationBean notif : notificationBeans){
+                nbSeen += notif.isSeen()?0:1;
+            }
+            if(nbSeen > 0){
+                out.print("(" + nbSeen + ") ");
+            }
+        }%>Modification BDD</title>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">

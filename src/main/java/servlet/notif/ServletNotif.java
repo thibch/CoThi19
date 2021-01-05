@@ -31,9 +31,14 @@ public class ServletNotif extends HttpServlet {
         UserBean usr = (UserBean) session.getAttribute(ATT_SESSION_USER);
         if(usr != null){
 
+            if(req.getParameter("wantToDelete") != null && req.getParameter("wantToDelete").matches("^[0-9]+$")){
+                if(delNotif(Integer.parseInt(req.getParameter("wantToDelete")), usr)){
+                    System.out.println("Notification successfully deleted");
+                }
+            }
+
             Collection<NotificationBean> notifs = getNotif(usr, 100);
 
-            System.out.println(notifs);
             if(notifs != null){
                 if(!setNotifAsSeen(notifs)){
                     System.out.println("Ne peux pas mettre à jour");
@@ -41,11 +46,6 @@ public class ServletNotif extends HttpServlet {
             }
 
             req.setAttribute("notifs", notifs);
-
-            if(req.getParameter("wantToDelete") != null && req.getParameter("wantToDelete").matches("^[0-9]+$")){
-
-            }
-
             this.getServletContext().getRequestDispatcher(VUE).forward(req, resp);
         }else{
             System.out.println("WHY ?");

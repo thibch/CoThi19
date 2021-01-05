@@ -3,6 +3,7 @@ package servlet.compteUtilisateurs;
 import connexionSQL.SQLConnector;
 import exception.ExceptionCoThi19;
 import beans.UserBean;
+import servlet.notif.ServletNotif;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -61,6 +62,7 @@ public class ServletModificationVerification extends HttpServlet {
         }
 
         UserBean user = (UserBean) request.getSession().getAttribute("userConnected");
+        request.setAttribute("notifs", ServletNotif.getNotif(user, 100));
 
         SQLConnector sql = SQLConnector.getInstance();
 

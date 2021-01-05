@@ -2,7 +2,9 @@
 <%@ page import="connexionSQL.SQLConnector" %>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="exception.ExceptionCoThi19" %>
-<%@ page import="java.sql.SQLException" %><%--
+<%@ page import="java.sql.SQLException" %>
+<%@ page import="beans.NotificationBean" %>
+<%@ page import="java.util.Collection" %><%--
   Created by IntelliJ IDEA.
   User: Khozo
   Date: 30/12/2020
@@ -16,7 +18,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Administration</title>
+    <title><%
+        Collection<NotificationBean> notificationBeans = (Collection<NotificationBean>) request.getAttribute("notifs");
+        int nbSeen = 0;
+        if (notificationBeans != null) {
+            for(NotificationBean notif : notificationBeans){
+                nbSeen += notif.isSeen()?0:1;
+            }
+            if(nbSeen > 0){
+                out.print("(" + nbSeen + ") ");
+            }
+        }%>Administration</title>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -74,6 +86,9 @@
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="accueil">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="consultNotifications">Notifications<%if(nbSeen > 0){out.print("<span style=\"color:red\">(" + nbSeen + ")</span>");}%></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="monCompte">Mon compte</a>

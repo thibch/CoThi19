@@ -1,4 +1,6 @@
 <%@ page import="beans.UserBean" %>
+<%@ page import="beans.NotificationBean" %>
+<%@ page import="java.util.Collection" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="fr">
 
@@ -9,7 +11,17 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>CoThi19</title>
+    <title><%
+        Collection<NotificationBean> notificationBeans = (Collection<NotificationBean>) request.getAttribute("notifs");
+        int nbSeen = 0;
+        if (notificationBeans != null) {
+            for(NotificationBean notif : notificationBeans){
+                nbSeen += notif.isSeen()?0:1;
+            }
+            if(nbSeen > 0){
+                out.print("(" + nbSeen + ") ");
+            }
+        }%>CoThi19</title>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -41,8 +53,10 @@
                     </li>
                     <% } %>
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Home
-                        </a>
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="consultNotifications">Notifications<%if(nbSeen > 0){out.print("<span style=\"color:red\">(" + nbSeen + ")</span>");}%></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="createActivity">Créer une activité</a>
