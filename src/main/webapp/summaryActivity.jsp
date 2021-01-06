@@ -55,6 +55,11 @@
                     <a class="nav-link" href="#">Home
                     </a>
                 </li>
+                <% if (user.isAdmin()){ %>
+                <li class="nav-item">
+                    <a class="nav-link" href="keskecer">Administration</a>
+                </li>
+                <% } %>
                 <li class="nav-item">
                     <a class="nav-link" href="consultNotifications">Notifications<%if(nbSeen > 0){out.print("<span style=\"color:red\">(" + nbSeen + ")</span>");}%></a>
                 </li>

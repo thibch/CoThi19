@@ -54,34 +54,40 @@ public class ServletNotif extends HttpServlet {
     }
 
     public static boolean delNotif(int notif, UserBean usr){
-        try {
-            SQLConnector.getInstance().delNotif(notif, usr);
-            return true;
-        } catch (ExceptionRequeteSQL exceptionRequeteSQL) {
-            System.out.println(exceptionRequeteSQL.getMessage());
-            System.out.println("ERREUR Notification : " + exceptionRequeteSQL.getMessage());
-            return false;
+        if(usr != null){
+            try {
+                SQLConnector.getInstance().delNotif(notif, usr);
+                return true;
+            } catch (ExceptionRequeteSQL exceptionRequeteSQL) {
+                System.out.println(exceptionRequeteSQL.getMessage());
+                System.out.println("ERREUR Notification : " + exceptionRequeteSQL.getMessage());
+            }
         }
+        return false;
     }
 
     public static boolean setNotifAsSeen(Collection<NotificationBean> notifs){
-        try {
-            SQLConnector.getInstance().setNotifAsSeen(notifs);
-            return true;
-        } catch (ExceptionRequeteSQL exceptionRequeteSQL) {
-            System.out.println(exceptionRequeteSQL.getMessage());
-            System.out.println("ERREUR Notification : " + exceptionRequeteSQL.getMessage());
-            return false;
+        if(notifs != null){
+            try {
+                SQLConnector.getInstance().setNotifAsSeen(notifs);
+                return true;
+            } catch (ExceptionRequeteSQL exceptionRequeteSQL) {
+                System.out.println(exceptionRequeteSQL.getMessage());
+                System.out.println("ERREUR Notification : " + exceptionRequeteSQL.getMessage());
+            }
         }
+        return false;
     }
 
     public static Collection<NotificationBean> getNotif(UserBean usr, int max){
         try {
-            return SQLConnector.getInstance().getListeNotif(usr.getMail(), max);
+            if(usr != null){
+                return SQLConnector.getInstance().getListeNotif(usr.getMail(), max);
+            }
         } catch (ExceptionRequeteSQL exceptionRequeteSQL) {
             System.out.println("ERREUR Notification : " + exceptionRequeteSQL.getMessage());
-            return null;
         }
+        return null;
     }
 
     @Override
