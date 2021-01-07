@@ -31,6 +31,12 @@ public class ServletRechercheLieux extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doPost(req, resp);
+    }
+
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
 
         HttpSession session = req.getSession();
@@ -117,6 +123,11 @@ public class ServletRechercheLieux extends HttpServlet {
                     if(creationReussie){
                         UserBean usr =  (UserBean)session.getAttribute(ATT_SESSION_USER);
                         try {
+                            System.out.println(usr.getMail());
+                            System.out.println(lieu.getId());
+                            System.out.println(Date.valueOf(date));
+                            System.out.println(LocalTime.of(heureDebut, minuteDebut, 0, 0));
+                            System.out.println(LocalTime.of(heureFin, minuteFin, 0, 0));
                             activite = SQLConnector.getInstance().createActivite(usr.getMail(), lieu.getId(), Date.valueOf(date), LocalTime.of(heureDebut, minuteDebut, 0, 0), LocalTime.of(heureFin, minuteFin, 0, 0));
                         } catch (ExceptionRequeteSQL exceptionRequeteSQL) {
                             creationReussie = false;
@@ -152,12 +163,5 @@ public class ServletRechercheLieux extends HttpServlet {
         }else{
             this.getServletContext().getRequestDispatcher(VUE_ERROR).forward(req, resp);
         }
-    }
-
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req, resp);
-
     }
 }

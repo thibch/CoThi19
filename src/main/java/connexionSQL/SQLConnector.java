@@ -159,7 +159,7 @@ public class SQLConnector {
             preparedStmt.setString(1, mail);
             preparedStmt.setString(2, password);
             ResultSet r = preparedStmt.executeQuery();
-            usr = new UserBean(r.getString("email"));
+            usr = new UserBean(r.getString("email"), r.getInt("isInfected"));
 
         } catch (SQLException throwables) {
             throw new ExceptionRequeteSQL("Erreur lors de la récupération d'un utilisateur", "SELECT * FROM USER WHERE mail = " + mail + ", password = "+ password + ";");
@@ -268,7 +268,10 @@ public class SQLConnector {
         String rqString = "SELECT * " +
                 "FROM PLACE " +
                 "WHERE name = ? AND adress = ? ";
-
+        System.out.println("GET LIEU : ");
+        System.out.println(name);
+        System.out.println(adress);
+        System.out.println("LET'S GOO");
         LieuBean lieu = null;
         try {
             if(tryConnection()){
@@ -277,9 +280,14 @@ public class SQLConnector {
                 preparedStmt.setString(2, adress);
                 ResultSet r = preparedStmt.executeQuery();
                 r.next();
-                lieu = new LieuBean(r.getInt("id_place"), r.getString("name"), r.getString("adress"));
+                int id = r.getInt("id_place");
+                System.out.println(id);
+                String name1 = r.getString("name");
+                System.out.println(name1);
+                String adress1 = r.getString("adress");
+                System.out.println(adress1);
+                lieu = new LieuBean(id, name1, adress1);
             }
-
         } catch (SQLException throwables) {
             System.out.println(throwables.getMessage());
             throw new ExceptionRequeteSQL("Erreur lors de la récupération d'un lieu", "SELECT * FROM PLACE WHERE name = " + name + ", adress = " + adress + ";");
@@ -339,7 +347,7 @@ public class SQLConnector {
                     System.out.println(throwables.getMessage());
                     throw new ExceptionRequeteSQL("Erreur lors de l'update d'une notif",
                             "UPDATE Notification " +
-                                    "SET Notification seen = 1 " +
+                                    "SET seen = 1 " +
                                     "WHERE id_notif = " + notif.getIdNotif());
                 }
             }
@@ -374,4 +382,84 @@ public class SQLConnector {
                     "SELECT *  FROM Notification JOIN User WHERE email = " + " AND id_user = id_receive LIMIT" );
         }
     }
+
+    public boolean setUserPositive(UserBean usr) throws ExceptionRequeteSQL {
+        String rqString = "UPDATE User SET isInfected = 1 \n" +
+                            "WHERE email = ?";
+
+        String places = "SELECT id_place, date, hourStart, hourEnd \n" +
+                "FROM `user` JOIN activity USING (id_user) JOIN place USING (id_place) \n" +
+                "WHERE email = ? AND date >= DATE_SUB(Date(NOW()), INTERVAL 10 DAY)";
+
+        String users = "SELECT DISTINCT id_user \n"+
+                "FROM `user` JOIN activity USING (id_user) JOIN place USING (id_place) \n" +
+                "WHERE id_place = ? AND (date = ?) AND " +
+                "((hourStart >= ? AND hourStart <= ?) OR (hourEnd >= ? AND hourEnd <= ?) OR (hourStart <= ? AND hourEnd >= ?))" +
+                "AND NOT (email = ?) ";
+
+        String casContact = "INSERT INTO NOTIFICATION(id_receive, content) \n" +
+                "VALUES (?, ?)";
+
+        try {
+            if(tryConnection()){
+                PreparedStatement preparedStmt = con.prepareStatement(rqString);
+                preparedStmt.setString(1, usr.getMail());
+                preparedStmt.executeUpdate();
+
+                PreparedStatement findPlaces = con.prepareStatement(places);
+                findPlaces.setString(1, usr.getMail());
+                ResultSet r = findPlaces.executeQuery();
+
+                PreparedStatement findUsersContact;
+                PreparedStatement notifUsers;
+                Time timeStart;
+                Time timeEnd;
+                ResultSet resUsers;
+                while(r.next()){
+                    //Récupération lieux et date :
+
+                    System.out.println("-----------");
+                    findUsersContact = con.prepareStatement(users);
+                    int id = r.getInt("id_place");
+                    System.out.println(id);
+                    findUsersContact.setInt(1, id); // id
+                    Date date = r.getDate("date");
+                    System.out.println(date);
+                    findUsersContact.setDate(2, date); // date
+                    timeStart = r.getTime("hourStart");
+                    timeEnd = r.getTime("hourEnd");
+                    System.out.println(timeStart);
+                    System.out.println(timeEnd);
+                    findUsersContact.setTime(3, timeStart); // bounds 1 hourStart
+                    findUsersContact.setTime(4, timeEnd); // bounds 2 hourStart
+                    findUsersContact.setTime(5, timeStart); // bounds 1 hourEnd
+                    findUsersContact.setTime(6, timeEnd); // bounds 2 hourEnd
+                    findUsersContact.setTime(7, timeStart); // bounds 1 hourEnd
+                    findUsersContact.setTime(8, timeEnd); // bounds 2 hourEnd
+                    findUsersContact.setString(9, usr.getMail()); // bounds 2 hourEnd
+
+                    resUsers = findUsersContact.executeQuery();
+
+                    notifUsers = con.prepareStatement(casContact);
+                    while(resUsers.next()) {
+                        System.out.println("***********");
+                        int id_u = resUsers.getInt("id_user");
+                        System.out.println(id_u);
+                        notifUsers.setInt(1, id_u);
+                        notifUsers.setString(2, "VOUS ETES CAS CONTACT, AU SECOURS");
+                        notifUsers.executeUpdate();
+                        System.out.println("Updated");
+                    }
+                }
+                return true;
+            }
+        } catch (SQLException throwables) {
+            System.out.println(throwables.getMessage());
+            throw new ExceptionRequeteSQL("Erreur lors de la tentative de notifier les users",
+                    "Pleins de requetes SQL" );
+        }
+        return false;
+    }
+
+
 }

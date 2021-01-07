@@ -49,8 +49,13 @@
                         <a class="nav-link" href="accueil">Home
                         </a>
                     </li>
+                    <% if (!user.isInfected()){ %>
                     <li class="nav-item">
-                        <a class="nav-link" href="createActivity">Créer une activité</a>
+                        <a class="nav-link" href="positif/">Je suis positif :)</a>
+                    </li>
+                    <%}%>
+                    <li class="nav-item">
+                        <a class="nav-link" href="CreateActivity">Créer une activité</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="monCompte">Mon compte</a>
@@ -69,7 +74,7 @@
                 <img src="images/cothi19.png" alt="CoThi19" width="240" height="135">
             </div>
             <div class="col-lg-8">
-                <form action="consultnotifications" method="GET" id="formNotif">
+                <form action="consultNotifications" method="GET" id="formNotif">
                     <h1 class="my-4">Notifications</h1>
                     <% String isSeen = "";
                         if(notificationBeans != null){

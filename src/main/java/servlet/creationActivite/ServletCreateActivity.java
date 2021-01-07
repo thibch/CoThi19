@@ -25,6 +25,40 @@ public class ServletCreateActivity extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doPost(req, resp);
+    }
+
+    public static int getTimeRegex(HttpServletRequest req, String parametersName, String regex) {
+        String timeString = req.getParameter(parametersName);
+        int time = -1;
+        if (timeString != null && timeString.matches(regex)) {
+            time = Integer.parseInt(timeString);
+        }
+        return time;
+    }
+
+    public static String getDate(HttpServletRequest req) {
+        String date;
+        date = req.getParameter("date");
+        if(date != null && date.matches("^[0-9]{4}-(0[1-9]|1[0-2])-(([3][0-1])|([0-2]?[0-9]))$")){
+            LocalDate datesql2 = LocalDate.parse(date);
+            //System.out.println(datesql2);
+        }else{
+            date = "";
+        }
+        return date;
+    }
+
+    public static String getRegexHeure(){
+        return "^1?[0-9]$|^[2]?[0-3]$";
+    }
+    public static String getRegexMinute(){
+        return "^[1-5]?[0-9]$";
+    }
+
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
 
         HttpSession session = req.getSession();
@@ -67,40 +101,6 @@ public class ServletCreateActivity extends HttpServlet {
         }else{
             this.getServletContext().getRequestDispatcher(VUE_ERROR).forward(req, resp);
         }
-    }
-
-    public static int getTimeRegex(HttpServletRequest req, String parametersName, String regex) {
-        String timeString = req.getParameter(parametersName);
-        int time = -1;
-        if (timeString != null && timeString.matches(regex)) {
-            time = Integer.parseInt(timeString);
-        }
-        return time;
-    }
-
-    public static String getDate(HttpServletRequest req) {
-        String date;
-        date = req.getParameter("date");
-        if(date != null && date.matches("^[0-9]{4}-(0[1-9]|1[0-2])-(([3][0-1])|([0-2]?[0-9]))$")){
-            LocalDate datesql2 = LocalDate.parse(date);
-            //System.out.println(datesql2);
-        }else{
-            date = "";
-        }
-        return date;
-    }
-
-    public static String getRegexHeure(){
-        return "^1?[0-9]$|^[2]?[0-3]$";
-    }
-    public static String getRegexMinute(){
-        return "^[1-5]?[0-9]$";
-    }
-
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req, resp);
     }
 
 }

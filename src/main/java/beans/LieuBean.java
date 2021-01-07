@@ -6,6 +6,7 @@ public class LieuBean {
     private String adress;
 
     public LieuBean(int id, String name, String adress) {
+        this.id = id;
         this.name = name;
         this.adress = adress;
     }

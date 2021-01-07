@@ -152,14 +152,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>ServletLieux</servlet-name>
-        <url-pattern>/findPlace</url-pattern>
         <url-pattern>/FindPlace</url-pattern>
-        <url-pattern>/Findplace</url-pattern>
-        <url-pattern>/findplace</url-pattern>
-        <url-pattern>/findPlace/</url-pattern>
-        <url-pattern>/FindPlace/</url-pattern>
-        <url-pattern>/Findplace/</url-pattern>
-        <url-pattern>/findplace/</url-pattern>
     </servlet-mapping>
 
 
@@ -169,14 +162,15 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>ServletNotifi</servlet-name>
-        <url-pattern>/consultnotifications</url-pattern>
-        <url-pattern>/consultnotifications/</url-pattern>
         <url-pattern>/consultNotifications</url-pattern>
-        <url-pattern>/consultNotifications/</url-pattern>
-        <url-pattern>/Consultnotifications</url-pattern>
-        <url-pattern>/Consultnotifications/</url-pattern>
-        <url-pattern>/ConsultNotifications</url-pattern>
-        <url-pattern>/ConsultNotifications/</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ServletPositif</servlet-name>
+        <servlet-class>servlet.notif.ServletPositif</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletPositif</servlet-name>
+        <url-pattern>/positif/</url-pattern>
     </servlet-mapping>
 
     <error-page>

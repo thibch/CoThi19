@@ -9,10 +9,13 @@ public class UserBean {
 
     private String mail;
     private boolean admin;
+    private boolean isInfected;
 
-    public UserBean(String mail){
+    public UserBean(String mail, int isInfected){
         this.mail = mail;
         admin = false;
+        System.out.println("IS INFECTED :" + isInfected);
+        this.isInfected = isInfected == 1;
     }
 
     public String getMail() {
@@ -29,5 +32,13 @@ public class UserBean {
 
     public void setAdmin(int admin) {
         this.admin = admin == 1;
+    }
+
+    public boolean isInfected() {
+        return isInfected;
+    }
+
+    public void setInfected(boolean infected) {
+        isInfected = infected;
     }
 }

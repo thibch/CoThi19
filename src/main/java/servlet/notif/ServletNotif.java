@@ -25,32 +25,7 @@ public class ServletNotif extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html");
-
-        HttpSession session = req.getSession();
-        UserBean usr = (UserBean) session.getAttribute(ATT_SESSION_USER);
-        if(usr != null){
-
-            if(req.getParameter("wantToDelete") != null && req.getParameter("wantToDelete").matches("^[0-9]+$")){
-                if(delNotif(Integer.parseInt(req.getParameter("wantToDelete")), usr)){
-                    System.out.println("Notification successfully deleted");
-                }
-            }
-
-            Collection<NotificationBean> notifs = getNotif(usr, 100);
-
-            if(notifs != null){
-                if(!setNotifAsSeen(notifs)){
-                    System.out.println("Ne peux pas mettre à jour");
-                }
-            }
-
-            req.setAttribute("notifs", notifs);
-            this.getServletContext().getRequestDispatcher(VUE).forward(req, resp);
-        }else{
-            System.out.println("WHY ?");
-            this.getServletContext().getRequestDispatcher(VUE_404).forward(req, resp);
-        }
+        doPost(req, resp);
     }
 
     public static boolean delNotif(int notif, UserBean usr){
@@ -92,6 +67,30 @@ public class ServletNotif extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req, resp);
+        resp.setContentType("text/html");
+
+        HttpSession session = req.getSession();
+        UserBean usr = (UserBean) session.getAttribute(ATT_SESSION_USER);
+        if(usr != null){
+
+            if(req.getParameter("wantToDelete") != null && req.getParameter("wantToDelete").matches("^[0-9]+$")){
+                if(delNotif(Integer.parseInt(req.getParameter("wantToDelete")), usr)){
+                    System.out.println("Notification successfully deleted");
+                }
+            }
+
+            Collection<NotificationBean> notifs = getNotif(usr, 100);
+
+            if(notifs != null){
+                if(!setNotifAsSeen(notifs)){
+                    System.out.println("Ne peux pas mettre à jour");
+                }
+            }
+
+            req.setAttribute("notifs", notifs);
+            this.getServletContext().getRequestDispatcher(VUE).forward(req, resp);
+        }else{
+            this.getServletContext().getRequestDispatcher(VUE_404).forward(req, resp);
+        }
     }
 }

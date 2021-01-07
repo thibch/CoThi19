@@ -87,11 +87,16 @@
                     <li class="nav-item">
                         <a class="nav-link" href="accueil">Home</a>
                     </li>
+                    <% if (user != null && !user.isInfected()){ %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="positif/">Je suis positif :)</a>
+                    </li>
+                    <%}%>
                     <li class="nav-item">
                         <a class="nav-link" href="consultNotifications">Notifications<%if(nbSeen > 0){out.print("<span style=\"color:red\">(" + nbSeen + ")</span>");}%></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="createActivity">Créer une activité</a>
+                        <a class="nav-link" href="CreateActivity">Créer une activité</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="monCompte">Mon compte</a>

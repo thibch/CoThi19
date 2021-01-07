@@ -32,6 +32,7 @@ public class ServletConnexionVerification extends HttpServlet {
         boolean verification = true;
         boolean recuperation = true;
         int isAdmin = 0;
+        int isInfected = 0;
         String mail, password;
         mail = request.getParameter("mail");
         password = request.getParameter("password");
@@ -49,6 +50,7 @@ public class ServletConnexionVerification extends HttpServlet {
                 if (resultIdSet.next()){
                     recuperation = true;
                     isAdmin = resultIdSet.getInt("isAdmin");
+                    isInfected = resultIdSet.getInt("isInfected");
                 }else{
                     System.out.println("Error");
                     recuperation = false;
@@ -57,16 +59,12 @@ public class ServletConnexionVerification extends HttpServlet {
                 throwables.printStackTrace();
             }
             if (recuperation) {
-                user = new UserBean(mail);
+                user = new UserBean(mail, isInfected);
                 user.setAdmin(isAdmin);
                 HttpSession session = request.getSession();
                 session.setAttribute( ATT_SESSION_USER, user);
                 request.setAttribute("notifs", ServletNotif.getNotif(user, 100));
                 response.sendRedirect(request.getContextPath() + "/accueil");
-                String myString = "https://fr.pornhub.com/";
-                StringSelection stringSelection = new StringSelection(myString);
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clipboard.setContents(stringSelection, null);
             }else{
                 response.sendRedirect(request.getContextPath() + "/connexion");
             }

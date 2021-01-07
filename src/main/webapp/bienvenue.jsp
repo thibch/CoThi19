@@ -43,7 +43,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
             <%  UserBean user = (UserBean) request.getSession().getAttribute("userConnected");
-                if (user != null){ %>
+                if (user != null){%>
                     <li class="nav-item">
                         <a class="btn disabled" style="color: white">Bonjour <% out.print(user.getMail());%></a>
                     </li>
@@ -55,11 +55,16 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="#">Home</a>
                     </li>
+                    <% if (!user.isInfected()){ %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="positif/">Je suis positif :)</a>
+                    </li>
+                    <%}%>
                     <li class="nav-item">
                         <a class="nav-link" href="consultNotifications">Notifications<%if(nbSeen > 0){out.print("<span style=\"color:red\">(" + nbSeen + ")</span>");}%></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="createActivity">Créer une activité</a>
+                        <a class="nav-link" href="CreateActivity">Créer une activité</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="monCompte">Mon compte</a>
