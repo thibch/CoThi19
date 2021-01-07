@@ -4,7 +4,8 @@
 <%@ page import="exception.ExceptionCoThi19" %>
 <%@ page import="java.sql.SQLException" %>
 <%@ page import="beans.NotificationBean" %>
-<%@ page import="java.util.Collection" %><%--
+<%@ page import="java.util.Collection" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: Khozo
   Date: 30/12/2020
@@ -126,7 +127,45 @@
                     <!-- Création des différentes tables de la BDD -->
 
                     <div class="col">
+                        <% if (request.getAttribute("errorMessageUser") != null) {
+                            List<String> messages = (List<String>) request.getAttribute("errorMessageUser");
+                            System.out.println(messages);
+                            for (String s : messages) {
+                                out.print("<div class=\"alert alert-danger col-lg-9\">" +
+                                        "<strong>Erreur ! </strong> " + s +
+                                        "</div>");
+                            }
+                        } %>
 
+                        <% if (request.getAttribute("errorMessageAct") != null) {
+                            List<String> messages = (List<String>) request.getAttribute("errorMessageAct");
+                            System.out.println(messages);
+                            for (String s : messages) {
+                                out.print("<div class=\"alert alert-danger col-lg-9\">" +
+                                        "<strong>Erreur ! </strong> " + s +
+                                        "</div>");
+                            }
+                        } %>
+
+                        <% if (request.getAttribute("errorMessagePlace") != null) {
+                            List<String> messages = (List<String>) request.getAttribute("errorMessagePlace");
+                            System.out.println(messages);
+                            for (String s : messages) {
+                                out.print("<div class=\"alert alert-danger col-lg-9\">" +
+                                        "<strong>Erreur ! </strong> " + s +
+                                        "</div>");
+                            }
+                        } %>
+
+                        <% if (request.getAttribute("errorMessageNotif") != null) {
+                            List<String> messages = (List<String>) request.getAttribute("errorMessageNotif");
+                            System.out.println(messages);
+                            for (String s : messages) {
+                                out.print("<div class=\"alert alert-danger col-lg-9\">" +
+                                        "<strong>Erreur ! </strong> " + s +
+                                        "</div>");
+                            }
+                        } %>
                         <!-- Table User -->
 
                         <div class="col-md-9">
@@ -177,6 +216,7 @@
                             <button type="button" class="btn btn-dark" onclick="displayUser(3)" id="deleteUser" value="Display DeleteForm">Supprimer</button>
                             <button type="button" class="btn btn-dark" onclick="displayUser(0)" id="hideUser" value="Hide Form">Hide Form</button>
                         </div>
+                        <br>
 
                         <form id="addUser" action="addBDD">
                             <h1>Ajouter une ligne :</h1>
@@ -282,6 +322,7 @@
                             <button type="button" class="btn btn-dark" onclick="displayActivity(3)" id="deleteActivity">Supprimer</button>
                             <button type="button" class="btn btn-dark" onclick="displayActivity(0)" id="hideActivity" value="Hide Form">Hide Form</button>
                         </div>
+                        <br>
 
                         <form id="addActivity" action="addBDD">
                             <h1>Ajouter une ligne :</h1>
@@ -295,8 +336,12 @@
                             <input class="form-control" type="date" id="date" name="date"><br>
                             <label for="hourEnd">HourEnd :</label>
                             <input class="form-control" type="number" id="hourEnd" name="hourEnd"><br>
+                            <label for="minuteEnd">MinuteEnd :</label>
+                            <input class="form-control" type="number" id="minuteEnd" name="minuteEnd"><br>
                             <label for="hourStart">HourStart :</label>
                             <input class="form-control" type="number" id="hourStart" name="hourStart"><br>
+                            <label for="minuteStart">MinuteStart :</label>
+                            <input class="form-control" type="number" id="minuteStart" name="minuteStart"><br>
                             <input type="hidden" value="activityForm" name="form" />
                             <input class="btn btn-dark" type="submit" value="VALIDER">
                         </form>
@@ -377,6 +422,7 @@
                             <button type="button" class="btn btn-dark" onclick="displayPlace(3)" id="deletePlace">Supprimer</button>
                             <button type="button" class="btn btn-dark" onclick="displayPlace(0)" id="hidePlace" value="Hide Form">Hide Form</button>
                         </div>
+                        <br>
 
                         <form id="addPlace" action="addBDD">
                             <h1>Ajouter une ligne :</h1>
@@ -440,6 +486,7 @@
                                 <th scope="col">Id_receive</th>
                                 <th scope="col">Id_ask</th>
                                 <th scope="col">Content</th>
+                                <th scope="col">Seen</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -453,6 +500,7 @@
                                 <td><% out.print(resultSet.getString("id_receive")); %></td>
                                 <td><% out.print(resultSet.getString("id_ask")); %></td>
                                 <td><% out.print(resultSet.getString("content")); %></td>
+                                <td><% out.print(resultSet.getString("seen")); %></td>
                             </tr>
                             <% }
                             }catch (ExceptionCoThi19 | SQLException throwable){
@@ -468,8 +516,7 @@
                             <button type="button" class="btn btn-dark" onclick="displayNotif(3)" id="deleteNotif">Supprimer</button>
                             <button type="button" class="btn btn-dark" onclick="displayNotif(0)" id="hideNotif" value="Hide Form">Hide Form</button>
                         </div>
-
-                        <br><br>
+                        <br>
                         <form id="addNotif" action="addBDD">
                             <h1>Ajouter une ligne :</h1>
                             <label for="id_notif">Id_notif :</label>
@@ -480,6 +527,8 @@
                             <input class="form-control" type="number" id="id_ask" name="id_ask"><br>
                             <label for="content">Content :</label>
                             <input class="form-control" type="text" id="content" name="content"><br>
+                            <label for="seen">Seen :</label>
+                            <input class="form-control" type="number" id="seen" name="seen"><br>
                             <input type="hidden" value="notifForm" name="form" />
                             <input class="btn btn-dark" type="submit" value="VALIDER">
                         </form>

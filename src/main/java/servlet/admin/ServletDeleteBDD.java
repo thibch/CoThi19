@@ -12,9 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(name = "ServletDeleteBDD")
 public class ServletDeleteBDD extends HttpServlet {
+
+    public static final String VUE_INSCRIPTION = "/inscription.jsp";
+    public static final String VUE_ADMIN = "/keskecer.jsp";
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
@@ -46,6 +52,7 @@ public class ServletDeleteBDD extends HttpServlet {
         try {
             switch (table){
                 case "User" :
+                    List<String> errorMessageUser = new ArrayList<>();
                     ResultSet resultSet = sql.doRequest("Select * from User WHERE id_user = \"" + id + "\"");
                     if (resultSet.next()) {
                         int deletedUser = sql.doInsert("Delete from User WHERE id_user = \"" + id + "\"");
@@ -53,39 +60,57 @@ public class ServletDeleteBDD extends HttpServlet {
                         int deletedNotif = sql.doInsert("Delete from Notification WHERE id_receive = \"" + id + "\"");
                         if (deletedUser == 1 && deletedActivity == 1 && deletedNotif == 1 && resultSet.getString("email").equals(user.getMail())) {
                             request.getSession().invalidate();
-                            response.sendRedirect(request.getContextPath() + "/inscription");
+                            request.setAttribute("errorMessageUser", errorMessageUser);
+                            this.getServletContext().getRequestDispatcher(VUE_INSCRIPTION).forward(request, response);
                         } else if (deletedUser == 1 && deletedActivity == 1 && deletedNotif == 1 && !resultSet.getString("email").equals(user.getMail())){
-                            response.sendRedirect(request.getContextPath() + "/keskecer");
+                            errorMessageUser.add("Un problème est survenu lors de la suppression de l'utilisateur");
+                            request.setAttribute("errorMessageUser", errorMessageUser);
+                            this.getServletContext().getRequestDispatcher(VUE_ADMIN).forward(request, response);
                         } else{
-                            response.sendRedirect(request.getContextPath() + "/keskecer");
+                            errorMessageUser.add("Un problème est survenu lors de la suppression de l'utilisateur");
+                            request.setAttribute("errorMessageUser", errorMessageUser);
+                            this.getServletContext().getRequestDispatcher(VUE_ADMIN).forward(request, response);
                         }
                     }else{
-                        response.sendRedirect(request.getContextPath() + "/keskecer");
+                        request.setAttribute("errorMessageUser", errorMessageUser);
+                        this.getServletContext().getRequestDispatcher(VUE_ADMIN).forward(request, response);
                     }
                     break;
                 case "Activity" :
+                    List<String> errorMessageAct = new ArrayList<>();
                     int deletedActivity = sql.doInsert("Delete from Activity WHERE id_act = \"" + id + "\"");
                     if (deletedActivity == 1) {
-                        response.sendRedirect(request.getContextPath() + "/keskecer");
+                        request.setAttribute("errorMessageAct", errorMessageAct);
+                        this.getServletContext().getRequestDispatcher(VUE_ADMIN).forward(request, response);
                     } else {
-                        response.sendRedirect(request.getContextPath() + "/keskecer");
+                        errorMessageAct.add("Un problème est survenu lors de la suppression de l'activité");
+                        request.setAttribute("errorMessageAct", errorMessageAct);
+                        this.getServletContext().getRequestDispatcher(VUE_ADMIN).forward(request, response);
                     }
                     break;
                 case "Place" :
+                    List<String> errorMessagePlace = new ArrayList<>();
                     int deletedPlace = sql.doInsert("Delete from Place WHERE id_place = \"" + id + "\"");
                     deletedActivity = sql.doInsert("Delete from Activity WHERE id_place = \"" + id + "\"");
                     if (deletedPlace == 1 && deletedActivity == 1) {
-                        response.sendRedirect(request.getContextPath() + "/keskecer");
+                        request.setAttribute("errorMessagePlace", errorMessagePlace);
+                        this.getServletContext().getRequestDispatcher(VUE_ADMIN).forward(request, response);
                     } else {
-                        response.sendRedirect(request.getContextPath() + "/keskecer");
+                        errorMessagePlace.add("Un problème est survenu lors de la suppression de l'activité");
+                        request.setAttribute("errorMessagePlace", errorMessagePlace);
+                        this.getServletContext().getRequestDispatcher(VUE_ADMIN).forward(request, response);
                     }
                     break;
                 case "Notification" :
+                    List<String> errorMessageNotif = new ArrayList<>();
                     int deletednotif = sql.doInsert("Delete from Place WHERE id_notif = \"" + id + "\"");
                     if (deletednotif == 1) {
-                        response.sendRedirect(request.getContextPath() + "/keskecer");
+                        request.setAttribute("errorMessageNotif", errorMessageNotif);
+                        this.getServletContext().getRequestDispatcher(VUE_ADMIN).forward(request, response);
                     } else {
-                        response.sendRedirect(request.getContextPath() + "/keskecer");
+                        errorMessageNotif.add("Un problème est survenu lors de la suppression de l'activité");
+                        request.setAttribute("errorMessageNotif", errorMessageNotif);
+                        this.getServletContext().getRequestDispatcher(VUE_ADMIN).forward(request, response);
                     }
                     break;
             }
