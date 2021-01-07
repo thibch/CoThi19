@@ -386,7 +386,7 @@ public class SQLConnector {
     public boolean setUserPositive(UserBean usr) throws ExceptionRequeteSQL {
         String rqString = "UPDATE User SET isInfected = 1 \n" +
                             "WHERE email = ?";
-
+        usr.setInfected(true);
         String places = "SELECT id_place, date, hourStart, hourEnd \n" +
                 "FROM `user` JOIN activity USING (id_user) JOIN place USING (id_place) \n" +
                 "WHERE email = ? AND date >= DATE_SUB(Date(NOW()), INTERVAL 10 DAY)";
