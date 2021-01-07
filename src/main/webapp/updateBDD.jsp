@@ -62,6 +62,8 @@
                 isAdmin = resultSet.getString("isAdmin");
                 pathPicture = resultSet.getString("path_picture");
                 isInfected = resultSet.getString("isInfected");
+            }else{
+
             }
         }catch (ExceptionCoThi19 | SQLException throwables){
             throwables.printStackTrace();
@@ -120,8 +122,12 @@
                 <input class="form-control" type="date" id="actDate" name="actDate" value="<%out.print(date);%>"><br>
                 <label for="hourEnd">HourEnd :</label>
                 <input class="form-control" type="text" id="hourEnd" name="hourEnd" value="<%out.print(hourEnd);%>"><br>
+                <label for="minuteEnd">MinuteEnd :</label>
+                <input class="form-control" type="text" id="minuteEnd" name="minuteEnd" value="<%out.print(hourEnd);%>"><br>
                 <label for="hourStart">HourStart :</label>
                 <input class="form-control" type="text" id="hourStart" name="hourStart" value="<%out.print(hourStart);%>"><br>
+                <label for="minuteStart">MinuteStart :</label>
+                <input class="form-control" type="text" id="minuteStart" name="minuteStart" value="<%out.print(hourStart);%>"><br>
                 <input type="hidden" value="activityForm" name="form" />
                 <input type="hidden" value="<% out.print(idAct);%>" name="id_activity" id="id_activity"/>
                 <input class="form-control" type="submit" value="MODIFIER">
@@ -165,13 +171,14 @@
     </div>
 <% } else if (request.getParameter("idUpdateNotif") != null) {
     String idNotif = "";
-    String content = "";
+    String content = "", seen = "";
     SQLConnector sql = SQLConnector.getInstance();
     try {
         ResultSet resultSet = sql.doRequest("Select * from Notification WHERE id_notif = \"" + request.getParameter("idUpdateNotif") + "\"");
         if (resultSet.next()){
             idNotif = resultSet.getString("id_notif");
             content = resultSet.getString("content");
+            seen = resultSet.getString("seen");
         }
     }catch (ExceptionCoThi19 | SQLException throwables){
         throwables.printStackTrace();
@@ -183,6 +190,8 @@
             <form action="modificationVerification" method="GET">
                 <label for="content">Content :</label>
                 <input class="form-control" type="text" id="content" name="content" value="<%out.print(content);%>"><br>
+                <label for="seen">Seen :</label>
+                <input class="form-control" type="text" id="seen" name="seen" value="<%out.print(seen);%>"><br>
                 <input type="hidden" value="notifForm" name="form" />
                 <input type="hidden" value="<% out.print(idNotif);%>" name="id_notif" id="id_notif"/>
                 <input class="form-control" type="submit" value="MODIFIER">

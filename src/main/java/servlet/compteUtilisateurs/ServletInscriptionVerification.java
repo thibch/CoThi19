@@ -12,50 +12,72 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Roberge-Mentec Corentin
  */
 
 public class ServletInscriptionVerification extends HttpServlet {
+
+    public ServletInscriptionVerification(){
+        super();
+    }
+
+    public static final String VUE = "/inscription.jsp";
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         boolean verification = true;
+        List<String> errorMessage = new ArrayList<>();
         String idUser, mail, name, surname, password, birthDateString;
         mail = request.getParameter("mail");
         name = request.getParameter("name");
         surname = request.getParameter("surname");
         password = request.getParameter("password");
         birthDateString = request.getParameter("birthDate");
-        Date birthDate = Date.valueOf(birthDateString);
-
+        Date birthDate = null;
+        if (!birthDateString.equals("")) {
+            birthDate = Date.valueOf(birthDateString);
+        }
 
         if (mail.equals("")){
             verification = false;
+            errorMessage.add("Le champs de mail est vide");
         }
         if (name.equals("")){
             verification = false;
+            errorMessage.add("Le champs de nom est vide");
         }
         if (surname.equals("")){
             verification = false;
+            errorMessage.add("Le champs de prénom est vide");
         }
         if (password.equals("")){
             verification = false;
+            errorMessage.add("Le champs de mot de passe est vide");
         }
 
         java.util.Date date = new java.util.Date();
 
-        if (birthDateString.equals("") || birthDate.after(date)){
+        if (birthDateString.equals("")){
             verification = false;
+            errorMessage.add("Le champs de date de naissance est vide");
+        }
+        if (birthDate != null) {
+            if (birthDate.after(date)) {
+                verification = false;
+                errorMessage.add("Le champs de la date de naissance est dans le futur");
+            }
         }
 
         if (verification){
             SQLConnector sql = SQLConnector.getInstance(); // On récupère la connexion sql
             int i;
-            String bd = null;
             try {
                 i = 0;
                 ResultSet resultIdSet = sql.doRequest("Select * from User");
@@ -74,7 +96,8 @@ public class ServletInscriptionVerification extends HttpServlet {
             }
             response.sendRedirect(request.getContextPath() + "/accueil");
         }else{
-            response.sendRedirect(request.getContextPath() + "/inscription");
+            request.setAttribute("errorMessage", errorMessage);
+            this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
         }
     }
 }

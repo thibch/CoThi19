@@ -1,3 +1,4 @@
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -40,6 +41,18 @@
     <div class="col-lg-3">
         <h1 class="my-4">Inscription</h1>
     </div>
+
+    <% if (request.getAttribute("errorMessage") != null) {
+            List<String> messages = (List<String>) request.getAttribute("errorMessage");
+            System.out.println(messages);
+            for (String s : messages) {
+                out.print("<div class=\"alert alert-danger col-lg-9\">" +
+                          "<strong>Erreur ! </strong> " + s +
+                          "</div>");
+            }
+        %>
+
+    <% } %>
 
     <div class="col-lg-9">
         <div class = "form-group">

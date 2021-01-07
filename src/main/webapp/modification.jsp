@@ -5,6 +5,7 @@
 <%@ page import="java.sql.SQLException" %>
 <%@ page import="beans.NotificationBean" %>
 <%@ page import="java.util.Collection" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -83,7 +84,15 @@
     }
 %>
 <div class="container">
-
+    <% if (request.getAttribute("errorMessage") != null) {
+        List<String> messages = (List<String>) request.getAttribute("errorMessage");
+        System.out.println(messages);
+        for (String s : messages) {
+            out.print("<div class=\"alert alert-danger col-lg-9\">" +
+                    "<strong>Erreur ! </strong> " + s +
+                    "</div>");
+        }
+    } %>
     <div class="col-lg-9">
         <h1>Modification des informations personnelles</h1>
     </div>
