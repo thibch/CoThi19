@@ -118,7 +118,7 @@ public class ServletAddBDD extends HttpServlet {
                             if (String.valueOf(i).equals(idUser)){
                                 idCorresponding = true;
                             }else{
-                                System.out.println("Error");
+                                System.err.println("Error");
                             }
                         }
                         if(!idCorresponding) {
@@ -126,7 +126,7 @@ public class ServletAddBDD extends HttpServlet {
                             if (resultInsertSet == 1) {
                                 System.out.println("Insertion réussie");
                             } else {
-                                System.out.println("Error");
+                                System.err.println("Error");
                             }
                         }else{
                             errorMessageUser.add("L'id entré est déjà utilisé");
@@ -213,7 +213,7 @@ public class ServletAddBDD extends HttpServlet {
                             if (String.valueOf(i).equals(idAct)){
                                 idCorresponding = true;
                             }else{
-                                System.out.println("Error");
+                                System.err.println("Error");
                             }
                         }
                         if(!idCorresponding) {
@@ -221,7 +221,7 @@ public class ServletAddBDD extends HttpServlet {
                             if (resultInsertSet == 1) {
                                 System.out.println("Insertion réussie");
                             } else {
-                                System.out.println("Error");
+                                System.err.println("Error");
                             }
                         }else{
                             errorMessageAct.add("L'id entré est déjà utilisé");
@@ -273,7 +273,7 @@ public class ServletAddBDD extends HttpServlet {
                             if (String.valueOf(i).equals(idPlace)){
                                 idCorresponding = true;
                             }else{
-                                System.out.println("Error");
+                                System.err.println("Error");
                             }
                         }
                         if(!idCorresponding) {
@@ -281,7 +281,7 @@ public class ServletAddBDD extends HttpServlet {
                             if (resultInsertSet == 1) {
                                 System.out.println("Insertion réussie");
                             } else {
-                                System.out.println("Error");
+                                System.err.println("Error");
                             }
                         }else {
                             errorMessagePlace.add("L'id entré est déjà utilisé");
@@ -342,7 +342,7 @@ public class ServletAddBDD extends HttpServlet {
                             if (String.valueOf(i).equals(idNotif)){
                                 idCorresponding = true;
                             }else{
-                                System.out.println("Error");
+                                System.err.println("Error");
                             }
                         }
                         if(!idCorresponding) {
@@ -350,7 +350,7 @@ public class ServletAddBDD extends HttpServlet {
                             if (resultInsertSet == 1) {
                                 System.out.println("Insertion réussie");
                             } else {
-                                System.out.println("Error");
+                                System.err.println("Error");
                             }
                         }else{
                             errorMessageNotif.add("L'id entré est déjà utilisé");

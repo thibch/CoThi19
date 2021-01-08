@@ -14,7 +14,6 @@ public class UserBean {
     public UserBean(String mail, int isInfected){
         this.mail = mail;
         admin = false;
-        System.out.println("IS INFECTED :" + isInfected);
         this.isInfected = isInfected == 1;
     }
 

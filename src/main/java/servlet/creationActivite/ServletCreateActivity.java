@@ -40,10 +40,7 @@ public class ServletCreateActivity extends HttpServlet {
     public static String getDate(HttpServletRequest req) {
         String date;
         date = req.getParameter("date");
-        if(date != null && date.matches("^[0-9]{4}-(0[1-9]|1[0-2])-(([3][0-1])|([0-2]?[0-9]))$")){
-            LocalDate datesql2 = LocalDate.parse(date);
-            //System.out.println(datesql2);
-        }else{
+        if (date == null || !date.matches("^[0-9]{4}-(0[1-9]|1[0-2])-(([3][0-1])|([0-2]?[0-9]))$")) {
             date = "";
         }
         return date;

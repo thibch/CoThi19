@@ -86,7 +86,6 @@
 <div class="container">
     <% if (request.getAttribute("errorMessage") != null) {
         List<String> messages = (List<String>) request.getAttribute("errorMessage");
-        System.out.println(messages);
         for (String s : messages) {
             out.print("<div class=\"alert alert-danger col-lg-9\">" +
                     "<strong>Erreur ! </strong> " + s +

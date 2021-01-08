@@ -71,10 +71,9 @@ public class ServletRechercheLieux extends HttpServlet {
                     if (!rechercheLieuNom.equals("") || !rechercheLieuAdresse.equals("")) {
                         try {
                             lieux = SQLConnector.getInstance().getListeLieu(rechercheLieuNom, rechercheLieuAdresse, 10);
-                            System.out.println(lieux);
                         } catch (ExceptionCoThi19 exceptionCoThi19) {
-                            System.out.println("Impossible de récupérer les lieux");
-                            System.out.println(exceptionCoThi19.getMessage());
+                            System.err.println("Impossible de récupérer les lieux");
+                            System.err.println(exceptionCoThi19.getMessage());
                             rechercheLieuNom = "ERROR";
                             rechercheLieuAdresse = "ERROR";
                         }
@@ -89,7 +88,7 @@ public class ServletRechercheLieux extends HttpServlet {
                             creationReussie = lieu != null;
                         } catch (ExceptionRequeteSQL exceptionRequeteSQL) {
                             erreur = true;
-                            System.out.println(exceptionRequeteSQL.getMessage());
+                            System.err.println(exceptionRequeteSQL.getMessage());
                         }
                     }else{
                         //Création de lieux
@@ -113,7 +112,7 @@ public class ServletRechercheLieux extends HttpServlet {
                                             }
                                         } catch (ExceptionRequeteSQL exceptionRequeteSQL) {
                                             erreur = true;
-                                            System.out.println(exceptionRequeteSQL.getMessage());
+                                            System.err.println(exceptionRequeteSQL.getMessage());
                                         }
                                     }
                                 }
@@ -123,12 +122,12 @@ public class ServletRechercheLieux extends HttpServlet {
                     if(creationReussie){
                         UserBean usr =  (UserBean)session.getAttribute(ATT_SESSION_USER);
                         try {
-                            System.out.println(usr.getMail());
+                            /*System.out.println(usr.getMail());
                             System.out.println(lieu.getId());
                             System.out.println(Date.valueOf(date));
                             System.out.println(LocalTime.of(heureDebut, minuteDebut, 0, 0));
                             System.out.println(LocalTime.of(heureFin, minuteFin, 0, 0));
-                            activite = SQLConnector.getInstance().createActivite(usr.getMail(), lieu.getId(), Date.valueOf(date), LocalTime.of(heureDebut, minuteDebut, 0, 0), LocalTime.of(heureFin, minuteFin, 0, 0));
+                            */activite = SQLConnector.getInstance().createActivite(usr.getMail(), lieu.getId(), Date.valueOf(date), LocalTime.of(heureDebut, minuteDebut, 0, 0), LocalTime.of(heureFin, minuteFin, 0, 0));
                         } catch (ExceptionRequeteSQL exceptionRequeteSQL) {
                             creationReussie = false;
                             erreur = true;

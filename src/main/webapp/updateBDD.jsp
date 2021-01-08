@@ -100,7 +100,6 @@
     String hourEnd = "";
     String hourStart = "";
     SQLConnector sql = SQLConnector.getInstance();
-    System.out.println(request.getParameter("idUpdateActivity"));
     try {
         ResultSet resultSet = sql.doRequest("Select * from Activity WHERE id_act = " + request.getParameter("idUpdateActivity")+";");
         if (resultSet.next()){
@@ -112,7 +111,6 @@
     }catch (ExceptionCoThi19 | SQLException throwables){
         throwables.printStackTrace();
     }
-    System.out.println("id act dans updateBDD : "+idAct);
     %>
     <div class="col-lg-9">
         <br>

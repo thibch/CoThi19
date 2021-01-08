@@ -89,7 +89,7 @@ public class ServletInscriptionVerification extends HttpServlet {
                 if (resultInsertSet == 1){
                     System.out.println("Insertion réussie");
                 }else{
-                    System.out.println("Error");
+                    System.err.println("Error");
                 }
             } catch (SQLException | ExceptionCoThi19 throwables) {
                 throwables.printStackTrace();

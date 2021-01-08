@@ -93,10 +93,7 @@ public class SQLConnector {
             }
             success = true;
         } catch (ClassNotFoundException | SQLException e) {
-            System.out.println("-------------------------------------------------\n" +
-                    "ERROR : \n");
-            System.out.println(e.getMessage());
-            System.out.println("-------------------------------------------------");
+            System.err.println(e.getMessage());
             con = null;
             success = false;
         }
@@ -187,7 +184,7 @@ public class SQLConnector {
             }
 
         } catch (SQLException throwables) {
-            System.out.println(throwables.getMessage());
+            System.err.println(throwables.getMessage());
             throw new ExceptionRequeteSQL("Erreur lors de la récupération des lieux", "SELECT * FROM PLACE WHERE name LIKE %" + name + "%, adress LIKE %" + adress + "% LIMIT " + max + ";");
         }
         return listeLieux;
@@ -276,7 +273,7 @@ public class SQLConnector {
                 lieu = new LieuBean(id, name1, adress1);
             }
         } catch (SQLException throwables) {
-            System.out.println(throwables.getMessage());
+            System.err.println(throwables.getMessage());
             throw new ExceptionRequeteSQL("Erreur lors de la récupération d'un lieu", "SELECT * FROM PLACE WHERE name = " + name + ", adress = " + adress + ";");
         }
         return lieu;
@@ -306,7 +303,7 @@ public class SQLConnector {
                 }
             }
         } catch (SQLException throwables) {
-            System.out.println(throwables.getMessage());
+            System.err.println(throwables.getMessage());
             throw new ExceptionRequeteSQL("Erreur lors de la récupération de notification",
                     "SELECT *  FROM Notification JOIN User WHERE email = " + email + " AND id_user = id_receive LIMIT" + max);
         }
@@ -323,7 +320,7 @@ public class SQLConnector {
             try {
                 preparedStmt = con.prepareStatement(rqString);
             } catch (SQLException throwables) {
-                System.out.println(throwables.getMessage());
+                System.err.println(throwables.getMessage());
                 throw new ExceptionRequeteSQL("Erreur lors de la création du Statement notifications", rqString);
             }
             for(NotificationBean notif : notifications){
@@ -331,7 +328,7 @@ public class SQLConnector {
                     preparedStmt.setInt(1, notif.getIdNotif());
                     preparedStmt.executeUpdate();
                 } catch (SQLException throwables) {
-                    System.out.println(throwables.getMessage());
+                    System.err.println(throwables.getMessage());
                     throw new ExceptionRequeteSQL("Erreur lors de l'update d'une notif",
                             "UPDATE Notification " +
                                     "SET seen = 1 " +
@@ -364,7 +361,7 @@ public class SQLConnector {
                 preparedStmt.executeUpdate();
             }
         } catch (SQLException throwables) {
-            System.out.println(throwables.getMessage());
+            System.err.println(throwables.getMessage());
             throw new ExceptionRequeteSQL("Erreur lors de la récupération d'un lieu",
                     "SELECT *  FROM Notification JOIN User WHERE email = " + " AND id_user = id_receive LIMIT" );
         }
@@ -444,7 +441,7 @@ WHERE id_place = 9 AND (date = DATE(2021-01-01)) AND
                 return true;
             }
         } catch (SQLException throwables) {
-            System.out.println(throwables.getMessage());
+            System.err.println(throwables.getMessage());
             throw new ExceptionRequeteSQL("Erreur lors de la tentative de notifier les users",
                     "Pleins de requetes SQL" );
         }

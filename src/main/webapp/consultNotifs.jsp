@@ -26,7 +26,6 @@
 </head>
 <body>
     <%
-        System.out.println(request.getAttribute("notifs"));
         Collection<NotificationBean> notificationBeans = (Collection<NotificationBean>) request.getAttribute("notifs");%>
 
     <!-- Navigation -->

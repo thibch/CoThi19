@@ -52,7 +52,7 @@ public class ServletConnexionVerification extends HttpServlet {
                     isAdmin = resultIdSet.getInt("isAdmin");
                     isInfected = resultIdSet.getInt("isInfected");
                 }else{
-                    System.out.println("Error");
+                    System.err.println("Error");
                     recuperation = false;
                 }
             } catch (SQLException | ExceptionCoThi19 throwables) {

@@ -41,8 +41,6 @@ public class ServletModificationVerification extends HttpServlet {
         String bdName, bdSurname, bdPassword, bdBirthdate, bdIsAdmin, bdPathPicture, bdContent, bdIsInfected;
         String bdDate, bdHourEnd, bdHourStart, bdAdress, bdGpsCooridnates;
 
-        System.out.println("id act : "+request.getParameter("id_activity"));
-
         idUser = request.getParameter("id_user");
         idAct = request.getParameter("id_activity");
         idPlace = request.getParameter("id_place");
@@ -69,7 +67,6 @@ public class ServletModificationVerification extends HttpServlet {
 
         Date birthDate = null, date = null;
 
-        System.out.println(dateString);
 
         if (birthDateString != null && !birthDateString.equals("")) {
             birthDate = Date.valueOf(birthDateString);
