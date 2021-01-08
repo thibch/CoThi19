@@ -16,6 +16,7 @@
 
     <title><%
         Collection<NotificationBean> notificationBeans = (Collection<NotificationBean>) request.getAttribute("notifs");
+        UserBean user = (UserBean) request.getSession().getAttribute("userConnected");
         int nbSeen = 0;
         if (notificationBeans != null) {
             for(NotificationBean notif : notificationBeans){
@@ -70,7 +71,6 @@
     String surname = "";
     String birthDate = "";
     SQLConnector sql = SQLConnector.getInstance();
-    UserBean user = (UserBean) request.getSession().getAttribute("userConnected");
     try {
         ResultSet resultSet = sql.doRequest("Select * from User WHERE email = \"" + user.getMail() + "\"");
         if (resultSet.next()){

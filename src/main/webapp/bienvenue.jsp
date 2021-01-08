@@ -125,7 +125,7 @@
                             }
                         }else{
                             out.print("<div class=\"col-lg-12 col-md-12 mb-12\"> \n" +
-                                    "<h1> Vous n'avez pas d'acitivités. </h1>\n" +
+                                    "<h1> Vous n'avez pas d'activités. </h1>\n" +
                                     "</div>" +
                                     "<a href=\"#\"><img src=\"images/onsaitpas.png\" alt=\"On sait pas\" width=\"400\" height=\"389\"></a>\n");
 
