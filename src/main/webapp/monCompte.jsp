@@ -58,7 +58,7 @@
                 <% } %>
                 <% if (!user.isInfected()){ %>
                 <li class="nav-item">
-                    <a class="nav-link" href="positif/">Je suis positif :)</a>
+                    <a class="nav-link" href="positif/" style="color:red">Je suis positif</a>
                 </li>
                 <%}%>
                 <li class="nav-item">
