@@ -84,7 +84,7 @@ public class ServletCreateActivity extends HttpServlet {
                     minuteFin = -1;
                     heureFin = -1;
                 }
-                noError = !date.equals("") && heureDebut != 1 && heureFin != -1 && minuteDebut != -1 && minuteFin != -1;
+                noError = !date.equals("") && heureDebut != -1 && heureFin != -1 && minuteDebut != -1 && minuteFin != -1;
             }
             req.setAttribute("date", date);
             req.setAttribute("heureDebut", heureDebut);

@@ -56,7 +56,7 @@
 
     <div class="col-lg-9">
         <div class = "form-group">
-            <form action="inscriptionVerification" method="GET">
+            <form action="inscriptionVerification" method="POST">
                 <label for="mail">Mail :</label>
                 <input class="form-control" type="email" id="mail" name="mail"><br>
                 <label for="surname">Prenom :</label>
@@ -72,7 +72,7 @@
             </form>
         </div>
         <div class = "form-group">
-            <form action="connexion" method="GET">
+            <form action="connexion" method="POST">
                 <label style="color: #be0505">Vous avez déjà un compte?</label>
                 <input class="form-control" type="submit" value="CONNEXION">
             </form>

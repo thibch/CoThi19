@@ -143,7 +143,7 @@
                     }
                 %>
                 <div class="form-group">
-                    <form action="CreateActivity" method="GET" id="formActivity">
+                    <form action="CreateActivity" method="POST" id="formActivity">
                         <!-- Pour l'activité -->
                         <label for="date">Date Activté :</label>
                         <br>

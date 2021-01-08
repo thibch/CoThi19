@@ -182,8 +182,6 @@ public class SQLConnector {
                 preparedStmt.setString(2, "%" + adress + "%");
                 ResultSet r = preparedStmt.executeQuery();
                 while(r.next()){
-                    System.out.println(r.getString("name"));
-                    System.out.println(r.getString("adress"));
                     listeLieux.add(new LieuBean(r.getInt("id_place"), r.getString("name"), r.getString("adress")));
                 }
             }
@@ -216,10 +214,6 @@ public class SQLConnector {
             ResultSet r = preparedStmt2.executeQuery();
             r.next();
             lieu = new LieuBean(r.getInt("id_place"), r.getString("name"), r.getString("adress"));
-            System.out.println("LIEU" + lieu);
-            System.out.println("LIEU" + lieu.getName());
-            System.out.println("LIEU" + lieu.getAdress());
-            System.out.println("LIEU" + lieu.getId());
         }catch (SQLException throwables) {
             throw new ExceptionRequeteSQL("Erreur lors de la creation d'un lieux",
                     "INSERT INTO Place(name, adress, gps_coordinates) VALUES(" + name + ", " + adress +", 0);");
@@ -268,10 +262,6 @@ public class SQLConnector {
         String rqString = "SELECT * " +
                 "FROM PLACE " +
                 "WHERE name = ? AND adress = ? ";
-        System.out.println("GET LIEU : ");
-        System.out.println(name);
-        System.out.println(adress);
-        System.out.println("LET'S GOO");
         LieuBean lieu = null;
         try {
             if(tryConnection()){
@@ -281,11 +271,8 @@ public class SQLConnector {
                 ResultSet r = preparedStmt.executeQuery();
                 r.next();
                 int id = r.getInt("id_place");
-                System.out.println(id);
                 String name1 = r.getString("name");
-                System.out.println(name1);
                 String adress1 = r.getString("adress");
-                System.out.println(adress1);
                 lieu = new LieuBean(id, name1, adress1);
             }
         } catch (SQLException throwables) {
@@ -391,11 +378,19 @@ public class SQLConnector {
                 "FROM `user` JOIN activity USING (id_user) JOIN place USING (id_place) \n" +
                 "WHERE email = ? AND date >= DATE_SUB(Date(NOW()), INTERVAL 10 DAY)";
 
-        String users = "SELECT DISTINCT id_user \n"+
+        String users = "SELECT DISTINCT id_user, place.name, adress \n"+
                 "FROM `user` JOIN activity USING (id_user) JOIN place USING (id_place) \n" +
                 "WHERE id_place = ? AND (date = ?) AND " +
                 "((hourStart >= ? AND hourStart <= ?) OR (hourEnd >= ? AND hourEnd <= ?) OR (hourStart <= ? AND hourEnd >= ?))" +
                 "AND NOT (email = ?) ";
+
+        /*
+
+        SELECT DISTINCT id_user
+FROM `user` JOIN activity USING (id_user) JOIN place USING (id_place)
+WHERE id_place = 9 AND (date = DATE(2021-01-01)) AND
+((hourStart >= TIME(00:00:00) AND hourStart <= TIME(23:00:00)) OR (hourEnd >= TIME(00:00:00) AND hourEnd <= TIME(23:00:00)) OR (hourStart <= TIME(00:00:00) AND hourEnd >= TIME(23:00:00)))
+         */
 
         String casContact = "INSERT INTO NOTIFICATION(id_receive, content) \n" +
                 "VALUES (?, ?)";
@@ -418,37 +413,32 @@ public class SQLConnector {
                 while(r.next()){
                     //Récupération lieux et date :
 
-                    System.out.println("-----------");
+
                     findUsersContact = con.prepareStatement(users);
                     int id = r.getInt("id_place");
-                    System.out.println(id);
                     findUsersContact.setInt(1, id); // id
                     Date date = r.getDate("date");
-                    System.out.println(date);
                     findUsersContact.setDate(2, date); // date
                     timeStart = r.getTime("hourStart");
                     timeEnd = r.getTime("hourEnd");
-                    System.out.println(timeStart);
-                    System.out.println(timeEnd);
                     findUsersContact.setTime(3, timeStart); // bounds 1 hourStart
                     findUsersContact.setTime(4, timeEnd); // bounds 2 hourStart
                     findUsersContact.setTime(5, timeStart); // bounds 1 hourEnd
                     findUsersContact.setTime(6, timeEnd); // bounds 2 hourEnd
                     findUsersContact.setTime(7, timeStart); // bounds 1 hourEnd
                     findUsersContact.setTime(8, timeEnd); // bounds 2 hourEnd
-                    findUsersContact.setString(9, usr.getMail()); // bounds 2 hourEnd
+                    findUsersContact.setString(9, usr.getMail()); // email de l'utilisateur qui a émet la requête
 
                     resUsers = findUsersContact.executeQuery();
 
                     notifUsers = con.prepareStatement(casContact);
                     while(resUsers.next()) {
-                        System.out.println("***********");
                         int id_u = resUsers.getInt("id_user");
-                        System.out.println(id_u);
+                        String name = resUsers.getString("place.name");
+                        String adress = resUsers.getString("adress");
                         notifUsers.setInt(1, id_u);
-                        notifUsers.setString(2, "VOUS ETES CAS CONTACT, AU SECOURS");
+                        notifUsers.setString(2, "Vous avez été cas contact ! <br>Dans cet établissement : " + name + " adresse : " + adress);
                         notifUsers.executeUpdate();
-                        System.out.println("Updated");
                     }
                 }
                 return true;
@@ -461,5 +451,31 @@ public class SQLConnector {
         return false;
     }
 
+    public Collection<ActiviteBean> getActivity(UserBean usr, int maxNumber, int fromMaxDay) throws ExceptionRequeteSQL {
+        String rqString = "SELECT id_place, date, hourStart, hourEnd, place.name, adress FROM Activity JOIN USER USING(id_user) JOIN PLACE USING(id_place) \n " +
+                "WHERE email = ? AND date >= DATE_SUB(Date(NOW()), INTERVAL " + fromMaxDay + " DAY) \n " +
+                "ORDER BY date DESC \n " +
+                "LIMIT " + maxNumber;
+
+        ArrayList<ActiviteBean> activities = new ArrayList<>();
+
+        try {
+            if (tryConnection()) {
+                PreparedStatement findPlaces = con.prepareStatement(rqString);
+                findPlaces.setString(1, usr.getMail());
+                ResultSet r = findPlaces.executeQuery();
+                ActiviteBean act;
+                while(r.next()){
+                    act = new ActiviteBean(r.getDate("date"), r.getTime("hourStart").toLocalTime(), r.getTime("hourEnd").toLocalTime());
+                    act.setLieu(new LieuBean(r.getInt("id_place"), r.getString("name"), r.getString("adress")));
+                    activities.add(act);
+                }
+            }
+        } catch (SQLException throwables) {
+            System.err.println(throwables.getMessage());
+            activities.clear();
+        }
+        return activities;
+    }
 
 }

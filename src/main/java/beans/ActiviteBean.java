@@ -9,6 +9,7 @@ public class ActiviteBean {
     private Date date;
     private LocalTime heureDebut;
     private LocalTime heureFin;
+    private LieuBean lieu;
 
     public ActiviteBean(Date date, LocalTime heureDebut, LocalTime heureFin) {
         this.date = date;
@@ -26,5 +27,13 @@ public class ActiviteBean {
 
     public LocalTime getHeureFin() {
         return heureFin;
+    }
+
+    public LieuBean getLieu() {
+        return lieu;
+    }
+
+    public void setLieu(LieuBean lieu) {
+        this.lieu = lieu;
     }
 }

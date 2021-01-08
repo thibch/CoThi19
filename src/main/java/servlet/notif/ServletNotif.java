@@ -69,17 +69,23 @@ public class ServletNotif extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
 
+        System.out.println("POST");
+
         HttpSession session = req.getSession();
         UserBean usr = (UserBean) session.getAttribute(ATT_SESSION_USER);
         if(usr != null){
-
+            System.out.println("User Not null");
             if(req.getParameter("wantToDelete") != null && req.getParameter("wantToDelete").matches("^[0-9]+$")){
                 if(delNotif(Integer.parseInt(req.getParameter("wantToDelete")), usr)){
                     System.out.println("Notification successfully deleted");
                 }
             }
 
+            System.out.println("After deletion if deletion");
+
             Collection<NotificationBean> notifs = getNotif(usr, 100);
+
+            System.out.println("Getting notif lul");
 
             if(notifs != null){
                 if(!setNotifAsSeen(notifs)){
@@ -87,9 +93,14 @@ public class ServletNotif extends HttpServlet {
                 }
             }
 
+            System.out.println("After setting notifs");
+
             req.setAttribute("notifs", notifs);
-            this.getServletContext().getRequestDispatcher(VUE).forward(req, resp);
+
+            System.out.println("redirect vue");
+            this.getServletContext().getRequestDispatcher("/consultNotifs.jsp").forward(req, resp);
         }else{
+            System.out.println("redirect Vue 404");
             this.getServletContext().getRequestDispatcher(VUE_404).forward(req, resp);
         }
     }

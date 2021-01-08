@@ -72,7 +72,7 @@
     <div class="col-lg-9">
         <br>
         <div class = "form-group">
-            <form action="modificationVerification" method="GET">
+            <form action="modificationVerification" method="POST">
                 <label for="password">Password :</label>
                 <input class="form-control" type="text" id="password" name="password" value="<%out.print(password);%>"><br>
                 <label for="name">Name :</label>
@@ -117,7 +117,7 @@
     <div class="col-lg-9">
         <br>
         <div class = "form-group">
-            <form action="modificationVerification" method="GET">
+            <form action="modificationVerification" method="POST">
                 <label for="actDate">Date :</label>
                 <input class="form-control" type="date" id="actDate" name="actDate" value="<%out.print(date);%>"><br>
                 <label for="hourEnd">HourEnd :</label>
@@ -156,7 +156,7 @@
     <div class="col-lg-9">
         <br>
         <div class = "form-group">
-            <form action="modificationVerification" method="GET">
+            <form action="modificationVerification" method="POST">
                 <label for="namePlace">Name :</label>
                 <input class="form-control" type="text" id="namePlace" name="namePlace" value="<%out.print(namePlace);%>"><br>
                 <label for="adress">Adress :</label>
@@ -187,7 +187,7 @@
     <div class="col-lg-9">
         <br>
         <div class = "form-group">
-            <form action="modificationVerification" method="GET">
+            <form action="modificationVerification" method="POST">
                 <label for="content">Content :</label>
                 <input class="form-control" type="text" id="content" name="content" value="<%out.print(content);%>"><br>
                 <label for="seen">Seen :</label>

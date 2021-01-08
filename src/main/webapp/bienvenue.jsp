@@ -1,6 +1,7 @@
 <%@ page import="beans.UserBean" %>
 <%@ page import="beans.NotificationBean" %>
 <%@ page import="java.util.Collection" %>
+<%@ page import="beans.ActiviteBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="fr">
 
@@ -12,16 +13,18 @@
     <meta name="author" content="">
 
     <title><%
-        Collection<NotificationBean> notificationBeans = (Collection<NotificationBean>) request.getAttribute("notifs");
+        Object o = request.getAttribute("notifs");
         int nbSeen = 0;
-        if (notificationBeans != null) {
+        if(o != null){
+            Collection<NotificationBean> notificationBeans = (Collection<NotificationBean>) o;
             for(NotificationBean notif : notificationBeans){
                 nbSeen += notif.isSeen()?0:1;
             }
             if(nbSeen > 0){
                 out.print("(" + nbSeen + ") ");
             }
-        }%>CoThi19</title>
+        }
+        %>CoThi19</title>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -93,98 +96,47 @@
 <div class="container">
 
     <div class="row">
-
         <div class="col-lg-3">
-
             <a href="#"><img src="images/cothi19.png" alt="CoThi19" width="240" height="135"></a>
-
         </div>
 
         <div class="col-lg-9">
-
             <div>
                 <h2>Liste des activités des 10 derniers jours :</h2>
             </div>
             <br><br>
             <div class="row">
+                <%
+                    Object ob = request.getAttribute("activities");
+                    if(ob != null){
+                        Collection<ActiviteBean> col = (Collection<ActiviteBean>) ob;
+                        if(col.size() > 0){
+                            for(ActiviteBean act : col){
+                                out.print("<div class=\"col-lg-4 col-md-6 mb-4\">\n" +
+                                        "<div class=\"card h-100\">\n" +
+                                        "<a href=\"#\"><img class=\"card-img-top\" src=\"images/onsaitpas2.png\" alt=\"\"></a>\n" +
+                                        "<div class=\"card-body\">\n" +
+                                        "<h4 class=\"card-title\">");
+                                out.print("<a href=\"#\"> " + act.getDate() + " de " + act.getHeureDebut() + " jusqu'à " + act.getHeureFin() + " </a>");
+                                out.print("<p class=\"card-text\">Nom : " + act.getLieu().getName() +" <br>Adresse :" + act.getLieu().getAdress() + "</p>\n" +
+                                        "</div>\n" +
+                                        "</div>\n" +
+                                        "</div>");
+                            }
+                        }else{
+                            out.print("<div class=\"col-lg-12 col-md-12 mb-12\"> \n" +
+                                    "<h1> Vous n'avez pas d'acitivités. </h1>\n" +
+                                    "</div>" +
+                                    "<a href=\"#\"><img src=\"images/onsaitpas.png\" alt=\"On sait pas\" width=\"400\" height=\"389\"></a>\n");
 
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
-                        <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                        <div class="card-body">
-                            <h4 class="card-title">
-                                <a href="#">Je laisse les différents "Items" parce que je sais pas si ça peut nous servir</a>
-                            </h4>
-                            <h5>Nom de l'activité</h5>
-                            <p class="card-text">Description de l'activité (Lieux, localisation GPS etc)</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
-                        <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                        <div class="card-body">
-                            <h4 class="card-title">
-                                <a href="#">Item Two</a>
-                            </h4>
-                            <h5>Nom de l'activité</h5>
-                            <p class="card-text">Description de l'activité (Lieux, localisation GPS etc)</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
-                        <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                        <div class="card-body">
-                            <h4 class="card-title">
-                                <a href="#">Item Three</a>
-                            </h4>
-                            <h5>Nom de l'activité</h5>
-                            <p class="card-text">Description de l'activité (Lieux, localisation GPS etc)</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
-                        <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                        <div class="card-body">
-                            <h4 class="card-title">
-                                <a href="#">Item Four</a>
-                            </h4>
-                            <h5>Nom de l'activité</h5>
-                            <p class="card-text">Description de l'activité (Lieux, localisation GPS etc)</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
-                        <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                        <div class="card-body">
-                            <h4 class="card-title">
-                                <a href="#">Item Five</a>
-                            </h4>
-                            <h5>Nom de l'activité</h5>
-                            <p class="card-text">Description de l'activité (Lieux, localisation GPS etc)</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
-                        <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                        <div class="card-body">
-                            <h4 class="card-title">
-                                <a href="#">Item Six</a>
-                            </h4>
-                            <h5>Nom de l'activité</h5>
-                            <p class="card-text">Description de l'activité (Lieux, localisation GPS etc)</p>
-                        </div>
-                    </div>
-                </div>
+                        }
+                    }else{
+                        out.print("<div class=\"col-lg-12 col-md-12 mb-12\"> \n" +
+                                "<h1> Connectez-vous pour afficher vos activités. </h1>\n" +
+                                "</div>" +
+                                "<a href=\"#\"><img src=\"images/onsaitpas.png\" alt=\"On sait pas\" width=\"400\" height=\"389\"></a>\n");
+                    }
+                %>
 
             </div>
             <!-- /.row -->

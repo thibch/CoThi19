@@ -43,7 +43,7 @@
 
     <div class="col-lg-9">
         <div class = "form-group">
-            <form action="connexionVerification" method="GET">
+            <form action="connexionVerification" method="POST">
                 <label for="mail">Mail :</label>
                 <input class="form-control" type="email" id="mail" name="mail"><br>
                 <label for="password">Mot de passe :</label>

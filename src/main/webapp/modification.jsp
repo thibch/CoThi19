@@ -100,7 +100,7 @@
     <div class="col-lg-9">
         <p>Mail : <%out.print(mail);%></p>
         <div class = "form-group">
-            <form action="modificationVerification" method="GET">
+            <form action="modificationVerification" method="POST">
                 <label for="surname">Prenom :</label>
                 <input class="form-control" type="text" id="surname" name="surname" value="<%out.print(surname);%>"><br>
                 <label for="name">Nom :</label>

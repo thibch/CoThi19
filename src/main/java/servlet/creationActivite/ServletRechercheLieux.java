@@ -60,7 +60,7 @@ public class ServletRechercheLieux extends HttpServlet {
             ActiviteBean activite = null;
 
             boolean creationReussie = false;
-            boolean erreur = date.equals("") || heureDebut == 1 || heureFin == -1 || minuteDebut == -1 || minuteFin == -1;
+            boolean erreur = date.equals("") || heureDebut == -1 || heureFin == -1 || minuteDebut == -1 || minuteFin == -1;
 
             if(req.getParameter("estActif") != null && req.getParameter("estActif").equals("1")){
 

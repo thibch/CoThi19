@@ -157,13 +157,23 @@
 
 
     <servlet>
-        <servlet-name>ServletNotifi</servlet-name>
+        <servlet-name>ServletNotif</servlet-name>
         <servlet-class>servlet.notif.ServletNotif</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ServletNotifi</servlet-name>
+        <servlet-name>ServletNotif</servlet-name>
         <url-pattern>/consultNotifications</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ServletNotif2</servlet-name>
+        <servlet-class>servlet.notif.ServletNotif</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletNotif2</servlet-name>
+        <url-pattern>/yep</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>ServletPositif</servlet-name>
         <servlet-class>servlet.notif.ServletPositif</servlet-class>

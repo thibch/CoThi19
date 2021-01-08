@@ -104,7 +104,7 @@
                     Integer minuteFinInt = (Integer) request.getAttribute("minuteFin");
                 %>
                 <div class="form-group">
-                    <form action="FindPlace" method="GET" id="formActivity">
+                    <form action="FindPlace" method="POST" id="formActivity">
                         <%
                             out.print("<input type=\"hidden\" id=\"date\" name=\"date\" value=\"" + dateStr + "\">");
                             out.print("<input type=\"hidden\" id=\"heureDebut\" name=\"heureDebut\" value=\"" + heureDebInt + "\">");
