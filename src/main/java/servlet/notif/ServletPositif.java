@@ -21,7 +21,9 @@ public class ServletPositif extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserBean usr = (UserBean) req.getSession().getAttribute("userConnected");
-        usr.isInfected();
+        if(!usr.isInfected()) {
+            setUsrPositiv(usr);
+        }
         resp.sendRedirect(req.getContextPath() + "/accueil");
     }
 
